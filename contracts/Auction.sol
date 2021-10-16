@@ -78,7 +78,7 @@ contract Auction {
         announcementTimes++;
 
         if (announcementTimes > 3) {
-            state = State.CLOSED;
+            state = State.CLOSING;
         }
     }
 
