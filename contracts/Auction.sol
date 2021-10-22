@@ -59,7 +59,7 @@ contract Auction {
         address biddersAddr = msg.sender;
         IBidder storage currentBidder = bidders[biddersAddr];
 
-        require(_price > rule.startingPrice, "Should set higher price");
+        require(_price > currentPrice, "Should set higher price");
         require(announcementTimes < rule.minimumStep, "Over");
         require(currentBidder.token > 0, "Not enough token");
 
@@ -82,5 +82,14 @@ contract Auction {
         }
     }
 
-    function getDeposit() public {}
+    function getDeposit() public {
+
+        state = State.CLOSED;
+        totalDeposit -= 
+
+
+        if (totalDeposit <= 0) {
+            state = State.CLOSED;
+        }
+    }
 }
