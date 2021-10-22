@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/Aoi1011/English_Auction_DApp/issues"
   },
-  "homepage": "https://github.com/Aoi1011/English_Auction_DApp#readme"
+  "homepage": "https://github.com/Aoi1011/English_Auction_DApp#readme",
+  "dependencies": {
+    "web3": "^1.6.0"
+  }
 }
