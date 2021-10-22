@@ -19,5 +19,11 @@ contract('AuctionContract', (accounts) => {
                 assert.equal(rule.minimumStep, 5, "Minimum step should be 5");
             });
         });
+
+        it("Only Auctioneer can register bidders", () => {
+            return auctionInstance.register(accounts[0], 10, {from: accounts[0]}).then(() => {
+                
+            })
+        })
     });
 });

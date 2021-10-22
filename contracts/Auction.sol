@@ -19,6 +19,14 @@ contract Auction {
         CLOSED
     }
 
+    enum Action {
+        REGISTER,
+        START_SESSION,
+        BID,
+        ANNOUNCE,
+        GET_DEPOSIT
+    }
+
     State public state = State.CREATED;
 
     uint8 public announcementTimes = 0;
@@ -32,6 +40,36 @@ contract Auction {
 
     mapping(address => IBidder) public bidders;
 
+    modifier onlyAuctioneer() {
+        require(msg.sender == auctioner);
+        _;
+    }
+
+    modifier onlyValidState(Action _action) {
+        if (_action == Action.REGISTER) {
+            if (state == State.CREATED) {
+                _;
+            }
+        } else if (_action == Action.START_SESSION) {
+            if (state == State.CREATED) {
+                _;
+            }
+        } else if (_action == Action.BID) {
+            if (state == State.STARTED) {
+                _;
+            }
+        } else if (_action == Action.ANNOUNCE) {
+            if (state == State.STARTED) {
+                _;
+            }
+        } else if (_action == Action.GET_DEPOSIT) {
+            if (state == State.CLOSING) {
+                _;
+            }
+        }
+        _;
+    }
+
     constructor(uint8 _startingPrice, uint8 _minimumStep) {
         auctioner = msg.sender;
         IRule memory newRule;
@@ -42,7 +80,11 @@ contract Auction {
         currentPrice = _startingPrice;
     }
 
-    function register(address _account, uint8 _token) public {
+    function register(address _account, uint8 _token)
+        public
+        onlyAuctioneer
+        onlyValidState(Action.REGISTER)
+    {
         IBidder memory newBidder;
 
         newBidder.token = _token;
@@ -51,11 +93,11 @@ contract Auction {
         bidders[_account] = newBidder;
     }
 
-    function startSession() public {
+    function startSession() public onlyValidState(Action.START_SESSION) {
         state = State.STARTED;
     }
 
-    function bid(uint8 _price) public {
+    function bid(uint8 _price) public onlyValidState(Action.BID) {
         address biddersAddr = msg.sender;
         IBidder storage currentBidder = bidders[biddersAddr];
 
@@ -76,7 +118,7 @@ contract Auction {
         announcementTimes = 0;
     }
 
-    function anounce() public {
+    function anounce() public onlyValidState(Action.ANNOUNCE) {
         announcementTimes++;
 
         if (announcementTimes > 3) {
@@ -84,7 +126,7 @@ contract Auction {
         }
     }
 
-    function getDeposit() public {
+    function getDeposit() public onlyValidState(Action.GET_DEPOSIT) {
         address bidderAddr = msg.sender;
 
         if (bidderAddr != currentWinner) {
