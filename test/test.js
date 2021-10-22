@@ -48,7 +48,6 @@ contract('AuctionContract', (accounts) => {
                                 })
                                 .catch((e) => {
                                     let a = e.toString();
-                                    console.log(a);
                                     if (a === "Error: Can not register anymore") {
                                         assert(true, "Can not register anymore");
                                     } else {
@@ -82,20 +81,43 @@ contract('AuctionContract', (accounts) => {
         });
 
         it("This action is only available in Created State", () => {
-            return auctionInstance.startSession({ from: accounts[0] })
-                .then((res) => {
-
+            return auctionInstance.register(accounts[1], 100, { from: accounts[0] })
+                .then(() => {
+                    return auctionInstance.startSession({ from: accounts[0] })
+                        .then(() => {
+                            return auctionInstance.startSession({ from: accounts[0] })
+                                .then(() => {
+                                    throw new Error("Can not start the session again");
+                                })
+                                .catch((e) => {
+                                    let a = e.toString();
+                                    if (a === "Error: Can not start the session again") {
+                                        assert(true, "Can not start the session again");
+                                    } else {
+                                        assert(false, "Something wrong....");
+                                    }
+                                })
+                        });
                 });
         });
     });
 
     describe("Bid", () => {
         it("All the Bidders can bid.", () => {
-            return auctionInstance.bid(5, { from: accounts[2] })
+            return auctionInstance.register(accounts[1], 100, { from: accounts[0] })
                 .then(() => {
-                    throw new Error("Only bidder can bid");
-                }).catch((e) => {
-                    assert(true, "Only bidder can bid");
+                    return auctionInstance.startSession({ from: accounts[0] })
+                        .then(() => {
+                            return auctionInstance.currentPrice()
+                                .then((price) => {
+                                    console.log(price);
+                                    return auctionInstance.bid(70, { from: accounts[1] })
+                                        .then((res) => {
+                                            console.log(res);
+                                        })
+                                })
+
+                        });
                 });
         });
 
