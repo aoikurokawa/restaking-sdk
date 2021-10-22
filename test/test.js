@@ -28,7 +28,7 @@ contract('AuctionContract', (accounts) => {
     describe('Register', () => {
         // Register
         it("Only Auctioneer can register bidders", () => {
-            return auctionInstance.register(accounts[1], 10, { from: accounts[1] })
+            return auctionInstance.register(accounts[1], 1000, { from: accounts[1] })
                 .then((result) => {
                     throw new Error("Can not register");
                 })
@@ -38,11 +38,25 @@ contract('AuctionContract', (accounts) => {
         });
 
         it("This action is only available in Created State", () => {
-            return auctionInstance.state().then((result) => {
-                assert(result !== undefined);
-
-                console.log(web3.utils.toBN(result).toString());
-            });
+            return auctionInstance.register(accounts[1], 100, { from: accounts[0] })
+                .then(() => {
+                    return auctionInstance.startSession({ from: accounts[0] })
+                        .then(() => {
+                            return auctionInstance.register(accounts[2], 100, { from: accounts[0] })
+                                .then(() => {
+                                    throw new Error("Can not register anymore");
+                                })
+                                .catch((e) => {
+                                    let a = e.toString();
+                                    console.log(a);
+                                    if (a === "Error: Can not register anymore") {
+                                        assert(true, "Can not register anymore");
+                                    } else {
+                                        assert(false, "Something wrong....");
+                                    }
+                                })
+                        });
+                });
         });
 
         it("When register, the account address and the number of tokens need to be inputted", () => {
@@ -70,17 +84,46 @@ contract('AuctionContract', (accounts) => {
         it("This action is only available in Created State", () => {
             return auctionInstance.startSession({ from: accounts[0] })
                 .then((res) => {
-                    console.log(res);
+
                 });
         });
     });
 
     describe("Bid", () => {
         it("All the Bidders can bid.", () => {
+            return auctionInstance.bid(5, { from: accounts[2] })
+                .then(() => {
+                    throw new Error("Only bidder can bid");
+                }).catch((e) => {
+                    assert(true, "Only bidder can bid");
+                });
+        });
+
+        it("This action is only available in Started State", () => {
             return auctionInstance.bid(5, { from: accounts[1] })
                 .then(() => {
-                    
+
                 });
+        });
+
+        it("The next price must be inputted!", () => {
+            let beforePrice;
+            return auctionInstance.currentPrice()
+                .then((bpr) => {
+                    beforePrice = bpr;
+
+                    return auctionInstance.bid(1, { from: accounts[1] })
+                        .then((res) => {
+
+                            return auctionInstance.currentPrice()
+                                .then((apr) => {
+                                    assert(apr > beforePrice, "After price must be higher");
+                                })
+                        });
+                });
+
         })
-    })
+    });
+
+
 });
