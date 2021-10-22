@@ -45,6 +45,11 @@ contract Auction {
         _;
     }
 
+    modifier onlyBidder {
+        require(bidders[msg.sender].token != 0);
+        _;
+    }
+
     modifier onlyValidState(Action _action) {
         if (_action == Action.REGISTER) {
             if (state == State.CREATED) {
@@ -97,7 +102,7 @@ contract Auction {
         state = State.STARTED;
     }
 
-    function bid(uint8 _price) public onlyValidState(Action.BID) {
+    function bid(uint8 _price) public onlyValidState(Action.BID) onlyBidder {
         address biddersAddr = msg.sender;
         IBidder storage currentBidder = bidders[biddersAddr];
 
@@ -118,7 +123,7 @@ contract Auction {
         announcementTimes = 0;
     }
 
-    function anounce() public onlyValidState(Action.ANNOUNCE) {
+    function anounce() public onlyValidState(Action.ANNOUNCE) onlyAuctioneer {
         announcementTimes++;
 
         if (announcementTimes > 3) {
@@ -126,7 +131,7 @@ contract Auction {
         }
     }
 
-    function getDeposit() public onlyValidState(Action.GET_DEPOSIT) {
+    function getDeposit() public onlyValidState(Action.GET_DEPOSIT) onlyBidder {
         address bidderAddr = msg.sender;
 
         if (bidderAddr != currentWinner) {

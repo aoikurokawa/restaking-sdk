@@ -65,6 +65,22 @@ contract('AuctionContract', (accounts) => {
                 .catch((e) => {
                     assert(true, "Only auctioneer can start the session");
                 });
+        });
+
+        it("This action is only available in Created State", () => {
+            return auctionInstance.startSession({ from: accounts[0] })
+                .then((res) => {
+                    console.log(res);
+                });
+        });
+    });
+
+    describe("Bid", () => {
+        it("All the Bidders can bid.", () => {
+            return auctionInstance.bid(5, { from: accounts[1] })
+                .then(() => {
+                    
+                });
         })
     })
 });
