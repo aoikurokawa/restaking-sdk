@@ -59,12 +59,14 @@ contract Auction {
         address biddersAddr = msg.sender;
         IBidder storage currentBidder = bidders[biddersAddr];
 
-        require(_price > currentPrice, "Should set higher price");
-        require(announcementTimes < rule.minimumStep, "Over");
+        require(
+            _price > currentPrice + rule.minimumStep,
+            "Should set higher price"
+        );
         require(currentBidder.token > 0, "Not enough token");
 
-        currentBidder.deposit = currentBidder.token;
-        currentBidder.token = 0;
+        currentBidder.deposit += _price;
+        currentBidder.token -= _price;
 
         totalDeposit += _price;
 
@@ -83,13 +85,17 @@ contract Auction {
     }
 
     function getDeposit() public {
+        address bidderAddr = msg.sender;
 
-        state = State.CLOSED;
-        totalDeposit -= 
+        if (bidderAddr != currentWinner) {
+            bidders[bidderAddr].token = bidders[bidderAddr].deposit;
+            bidders[bidderAddr].deposit = 0;
 
+            totalDeposit -= bidders[bidderAddr].deposit;
 
-        if (totalDeposit <= 0) {
-            state = State.CLOSED;
+            if (totalDeposit <= 0) {
+                state = State.CLOSED;
+            }
         }
     }
 }
