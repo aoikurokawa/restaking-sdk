@@ -47,7 +47,7 @@ contract Auction {
     }
 
     modifier onlyBidder() {
-        require(bidders[msg.sender].token != 0);
+        require(bidders[msg.sender].token != 0, "Only registered bidder can bid");
         _;
     }
 

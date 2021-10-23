@@ -17,7 +17,7 @@ contract('AuctionContract', (accounts) => {
             return auctionInstance.rule().then((rule) => {
                 assert(rule !== undefined, "Rule should be defined");
 
-                assert.equal(rule.startingPrice, 50, "Starting price should be 50");
+                assert.equal(rule.startingPrice, 10, "Starting price should be 50");
                 assert.equal(rule.minimumStep, 5, "Minimum step should be 5");
             });
         });
@@ -28,7 +28,7 @@ contract('AuctionContract', (accounts) => {
     describe('Register', () => {
         // Register
         it("Only Auctioneer can register bidders", () => {
-            return auctionInstance.register(accounts[1], 1000, { from: accounts[1] })
+            return auctionInstance.register(accounts[1], 100, { from: accounts[1] })
                 .then((result) => {
                     throw new Error("Can not register");
                 })
@@ -88,46 +88,67 @@ contract('AuctionContract', (accounts) => {
 
     describe("Bid", () => {
         it("All the Bidders can bid.", () => {
-            return auctionInstance.register(accounts[1], 100, { from: accounts[0] })
-                .then(() => {
-                    return auctionInstance.startSession({ from: accounts[0] })
-                        .then(() => {
-                            return auctionInstance.currentPrice()
-                                .then((price) => {
-                                    return auctionInstance.bid(90, { from: accounts[1] })
-                                        .then((res) => {
-                                            console.log(res);
-                                        })
-                                })
+            return auctionInstance.bid(20, { from: accounts[1] })
+                .then((res) => {
 
-                        });
+                    return auctionInstance.bid(20, { from: accounts[2] })
+                        .then((res) => {
+                            throw new Error("Can not bid! Because this account is not registered...")
+                        })
+                        .catch((e) => {
+                            assert(true, "Can not bid! Because this account is not registered...");
+                        })
                 });
-        });
 
-        it("This action is only available in Started State", () => {
-            return auctionInstance.bid(5, { from: accounts[1] })
-                .then(() => {
 
-                });
         });
 
         it("The next price must be inputted!", () => {
-            let beforePrice;
-            return auctionInstance.currentPrice()
+            let beforeNextPrice;
+            return auctionInstance.nextPrice()
                 .then((bpr) => {
-                    beforePrice = bpr;
+                    console.log(parseInt(bpr));
+                    beforeNextPrice = bpr;
 
-                    return auctionInstance.bid(1, { from: accounts[1] })
+                    return auctionInstance.bid(30, { from: accounts[1] })
                         .then((res) => {
 
-                            return auctionInstance.currentPrice()
+                            return auctionInstance.nextPrice()
                                 .then((apr) => {
-                                    assert(apr > beforePrice, "After price must be higher");
+                                    console.log(parseInt(apr))
+                                    assert(apr > beforeNextPrice, "After price must be higher");
                                 })
                         });
                 });
 
         })
+
+        it("This action is only available in Started State", () => {
+            return auctionInstance.bid(40, { from: accounts[1] })
+                .then(() => {
+
+                    return auctionInstance.anounce({ from: accounts[0] })
+                        .then(() => {
+
+                            return auctionInstance.anounce({ from: accounts[0] })
+                                .then(() => {
+
+                                    return auctionInstance.anounce({ from: accounts[0] })
+                                        .then(() => {
+
+                                            return auctionInstance.bid(47, { from: accounts[1] })
+                                                .then(() => {
+                                                    throw new Error("Can not bid anymore. because it's closing already.")
+                                                })
+                                                .catch(() => {
+                                                    assert(true, "Can not bid anymore. because it's closing already.");
+                                                })
+                                        })
+                                })
+
+                        })
+                });
+        });
     });
 
 
