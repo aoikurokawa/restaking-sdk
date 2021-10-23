@@ -28,7 +28,7 @@ contract('AuctionContract', (accounts) => {
     describe('Register', () => {
         // Register
         it("Only Auctioneer can register bidders", () => {
-            return auctionInstance.register(accounts[1], 100, { from: accounts[1] })
+            return auctionInstance.register(accounts[1], 200, { from: accounts[1] })
                 .then((result) => {
                     throw new Error("Can not register");
                 })
@@ -38,7 +38,7 @@ contract('AuctionContract', (accounts) => {
         });
 
         it("This action is only available in Created State", () => {
-            return auctionInstance.register(accounts[1], 100, { from: accounts[0] })
+            return auctionInstance.register(accounts[1], 200, { from: accounts[0] })
                 .then(() => {
                     return auctionInstance.startSession({ from: accounts[0] })
                         .then(() => {
@@ -110,7 +110,7 @@ contract('AuctionContract', (accounts) => {
                     console.log(parseInt(bpr));
                     beforeNextPrice = bpr;
 
-                    return auctionInstance.bid(30, { from: accounts[1] })
+                    return auctionInstance.bid(26, { from: accounts[1] })
                         .then((res) => {
 
                             return auctionInstance.nextPrice()
@@ -124,7 +124,7 @@ contract('AuctionContract', (accounts) => {
         })
 
         it("This action is only available in Started State", () => {
-            return auctionInstance.bid(40, { from: accounts[1] })
+            return auctionInstance.bid(35, { from: accounts[1] })
                 .then(() => {
 
                     return auctionInstance.anounce({ from: accounts[0] })
@@ -133,20 +133,25 @@ contract('AuctionContract', (accounts) => {
                             return auctionInstance.anounce({ from: accounts[0] })
                                 .then(() => {
 
-                                    return auctionInstance.anounce({ from: accounts[0] })
+                                    // return auctionInstance.anounce({ from: accounts[0] })
+                                    //     .then(() => {
+
+                                    //         return auctionInstance.anounce({ from: accounts[0] })
+                                    //             .then(() => {
+
+                                    return auctionInstance.bid(41, { from: accounts[1] })
                                         .then(() => {
-
-                                            return auctionInstance.bid(47, { from: accounts[1] })
-                                                .then(() => {
-                                                    throw new Error("Can not bid anymore. because it's closing already.")
-                                                })
-                                                .catch(() => {
-                                                    assert(true, "Can not bid anymore. because it's closing already.");
-                                                })
+                                            throw new Error("Can not bid anymore. because it's closing already.")
                                         })
-                                })
+                                        .catch(() => {
+                                            assert(true, "Can not bid anymore. because it's closing already.");
+                                        });
 
-                        })
+                                    //         });
+                                    // });
+                                });
+
+                        });
                 });
         });
     });
