@@ -106,8 +106,10 @@ contract Auction {
         address biddersAddr = msg.sender;
         IBidder storage currentBidder = bidders[biddersAddr];
 
+        IRule memory newRule = rule;
+
         require(
-            _price > currentPrice + rule.minimumStep,
+            _price > currentPrice + newRule.minimumStep,
             "Should set higher price"
         );
         require(currentBidder.token > 0, "Not enough token");
