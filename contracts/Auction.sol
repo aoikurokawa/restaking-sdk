@@ -31,6 +31,7 @@ contract Auction {
 
     uint8 public announcementTimes = 0;
     uint8 public currentPrice = 0;
+    uint8 public nextPrice = 0;
     IRule public rule;
 
     address public currentWinner;
@@ -41,36 +42,34 @@ contract Auction {
     mapping(address => IBidder) public bidders;
 
     modifier onlyAuctioneer() {
-        require(msg.sender == auctioner);
+        require(msg.sender == auctioner, "Only Auctioneer can do the action!");
         _;
     }
 
-    modifier onlyBidder {
+    modifier onlyBidder() {
         require(bidders[msg.sender].token != 0);
         _;
     }
 
     modifier onlyValidState(Action _action) {
         if (_action == Action.REGISTER) {
-            if (state == State.CREATED) {
-                _;
-            }
+            require(state == State.CREATED, "The state is not 'CREATED'");
+            _;
         } else if (_action == Action.START_SESSION) {
-            if (state == State.CREATED) {
-                _;
-            }
+            require(state == State.CREATED, "The state is not 'CREATED'");
+            _;
         } else if (_action == Action.BID) {
-            if (state == State.STARTED) {
-                _;
-            }
+            require(state == State.STARTED, "The state is not 'STARTED'");
+
+            _;
         } else if (_action == Action.ANNOUNCE) {
-            if (state == State.STARTED) {
-                _;
-            }
+            require(state == State.STARTED, "The state is not 'STARTED'");
+
+            _;
         } else if (_action == Action.GET_DEPOSIT) {
-            if (state == State.CLOSING) {
-                _;
-            }
+            require(state == State.CLOSING, "The state is not 'CLOSING'");
+
+            _;
         }
         _;
     }
@@ -81,6 +80,7 @@ contract Auction {
         newRule.startingPrice = _startingPrice;
         newRule.minimumStep = _minimumStep;
 
+        nextPrice = _startingPrice;
         rule = newRule;
         currentPrice = _startingPrice;
     }
@@ -103,26 +103,33 @@ contract Auction {
     }
 
     function bid(uint8 _price) public onlyValidState(Action.BID) onlyBidder {
+        bool _success = false;
         address biddersAddr = msg.sender;
         IBidder storage currentBidder = bidders[biddersAddr];
 
-        IRule memory newRule = rule;
+        if (_price >= currentPrice) {
+            require(currentBidder.token > 0, "Not enough token");
 
-        require(
-            _price > currentPrice + newRule.minimumStep,
-            "Should set higher price"
-        );
-        require(currentBidder.token > 0, "Not enough token");
+            currentBidder.deposit += _price;
+            currentBidder.token -= _price;
 
-        currentBidder.deposit += _price;
-        currentBidder.token -= _price;
+            totalDeposit += _price;
 
-        totalDeposit += _price;
+            currentPrice = _price;
+            currentWinner = biddersAddr;
 
-        currentPrice = _price;
-        currentWinner = biddersAddr;
+            _success = true;
+        } else {
+            revert("Should set higher price!");
+        }
 
-        announcementTimes = 0;
+        if (_success) {
+            uint8 newNextPrice = _price + rule.minimumStep;
+
+            nextPrice = newNextPrice;
+
+            announcementTimes = 0;
+        }
     }
 
     function anounce() public onlyValidState(Action.ANNOUNCE) onlyAuctioneer {
