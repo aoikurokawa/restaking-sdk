@@ -44,15 +44,10 @@ contract('AuctionContract', (accounts) => {
                         .then(() => {
                             return auctionInstance.register(accounts[2], 60, { from: accounts[0] })
                                 .then(() => {
-                                    throw new Error("Can not register anymore");
+                                    throw new Error("The state is not 'CREATED'");
                                 })
                                 .catch((e) => {
-                                    let a = e.toString();
-                                    if (a === "Error: Can not register anymore") {
-                                        assert(true, "Can not register anymore");
-                                    } else {
-                                        assert(false, "Something wrong....");
-                                    }
+                                    assert(true, "The state is not 'CREATED'");
                                 })
                         });
                 });
@@ -81,23 +76,12 @@ contract('AuctionContract', (accounts) => {
         });
 
         it("This action is only available in Created State", () => {
-            return auctionInstance.register(accounts[1], 100, { from: accounts[0] })
+            return auctionInstance.startSession({ from: accounts[0] })
                 .then(() => {
-                    return auctionInstance.startSession({ from: accounts[0] })
-                        .then(() => {
-                            return auctionInstance.startSession({ from: accounts[0] })
-                                .then(() => {
-                                    throw new Error("Can not start the session again");
-                                })
-                                .catch((e) => {
-                                    let a = e.toString();
-                                    if (a === "Error: Can not start the session again") {
-                                        assert(true, "Can not start the session again");
-                                    } else {
-                                        assert(false, "Something wrong....");
-                                    }
-                                })
-                        });
+                    throw new Error("Can not start the session again");
+                })
+                .catch((e) => {
+                    assert(true, "Can not start the session again");
                 });
         });
     });
