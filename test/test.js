@@ -81,7 +81,7 @@ contract('AuctionContract', (accounts) => {
         });
 
         it("This action is only available in Created State", () => {
-            return auctionInstance.register(accounts[1], 100, { from: accounts[0] })
+            return auctionInstance.register(accounts[1], 1000, { from: accounts[0] })
                 .then(() => {
                     return auctionInstance.startSession({ from: accounts[0] })
                         .then(() => {
@@ -104,14 +104,14 @@ contract('AuctionContract', (accounts) => {
 
     describe("Bid", () => {
         it("All the Bidders can bid.", () => {
-            return auctionInstance.register(accounts[1], 100, { from: accounts[0] })
+            return auctionInstance.register(accounts[1], 1000, { from: accounts[0] })
                 .then(() => {
                     return auctionInstance.startSession({ from: accounts[0] })
                         .then(() => {
                             return auctionInstance.currentPrice()
                                 .then((price) => {
                                     console.log(price);
-                                    return auctionInstance.bid(70, { from: accounts[1] })
+                                    return auctionInstance.bid(100, { from: accounts[1] })
                                         .then((res) => {
                                             console.log(res);
                                         })
