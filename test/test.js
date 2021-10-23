@@ -156,5 +156,33 @@ contract('AuctionContract', (accounts) => {
         });
     });
 
+    describe("Get back the deposit", () => {
+        it("All the Bidders (except the Winner) can Get back the deposit.", () => {
+            return auctionInstance.getDeposit({ from: accounts[1] })
+                .then(() => {
+
+                    return auctionInstance.getDeposit({ from: accounts[2] })
+                        .then(() => {
+                            throw new Error("Can not get the deposit.")
+                        })
+                        .catch(() => {
+                            assert(true, "Can not get the deposit.")
+                        });
+                });
+        });
+
+        it("This action is only available in Closing State.", () => {
+            return auctionInstance.getDeposit({ from: accounts[1] })
+                .then((amount) => {
+
+                    throw new Error("Can not get deposit")
+                })
+                .catch((e) => {
+
+                    assert(true, "Can not get deposit");
+                })
+        })
+    })
+
 
 });

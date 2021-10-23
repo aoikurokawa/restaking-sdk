@@ -37,7 +37,7 @@ contract Auction {
     address public currentWinner;
     address public auctioner;
 
-    uint16 private totalDeposit = 0;
+    uint16 public totalDeposit = 0;
 
     mapping(address => IBidder) public bidders;
 
