@@ -7,6 +7,7 @@
     "test": "test"
   },
   "scripts": {
+    "start": "node graphql/viewer.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,6 +22,7 @@
   },
   "homepage": "https://github.com/Aoi1011/English_Auction_DApp#readme",
   "dependencies": {
+    "superagent": "^6.1.0",
     "web3": "^1.6.0"
   }
 }
