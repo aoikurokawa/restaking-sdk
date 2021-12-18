@@ -17,7 +17,7 @@ const FETCH_REPO_QUERY = `
 
 const TOKEN = process.env.REACT_APP_GITHUB_TOKEN;
 
-export const fetchRepositries = () => {
+export const fetchRepositries = async (): Promise<any> => {
   post("https://api.github.com/graphql")
     .set({
       Authorization: `Beater ${TOKEN}`,
