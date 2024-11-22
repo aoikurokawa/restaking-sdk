@@ -27,9 +27,9 @@ import {
   type ReadonlySignerAccount,
   type TransactionSigner,
   type WritableAccount,
-} from '@solana/web3.js';
-import { JITO_VAULT_PROGRAM_ADDRESS } from '../programs';
-import { getAccountMetaFactory, type ResolvedAccount } from '../shared';
+} from "@solana/web3.js";
+import { JITO_VAULT_PROGRAM_ADDRESS } from "../programs";
+import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
 
 export const SET_PROGRAM_FEE_DISCRIMINATOR = 17;
 
@@ -67,17 +67,17 @@ export type SetProgramFeeInstructionDataArgs = { newFeeBps: number };
 export function getSetProgramFeeInstructionDataEncoder(): Encoder<SetProgramFeeInstructionDataArgs> {
   return transformEncoder(
     getStructEncoder([
-      ['discriminator', getU8Encoder()],
-      ['newFeeBps', getU16Encoder()],
+      ["discriminator", getU8Encoder()],
+      ["newFeeBps", getU16Encoder()],
     ]),
-    (value) => ({ ...value, discriminator: SET_PROGRAM_FEE_DISCRIMINATOR })
+    (value) => ({ ...value, discriminator: SET_PROGRAM_FEE_DISCRIMINATOR }),
   );
 }
 
 export function getSetProgramFeeInstructionDataDecoder(): Decoder<SetProgramFeeInstructionData> {
   return getStructDecoder([
-    ['discriminator', getU8Decoder()],
-    ['newFeeBps', getU16Decoder()],
+    ["discriminator", getU8Decoder()],
+    ["newFeeBps", getU16Decoder()],
   ]);
 }
 
@@ -87,7 +87,7 @@ export function getSetProgramFeeInstructionDataCodec(): Codec<
 > {
   return combineCodec(
     getSetProgramFeeInstructionDataEncoder(),
-    getSetProgramFeeInstructionDataDecoder()
+    getSetProgramFeeInstructionDataDecoder(),
   );
 }
 
@@ -97,14 +97,14 @@ export type SetProgramFeeInput<
 > = {
   config: Address<TAccountConfig>;
   admin: TransactionSigner<TAccountAdmin>;
-  newFeeBps: SetProgramFeeInstructionDataArgs['newFeeBps'];
+  newFeeBps: SetProgramFeeInstructionDataArgs["newFeeBps"];
 };
 
 export function getSetProgramFeeInstruction<
   TAccountConfig extends string,
   TAccountAdmin extends string,
 >(
-  input: SetProgramFeeInput<TAccountConfig, TAccountAdmin>
+  input: SetProgramFeeInput<TAccountConfig, TAccountAdmin>,
 ): SetProgramFeeInstruction<
   typeof JITO_VAULT_PROGRAM_ADDRESS,
   TAccountConfig,
@@ -126,12 +126,12 @@ export function getSetProgramFeeInstruction<
   // Original args.
   const args = { ...input };
 
-  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
+  const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
   const instruction = {
     accounts: [getAccountMeta(accounts.config), getAccountMeta(accounts.admin)],
     programAddress,
     data: getSetProgramFeeInstructionDataEncoder().encode(
-      args as SetProgramFeeInstructionDataArgs
+      args as SetProgramFeeInstructionDataArgs,
     ),
   } as SetProgramFeeInstruction<
     typeof JITO_VAULT_PROGRAM_ADDRESS,
@@ -160,11 +160,11 @@ export function parseSetProgramFeeInstruction<
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>
+    IInstructionWithData<Uint8Array>,
 ): ParsedSetProgramFeeInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 2) {
     // TODO: Coded error.
-    throw new Error('Not enough accounts');
+    throw new Error("Not enough accounts");
   }
   let accountIndex = 0;
   const getNextAccount = () => {

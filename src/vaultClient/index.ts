@@ -6,8 +6,8 @@
  * @see https://github.com/kinobi-so/kinobi
  */
 
-export * from './accounts';
-export * from './errors';
-export * from './instructions';
-export * from './programs';
-export * from './types';
+export * from "./accounts";
+export * from "./errors";
+export * from "./instructions";
+export * from "./programs";
+export * from "./types";

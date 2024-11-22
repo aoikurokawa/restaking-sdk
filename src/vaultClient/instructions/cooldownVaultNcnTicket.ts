@@ -26,9 +26,9 @@ import {
   type ReadonlySignerAccount,
   type TransactionSigner,
   type WritableAccount,
-} from '@solana/web3.js';
-import { JITO_VAULT_PROGRAM_ADDRESS } from '../programs';
-import { getAccountMetaFactory, type ResolvedAccount } from '../shared';
+} from "@solana/web3.js";
+import { JITO_VAULT_PROGRAM_ADDRESS } from "../programs";
+import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
 
 export const COOLDOWN_VAULT_NCN_TICKET_DISCRIMINATOR = 8;
 
@@ -72,16 +72,16 @@ export type CooldownVaultNcnTicketInstructionDataArgs = {};
 
 export function getCooldownVaultNcnTicketInstructionDataEncoder(): Encoder<CooldownVaultNcnTicketInstructionDataArgs> {
   return transformEncoder(
-    getStructEncoder([['discriminator', getU8Encoder()]]),
+    getStructEncoder([["discriminator", getU8Encoder()]]),
     (value) => ({
       ...value,
       discriminator: COOLDOWN_VAULT_NCN_TICKET_DISCRIMINATOR,
-    })
+    }),
   );
 }
 
 export function getCooldownVaultNcnTicketInstructionDataDecoder(): Decoder<CooldownVaultNcnTicketInstructionData> {
-  return getStructDecoder([['discriminator', getU8Decoder()]]);
+  return getStructDecoder([["discriminator", getU8Decoder()]]);
 }
 
 export function getCooldownVaultNcnTicketInstructionDataCodec(): Codec<
@@ -90,7 +90,7 @@ export function getCooldownVaultNcnTicketInstructionDataCodec(): Codec<
 > {
   return combineCodec(
     getCooldownVaultNcnTicketInstructionDataEncoder(),
-    getCooldownVaultNcnTicketInstructionDataDecoder()
+    getCooldownVaultNcnTicketInstructionDataDecoder(),
   );
 }
 
@@ -121,7 +121,7 @@ export function getCooldownVaultNcnTicketInstruction<
     TAccountNcn,
     TAccountVaultNcnTicket,
     TAccountAdmin
-  >
+  >,
 ): CooldownVaultNcnTicketInstruction<
   typeof JITO_VAULT_PROGRAM_ADDRESS,
   TAccountConfig,
@@ -146,7 +146,7 @@ export function getCooldownVaultNcnTicketInstruction<
     ResolvedAccount
   >;
 
-  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
+  const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
   const instruction = {
     accounts: [
       getAccountMeta(accounts.config),
@@ -190,11 +190,11 @@ export function parseCooldownVaultNcnTicketInstruction<
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>
+    IInstructionWithData<Uint8Array>,
 ): ParsedCooldownVaultNcnTicketInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 5) {
     // TODO: Coded error.
-    throw new Error('Not enough accounts');
+    throw new Error("Not enough accounts");
   }
   let accountIndex = 0;
   const getNextAccount = () => {
@@ -212,7 +212,7 @@ export function parseCooldownVaultNcnTicketInstruction<
       admin: getNextAccount(),
     },
     data: getCooldownVaultNcnTicketInstructionDataDecoder().decode(
-      instruction.data
+      instruction.data,
     ),
   };
 }

@@ -27,15 +27,15 @@ import {
   type TransactionSigner,
   type WritableAccount,
   type WritableSignerAccount,
-} from '@solana/web3.js';
-import { JITO_VAULT_PROGRAM_ADDRESS } from '../programs';
-import { getAccountMetaFactory, type ResolvedAccount } from '../shared';
+} from "@solana/web3.js";
+import { JITO_VAULT_PROGRAM_ADDRESS } from "../programs";
+import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
 
 export const INITIALIZE_VAULT_NCN_SLASHER_TICKET_DISCRIMINATOR = 6;
 
 export function getInitializeVaultNcnSlasherTicketDiscriminatorBytes() {
   return getU8Encoder().encode(
-    INITIALIZE_VAULT_NCN_SLASHER_TICKET_DISCRIMINATOR
+    INITIALIZE_VAULT_NCN_SLASHER_TICKET_DISCRIMINATOR,
   );
 }
 
@@ -51,7 +51,7 @@ export type InitializeVaultNcnSlasherTicketInstruction<
   TAccountPayer extends string | IAccountMeta<string> = string,
   TAccountSystemProgram extends
     | string
-    | IAccountMeta<string> = '11111111111111111111111111111111',
+    | IAccountMeta<string> = "11111111111111111111111111111111",
   TRemainingAccounts extends readonly IAccountMeta<string>[] = [],
 > = IInstruction<TProgram> &
   IInstructionWithData<Uint8Array> &
@@ -96,16 +96,16 @@ export type InitializeVaultNcnSlasherTicketInstructionDataArgs = {};
 
 export function getInitializeVaultNcnSlasherTicketInstructionDataEncoder(): Encoder<InitializeVaultNcnSlasherTicketInstructionDataArgs> {
   return transformEncoder(
-    getStructEncoder([['discriminator', getU8Encoder()]]),
+    getStructEncoder([["discriminator", getU8Encoder()]]),
     (value) => ({
       ...value,
       discriminator: INITIALIZE_VAULT_NCN_SLASHER_TICKET_DISCRIMINATOR,
-    })
+    }),
   );
 }
 
 export function getInitializeVaultNcnSlasherTicketInstructionDataDecoder(): Decoder<InitializeVaultNcnSlasherTicketInstructionData> {
-  return getStructDecoder([['discriminator', getU8Decoder()]]);
+  return getStructDecoder([["discriminator", getU8Decoder()]]);
 }
 
 export function getInitializeVaultNcnSlasherTicketInstructionDataCodec(): Codec<
@@ -114,7 +114,7 @@ export function getInitializeVaultNcnSlasherTicketInstructionDataCodec(): Codec<
 > {
   return combineCodec(
     getInitializeVaultNcnSlasherTicketInstructionDataEncoder(),
-    getInitializeVaultNcnSlasherTicketInstructionDataDecoder()
+    getInitializeVaultNcnSlasherTicketInstructionDataDecoder(),
   );
 }
 
@@ -161,7 +161,7 @@ export function getInitializeVaultNcnSlasherTicketInstruction<
     TAccountAdmin,
     TAccountPayer,
     TAccountSystemProgram
-  >
+  >,
 ): InitializeVaultNcnSlasherTicketInstruction<
   typeof JITO_VAULT_PROGRAM_ADDRESS,
   TAccountConfig,
@@ -203,10 +203,10 @@ export function getInitializeVaultNcnSlasherTicketInstruction<
   // Resolve default values.
   if (!accounts.systemProgram.value) {
     accounts.systemProgram.value =
-      '11111111111111111111111111111111' as Address<'11111111111111111111111111111111'>;
+      "11111111111111111111111111111111" as Address<"11111111111111111111111111111111">;
   }
 
-  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
+  const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
   const instruction = {
     accounts: [
       getAccountMeta(accounts.config),
@@ -262,11 +262,11 @@ export function parseInitializeVaultNcnSlasherTicketInstruction<
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>
+    IInstructionWithData<Uint8Array>,
 ): ParsedInitializeVaultNcnSlasherTicketInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 9) {
     // TODO: Coded error.
-    throw new Error('Not enough accounts');
+    throw new Error("Not enough accounts");
   }
   let accountIndex = 0;
   const getNextAccount = () => {
@@ -288,7 +288,7 @@ export function parseInitializeVaultNcnSlasherTicketInstruction<
       systemProgram: getNextAccount(),
     },
     data: getInitializeVaultNcnSlasherTicketInstructionDataDecoder().decode(
-      instruction.data
+      instruction.data,
     ),
   };
 }

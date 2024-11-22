@@ -27,9 +27,9 @@ import {
   type TransactionSigner,
   type WritableAccount,
   type WritableSignerAccount,
-} from '@solana/web3.js';
-import { JITO_RESTAKING_PROGRAM_ADDRESS } from '../programs';
-import { getAccountMetaFactory, type ResolvedAccount } from '../shared';
+} from "@solana/web3.js";
+import { JITO_RESTAKING_PROGRAM_ADDRESS } from "../programs";
+import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
 
 export const INITIALIZE_NCN_DISCRIMINATOR = 1;
 
@@ -45,7 +45,7 @@ export type InitializeNcnInstruction<
   TAccountBase extends string | IAccountMeta<string> = string,
   TAccountSystemProgram extends
     | string
-    | IAccountMeta<string> = '11111111111111111111111111111111',
+    | IAccountMeta<string> = "11111111111111111111111111111111",
   TRemainingAccounts extends readonly IAccountMeta<string>[] = [],
 > = IInstruction<TProgram> &
   IInstructionWithData<Uint8Array> &
@@ -75,13 +75,13 @@ export type InitializeNcnInstructionDataArgs = {};
 
 export function getInitializeNcnInstructionDataEncoder(): Encoder<InitializeNcnInstructionDataArgs> {
   return transformEncoder(
-    getStructEncoder([['discriminator', getU8Encoder()]]),
-    (value) => ({ ...value, discriminator: INITIALIZE_NCN_DISCRIMINATOR })
+    getStructEncoder([["discriminator", getU8Encoder()]]),
+    (value) => ({ ...value, discriminator: INITIALIZE_NCN_DISCRIMINATOR }),
   );
 }
 
 export function getInitializeNcnInstructionDataDecoder(): Decoder<InitializeNcnInstructionData> {
-  return getStructDecoder([['discriminator', getU8Decoder()]]);
+  return getStructDecoder([["discriminator", getU8Decoder()]]);
 }
 
 export function getInitializeNcnInstructionDataCodec(): Codec<
@@ -90,7 +90,7 @@ export function getInitializeNcnInstructionDataCodec(): Codec<
 > {
   return combineCodec(
     getInitializeNcnInstructionDataEncoder(),
-    getInitializeNcnInstructionDataDecoder()
+    getInitializeNcnInstructionDataDecoder(),
   );
 }
 
@@ -121,7 +121,7 @@ export function getInitializeNcnInstruction<
     TAccountAdmin,
     TAccountBase,
     TAccountSystemProgram
-  >
+  >,
 ): InitializeNcnInstruction<
   typeof JITO_RESTAKING_PROGRAM_ADDRESS,
   TAccountConfig,
@@ -149,10 +149,10 @@ export function getInitializeNcnInstruction<
   // Resolve default values.
   if (!accounts.systemProgram.value) {
     accounts.systemProgram.value =
-      '11111111111111111111111111111111' as Address<'11111111111111111111111111111111'>;
+      "11111111111111111111111111111111" as Address<"11111111111111111111111111111111">;
   }
 
-  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
+  const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
   const instruction = {
     accounts: [
       getAccountMeta(accounts.config),
@@ -196,11 +196,11 @@ export function parseInitializeNcnInstruction<
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>
+    IInstructionWithData<Uint8Array>,
 ): ParsedInitializeNcnInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 5) {
     // TODO: Coded error.
-    throw new Error('Not enough accounts');
+    throw new Error("Not enough accounts");
   }
   let accountIndex = 0;
   const getNextAccount = () => {

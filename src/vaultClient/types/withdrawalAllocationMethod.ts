@@ -13,7 +13,7 @@ import {
   type Codec,
   type Decoder,
   type Encoder,
-} from '@solana/web3.js';
+} from "@solana/web3.js";
 
 export enum WithdrawalAllocationMethod {
   Greedy,
@@ -35,6 +35,6 @@ export function getWithdrawalAllocationMethodCodec(): Codec<
 > {
   return combineCodec(
     getWithdrawalAllocationMethodEncoder(),
-    getWithdrawalAllocationMethodDecoder()
+    getWithdrawalAllocationMethodDecoder(),
   );
 }

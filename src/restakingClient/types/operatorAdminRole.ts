@@ -13,7 +13,7 @@ import {
   type Codec,
   type Decoder,
   type Encoder,
-} from '@solana/web3.js';
+} from "@solana/web3.js";
 
 export enum OperatorAdminRole {
   NcnAdmin,
@@ -39,6 +39,6 @@ export function getOperatorAdminRoleCodec(): Codec<
 > {
   return combineCodec(
     getOperatorAdminRoleEncoder(),
-    getOperatorAdminRoleDecoder()
+    getOperatorAdminRoleDecoder(),
   );
 }

@@ -29,9 +29,9 @@ import {
   type TransactionSigner,
   type WritableAccount,
   type WritableSignerAccount,
-} from '@solana/web3.js';
-import { JITO_RESTAKING_PROGRAM_ADDRESS } from '../programs';
-import { getAccountMetaFactory, type ResolvedAccount } from '../shared';
+} from "@solana/web3.js";
+import { JITO_RESTAKING_PROGRAM_ADDRESS } from "../programs";
+import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
 
 export const INITIALIZE_OPERATOR_DISCRIMINATOR = 2;
 
@@ -47,7 +47,7 @@ export type InitializeOperatorInstruction<
   TAccountBase extends string | IAccountMeta<string> = string,
   TAccountSystemProgram extends
     | string
-    | IAccountMeta<string> = '11111111111111111111111111111111',
+    | IAccountMeta<string> = "11111111111111111111111111111111",
   TRemainingAccounts extends readonly IAccountMeta<string>[] = [],
 > = IInstruction<TProgram> &
   IInstructionWithData<Uint8Array> &
@@ -83,17 +83,17 @@ export type InitializeOperatorInstructionDataArgs = { operatorFeeBps: number };
 export function getInitializeOperatorInstructionDataEncoder(): Encoder<InitializeOperatorInstructionDataArgs> {
   return transformEncoder(
     getStructEncoder([
-      ['discriminator', getU8Encoder()],
-      ['operatorFeeBps', getU16Encoder()],
+      ["discriminator", getU8Encoder()],
+      ["operatorFeeBps", getU16Encoder()],
     ]),
-    (value) => ({ ...value, discriminator: INITIALIZE_OPERATOR_DISCRIMINATOR })
+    (value) => ({ ...value, discriminator: INITIALIZE_OPERATOR_DISCRIMINATOR }),
   );
 }
 
 export function getInitializeOperatorInstructionDataDecoder(): Decoder<InitializeOperatorInstructionData> {
   return getStructDecoder([
-    ['discriminator', getU8Decoder()],
-    ['operatorFeeBps', getU16Decoder()],
+    ["discriminator", getU8Decoder()],
+    ["operatorFeeBps", getU16Decoder()],
   ]);
 }
 
@@ -103,7 +103,7 @@ export function getInitializeOperatorInstructionDataCodec(): Codec<
 > {
   return combineCodec(
     getInitializeOperatorInstructionDataEncoder(),
-    getInitializeOperatorInstructionDataDecoder()
+    getInitializeOperatorInstructionDataDecoder(),
   );
 }
 
@@ -119,7 +119,7 @@ export type InitializeOperatorInput<
   admin: TransactionSigner<TAccountAdmin>;
   base: TransactionSigner<TAccountBase>;
   systemProgram?: Address<TAccountSystemProgram>;
-  operatorFeeBps: InitializeOperatorInstructionDataArgs['operatorFeeBps'];
+  operatorFeeBps: InitializeOperatorInstructionDataArgs["operatorFeeBps"];
 };
 
 export function getInitializeOperatorInstruction<
@@ -135,7 +135,7 @@ export function getInitializeOperatorInstruction<
     TAccountAdmin,
     TAccountBase,
     TAccountSystemProgram
-  >
+  >,
 ): InitializeOperatorInstruction<
   typeof JITO_RESTAKING_PROGRAM_ADDRESS,
   TAccountConfig,
@@ -166,10 +166,10 @@ export function getInitializeOperatorInstruction<
   // Resolve default values.
   if (!accounts.systemProgram.value) {
     accounts.systemProgram.value =
-      '11111111111111111111111111111111' as Address<'11111111111111111111111111111111'>;
+      "11111111111111111111111111111111" as Address<"11111111111111111111111111111111">;
   }
 
-  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
+  const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
   const instruction = {
     accounts: [
       getAccountMeta(accounts.config),
@@ -180,7 +180,7 @@ export function getInitializeOperatorInstruction<
     ],
     programAddress,
     data: getInitializeOperatorInstructionDataEncoder().encode(
-      args as InitializeOperatorInstructionDataArgs
+      args as InitializeOperatorInstructionDataArgs,
     ),
   } as InitializeOperatorInstruction<
     typeof JITO_RESTAKING_PROGRAM_ADDRESS,
@@ -215,11 +215,11 @@ export function parseInitializeOperatorInstruction<
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>
+    IInstructionWithData<Uint8Array>,
 ): ParsedInitializeOperatorInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 5) {
     // TODO: Coded error.
-    throw new Error('Not enough accounts');
+    throw new Error("Not enough accounts");
   }
   let accountIndex = 0;
   const getNextAccount = () => {
@@ -237,7 +237,7 @@ export function parseInitializeOperatorInstruction<
       systemProgram: getNextAccount(),
     },
     data: getInitializeOperatorInstructionDataDecoder().decode(
-      instruction.data
+      instruction.data,
     ),
   };
 }

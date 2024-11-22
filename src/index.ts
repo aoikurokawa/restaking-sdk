@@ -1,7 +1,7 @@
 import { address, type Address } from "@solana/web3.js";
 
-export * as restakincClient from './restakingClient';
-export * as vaultClient from './vaultClient';
+export * as restakincClient from "./restakingClient";
+export * as vaultClient from "./vaultClient";
 
 /**
  * Jito Restaking Program address
@@ -9,7 +9,8 @@ export * as vaultClient from './vaultClient';
  * @category constants
  * @category generated
  */
-export const JITO_RESTAKING_PROGRAM_ADDRESS = "RestkWeAVL8fRGgzhfeoqFhsqKRchg6aa1XrcH96z4Q";
+export const JITO_RESTAKING_PROGRAM_ADDRESS =
+  "RestkWeAVL8fRGgzhfeoqFhsqKRchg6aa1XrcH96z4Q";
 
 /**
  * Jito Restaking Program public key
@@ -17,7 +18,9 @@ export const JITO_RESTAKING_PROGRAM_ADDRESS = "RestkWeAVL8fRGgzhfeoqFhsqKRchg6aa
  * @category constants
  * @category generated
  */
-export const JITO_RESTAKING_PROGRAM_ID: Address = address(JITO_RESTAKING_PROGRAM_ADDRESS);
+export const JITO_RESTAKING_PROGRAM_ID: Address = address(
+  JITO_RESTAKING_PROGRAM_ADDRESS,
+);
 
 /**
  * Jito Vault Program address
@@ -25,7 +28,8 @@ export const JITO_RESTAKING_PROGRAM_ID: Address = address(JITO_RESTAKING_PROGRAM
  * @category constants
  * @category generated
  */
-export const JITO_VAULT_PROGRAM_ADDRESS = "Vau1t6sLNxnzB7ZDsef8TLbPLfyZMYXH8WTNqUdm9g8";
+export const JITO_VAULT_PROGRAM_ADDRESS =
+  "Vau1t6sLNxnzB7ZDsef8TLbPLfyZMYXH8WTNqUdm9g8";
 
 /**
  * Jito Vault Program public key
@@ -33,4 +37,6 @@ export const JITO_VAULT_PROGRAM_ADDRESS = "Vau1t6sLNxnzB7ZDsef8TLbPLfyZMYXH8WTNq
  * @category constants
  * @category generated
  */
-export const JITO_VAULT_PROGRAM_ID: Address = address(JITO_VAULT_PROGRAM_ADDRESS);
+export const JITO_VAULT_PROGRAM_ID: Address = address(
+  JITO_VAULT_PROGRAM_ADDRESS,
+);

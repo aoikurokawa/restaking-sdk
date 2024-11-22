@@ -33,13 +33,13 @@ import {
   type FetchAccountsConfig,
   type MaybeAccount,
   type MaybeEncodedAccount,
-} from '@solana/web3.js';
+} from "@solana/web3.js";
 import {
   getSlotToggleDecoder,
   getSlotToggleEncoder,
   type SlotToggle,
   type SlotToggleArgs,
-} from '../types';
+} from "../types";
 
 export type NcnVaultSlasherTicket = {
   discriminator: bigint;
@@ -67,29 +67,29 @@ export type NcnVaultSlasherTicketArgs = {
 
 export function getNcnVaultSlasherTicketEncoder(): Encoder<NcnVaultSlasherTicketArgs> {
   return getStructEncoder([
-    ['discriminator', getU64Encoder()],
-    ['ncn', getAddressEncoder()],
-    ['vault', getAddressEncoder()],
-    ['slasher', getAddressEncoder()],
-    ['maxSlashablePerEpoch', getU64Encoder()],
-    ['index', getU64Encoder()],
-    ['state', getSlotToggleEncoder()],
-    ['bump', getU8Encoder()],
-    ['reserved', getArrayEncoder(getU8Encoder(), { size: 263 })],
+    ["discriminator", getU64Encoder()],
+    ["ncn", getAddressEncoder()],
+    ["vault", getAddressEncoder()],
+    ["slasher", getAddressEncoder()],
+    ["maxSlashablePerEpoch", getU64Encoder()],
+    ["index", getU64Encoder()],
+    ["state", getSlotToggleEncoder()],
+    ["bump", getU8Encoder()],
+    ["reserved", getArrayEncoder(getU8Encoder(), { size: 263 })],
   ]);
 }
 
 export function getNcnVaultSlasherTicketDecoder(): Decoder<NcnVaultSlasherTicket> {
   return getStructDecoder([
-    ['discriminator', getU64Decoder()],
-    ['ncn', getAddressDecoder()],
-    ['vault', getAddressDecoder()],
-    ['slasher', getAddressDecoder()],
-    ['maxSlashablePerEpoch', getU64Decoder()],
-    ['index', getU64Decoder()],
-    ['state', getSlotToggleDecoder()],
-    ['bump', getU8Decoder()],
-    ['reserved', getArrayDecoder(getU8Decoder(), { size: 263 })],
+    ["discriminator", getU64Decoder()],
+    ["ncn", getAddressDecoder()],
+    ["vault", getAddressDecoder()],
+    ["slasher", getAddressDecoder()],
+    ["maxSlashablePerEpoch", getU64Decoder()],
+    ["index", getU64Decoder()],
+    ["state", getSlotToggleDecoder()],
+    ["bump", getU8Decoder()],
+    ["reserved", getArrayDecoder(getU8Decoder(), { size: 263 })],
   ]);
 }
 
@@ -99,24 +99,24 @@ export function getNcnVaultSlasherTicketCodec(): Codec<
 > {
   return combineCodec(
     getNcnVaultSlasherTicketEncoder(),
-    getNcnVaultSlasherTicketDecoder()
+    getNcnVaultSlasherTicketDecoder(),
   );
 }
 
 export function decodeNcnVaultSlasherTicket<TAddress extends string = string>(
-  encodedAccount: EncodedAccount<TAddress>
+  encodedAccount: EncodedAccount<TAddress>,
 ): Account<NcnVaultSlasherTicket, TAddress>;
 export function decodeNcnVaultSlasherTicket<TAddress extends string = string>(
-  encodedAccount: MaybeEncodedAccount<TAddress>
+  encodedAccount: MaybeEncodedAccount<TAddress>,
 ): MaybeAccount<NcnVaultSlasherTicket, TAddress>;
 export function decodeNcnVaultSlasherTicket<TAddress extends string = string>(
-  encodedAccount: EncodedAccount<TAddress> | MaybeEncodedAccount<TAddress>
+  encodedAccount: EncodedAccount<TAddress> | MaybeEncodedAccount<TAddress>,
 ):
   | Account<NcnVaultSlasherTicket, TAddress>
   | MaybeAccount<NcnVaultSlasherTicket, TAddress> {
   return decodeAccount(
     encodedAccount as MaybeEncodedAccount<TAddress>,
-    getNcnVaultSlasherTicketDecoder()
+    getNcnVaultSlasherTicketDecoder(),
   );
 }
 
@@ -125,12 +125,12 @@ export async function fetchNcnVaultSlasherTicket<
 >(
   rpc: Parameters<typeof fetchEncodedAccount>[0],
   address: Address<TAddress>,
-  config?: FetchAccountConfig
+  config?: FetchAccountConfig,
 ): Promise<Account<NcnVaultSlasherTicket, TAddress>> {
   const maybeAccount = await fetchMaybeNcnVaultSlasherTicket(
     rpc,
     address,
-    config
+    config,
   );
   assertAccountExists(maybeAccount);
   return maybeAccount;
@@ -141,7 +141,7 @@ export async function fetchMaybeNcnVaultSlasherTicket<
 >(
   rpc: Parameters<typeof fetchEncodedAccount>[0],
   address: Address<TAddress>,
-  config?: FetchAccountConfig
+  config?: FetchAccountConfig,
 ): Promise<MaybeAccount<NcnVaultSlasherTicket, TAddress>> {
   const maybeAccount = await fetchEncodedAccount(rpc, address, config);
   return decodeNcnVaultSlasherTicket(maybeAccount);
@@ -150,12 +150,12 @@ export async function fetchMaybeNcnVaultSlasherTicket<
 export async function fetchAllNcnVaultSlasherTicket(
   rpc: Parameters<typeof fetchEncodedAccounts>[0],
   addresses: Array<Address>,
-  config?: FetchAccountsConfig
+  config?: FetchAccountsConfig,
 ): Promise<Account<NcnVaultSlasherTicket>[]> {
   const maybeAccounts = await fetchAllMaybeNcnVaultSlasherTicket(
     rpc,
     addresses,
-    config
+    config,
   );
   assertAccountsExist(maybeAccounts);
   return maybeAccounts;
@@ -164,10 +164,10 @@ export async function fetchAllNcnVaultSlasherTicket(
 export async function fetchAllMaybeNcnVaultSlasherTicket(
   rpc: Parameters<typeof fetchEncodedAccounts>[0],
   addresses: Array<Address>,
-  config?: FetchAccountsConfig
+  config?: FetchAccountsConfig,
 ): Promise<MaybeAccount<NcnVaultSlasherTicket>[]> {
   const maybeAccounts = await fetchEncodedAccounts(rpc, addresses, config);
   return maybeAccounts.map((maybeAccount) =>
-    decodeNcnVaultSlasherTicket(maybeAccount)
+    decodeNcnVaultSlasherTicket(maybeAccount),
   );
 }

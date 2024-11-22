@@ -29,15 +29,15 @@ import {
   type TransactionSigner,
   type WritableAccount,
   type WritableSignerAccount,
-} from '@solana/web3.js';
-import { JITO_RESTAKING_PROGRAM_ADDRESS } from '../programs';
-import { getAccountMetaFactory, type ResolvedAccount } from '../shared';
+} from "@solana/web3.js";
+import { JITO_RESTAKING_PROGRAM_ADDRESS } from "../programs";
+import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
 
 export const INITIALIZE_NCN_VAULT_SLASHER_TICKET_DISCRIMINATOR = 3;
 
 export function getInitializeNcnVaultSlasherTicketDiscriminatorBytes() {
   return getU8Encoder().encode(
-    INITIALIZE_NCN_VAULT_SLASHER_TICKET_DISCRIMINATOR
+    INITIALIZE_NCN_VAULT_SLASHER_TICKET_DISCRIMINATOR,
   );
 }
 
@@ -53,7 +53,7 @@ export type InitializeNcnVaultSlasherTicketInstruction<
   TAccountPayer extends string | IAccountMeta<string> = string,
   TAccountSystemProgram extends
     | string
-    | IAccountMeta<string> = '11111111111111111111111111111111',
+    | IAccountMeta<string> = "11111111111111111111111111111111",
   TRemainingAccounts extends readonly IAccountMeta<string>[] = [],
 > = IInstruction<TProgram> &
   IInstructionWithData<Uint8Array> &
@@ -102,20 +102,20 @@ export type InitializeNcnVaultSlasherTicketInstructionDataArgs = {
 export function getInitializeNcnVaultSlasherTicketInstructionDataEncoder(): Encoder<InitializeNcnVaultSlasherTicketInstructionDataArgs> {
   return transformEncoder(
     getStructEncoder([
-      ['discriminator', getU8Encoder()],
-      ['maxSlashablePerEpoch', getU64Encoder()],
+      ["discriminator", getU8Encoder()],
+      ["maxSlashablePerEpoch", getU64Encoder()],
     ]),
     (value) => ({
       ...value,
       discriminator: INITIALIZE_NCN_VAULT_SLASHER_TICKET_DISCRIMINATOR,
-    })
+    }),
   );
 }
 
 export function getInitializeNcnVaultSlasherTicketInstructionDataDecoder(): Decoder<InitializeNcnVaultSlasherTicketInstructionData> {
   return getStructDecoder([
-    ['discriminator', getU8Decoder()],
-    ['maxSlashablePerEpoch', getU64Decoder()],
+    ["discriminator", getU8Decoder()],
+    ["maxSlashablePerEpoch", getU64Decoder()],
   ]);
 }
 
@@ -125,7 +125,7 @@ export function getInitializeNcnVaultSlasherTicketInstructionDataCodec(): Codec<
 > {
   return combineCodec(
     getInitializeNcnVaultSlasherTicketInstructionDataEncoder(),
-    getInitializeNcnVaultSlasherTicketInstructionDataDecoder()
+    getInitializeNcnVaultSlasherTicketInstructionDataDecoder(),
   );
 }
 
@@ -149,7 +149,7 @@ export type InitializeNcnVaultSlasherTicketInput<
   admin: TransactionSigner<TAccountAdmin>;
   payer: TransactionSigner<TAccountPayer>;
   systemProgram?: Address<TAccountSystemProgram>;
-  maxSlashablePerEpoch: InitializeNcnVaultSlasherTicketInstructionDataArgs['maxSlashablePerEpoch'];
+  maxSlashablePerEpoch: InitializeNcnVaultSlasherTicketInstructionDataArgs["maxSlashablePerEpoch"];
 };
 
 export function getInitializeNcnVaultSlasherTicketInstruction<
@@ -173,7 +173,7 @@ export function getInitializeNcnVaultSlasherTicketInstruction<
     TAccountAdmin,
     TAccountPayer,
     TAccountSystemProgram
-  >
+  >,
 ): InitializeNcnVaultSlasherTicketInstruction<
   typeof JITO_RESTAKING_PROGRAM_ADDRESS,
   TAccountConfig,
@@ -215,10 +215,10 @@ export function getInitializeNcnVaultSlasherTicketInstruction<
   // Resolve default values.
   if (!accounts.systemProgram.value) {
     accounts.systemProgram.value =
-      '11111111111111111111111111111111' as Address<'11111111111111111111111111111111'>;
+      "11111111111111111111111111111111" as Address<"11111111111111111111111111111111">;
   }
 
-  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
+  const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
   const instruction = {
     accounts: [
       getAccountMeta(accounts.config),
@@ -233,7 +233,7 @@ export function getInitializeNcnVaultSlasherTicketInstruction<
     ],
     programAddress,
     data: getInitializeNcnVaultSlasherTicketInstructionDataEncoder().encode(
-      args as InitializeNcnVaultSlasherTicketInstructionDataArgs
+      args as InitializeNcnVaultSlasherTicketInstructionDataArgs,
     ),
   } as InitializeNcnVaultSlasherTicketInstruction<
     typeof JITO_RESTAKING_PROGRAM_ADDRESS,
@@ -276,11 +276,11 @@ export function parseInitializeNcnVaultSlasherTicketInstruction<
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>
+    IInstructionWithData<Uint8Array>,
 ): ParsedInitializeNcnVaultSlasherTicketInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 9) {
     // TODO: Coded error.
-    throw new Error('Not enough accounts');
+    throw new Error("Not enough accounts");
   }
   let accountIndex = 0;
   const getNextAccount = () => {
@@ -302,7 +302,7 @@ export function parseInitializeNcnVaultSlasherTicketInstruction<
       systemProgram: getNextAccount(),
     },
     data: getInitializeNcnVaultSlasherTicketInstructionDataDecoder().decode(
-      instruction.data
+      instruction.data,
     ),
   };
 }

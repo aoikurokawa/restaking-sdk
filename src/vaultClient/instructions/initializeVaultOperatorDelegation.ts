@@ -27,15 +27,15 @@ import {
   type TransactionSigner,
   type WritableAccount,
   type WritableSignerAccount,
-} from '@solana/web3.js';
-import { JITO_VAULT_PROGRAM_ADDRESS } from '../programs';
-import { getAccountMetaFactory, type ResolvedAccount } from '../shared';
+} from "@solana/web3.js";
+import { JITO_VAULT_PROGRAM_ADDRESS } from "../programs";
+import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
 
 export const INITIALIZE_VAULT_OPERATOR_DELEGATION_DISCRIMINATOR = 3;
 
 export function getInitializeVaultOperatorDelegationDiscriminatorBytes() {
   return getU8Encoder().encode(
-    INITIALIZE_VAULT_OPERATOR_DELEGATION_DISCRIMINATOR
+    INITIALIZE_VAULT_OPERATOR_DELEGATION_DISCRIMINATOR,
   );
 }
 
@@ -52,7 +52,7 @@ export type InitializeVaultOperatorDelegationInstruction<
   TAccountPayer extends string | IAccountMeta<string> = string,
   TAccountSystemProgram extends
     | string
-    | IAccountMeta<string> = '11111111111111111111111111111111',
+    | IAccountMeta<string> = "11111111111111111111111111111111",
   TRemainingAccounts extends readonly IAccountMeta<string>[] = [],
 > = IInstruction<TProgram> &
   IInstructionWithData<Uint8Array> &
@@ -96,16 +96,16 @@ export type InitializeVaultOperatorDelegationInstructionDataArgs = {};
 
 export function getInitializeVaultOperatorDelegationInstructionDataEncoder(): Encoder<InitializeVaultOperatorDelegationInstructionDataArgs> {
   return transformEncoder(
-    getStructEncoder([['discriminator', getU8Encoder()]]),
+    getStructEncoder([["discriminator", getU8Encoder()]]),
     (value) => ({
       ...value,
       discriminator: INITIALIZE_VAULT_OPERATOR_DELEGATION_DISCRIMINATOR,
-    })
+    }),
   );
 }
 
 export function getInitializeVaultOperatorDelegationInstructionDataDecoder(): Decoder<InitializeVaultOperatorDelegationInstructionData> {
-  return getStructDecoder([['discriminator', getU8Decoder()]]);
+  return getStructDecoder([["discriminator", getU8Decoder()]]);
 }
 
 export function getInitializeVaultOperatorDelegationInstructionDataCodec(): Codec<
@@ -114,7 +114,7 @@ export function getInitializeVaultOperatorDelegationInstructionDataCodec(): Code
 > {
   return combineCodec(
     getInitializeVaultOperatorDelegationInstructionDataEncoder(),
-    getInitializeVaultOperatorDelegationInstructionDataDecoder()
+    getInitializeVaultOperatorDelegationInstructionDataDecoder(),
   );
 }
 
@@ -157,7 +157,7 @@ export function getInitializeVaultOperatorDelegationInstruction<
     TAccountAdmin,
     TAccountPayer,
     TAccountSystemProgram
-  >
+  >,
 ): InitializeVaultOperatorDelegationInstruction<
   typeof JITO_VAULT_PROGRAM_ADDRESS,
   TAccountConfig,
@@ -197,10 +197,10 @@ export function getInitializeVaultOperatorDelegationInstruction<
   // Resolve default values.
   if (!accounts.systemProgram.value) {
     accounts.systemProgram.value =
-      '11111111111111111111111111111111' as Address<'11111111111111111111111111111111'>;
+      "11111111111111111111111111111111" as Address<"11111111111111111111111111111111">;
   }
 
-  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
+  const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
   const instruction = {
     accounts: [
       getAccountMeta(accounts.config),
@@ -214,7 +214,7 @@ export function getInitializeVaultOperatorDelegationInstruction<
     ],
     programAddress,
     data: getInitializeVaultOperatorDelegationInstructionDataEncoder().encode(
-      {}
+      {},
     ),
   } as InitializeVaultOperatorDelegationInstruction<
     typeof JITO_VAULT_PROGRAM_ADDRESS,
@@ -255,11 +255,11 @@ export function parseInitializeVaultOperatorDelegationInstruction<
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>
+    IInstructionWithData<Uint8Array>,
 ): ParsedInitializeVaultOperatorDelegationInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 8) {
     // TODO: Coded error.
-    throw new Error('Not enough accounts');
+    throw new Error("Not enough accounts");
   }
   let accountIndex = 0;
   const getNextAccount = () => {
@@ -280,7 +280,7 @@ export function parseInitializeVaultOperatorDelegationInstruction<
       systemProgram: getNextAccount(),
     },
     data: getInitializeVaultOperatorDelegationInstructionDataDecoder().decode(
-      instruction.data
+      instruction.data,
     ),
   };
 }

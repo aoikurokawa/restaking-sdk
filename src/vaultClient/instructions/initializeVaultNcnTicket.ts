@@ -27,9 +27,9 @@ import {
   type TransactionSigner,
   type WritableAccount,
   type WritableSignerAccount,
-} from '@solana/web3.js';
-import { JITO_VAULT_PROGRAM_ADDRESS } from '../programs';
-import { getAccountMetaFactory, type ResolvedAccount } from '../shared';
+} from "@solana/web3.js";
+import { JITO_VAULT_PROGRAM_ADDRESS } from "../programs";
+import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
 
 export const INITIALIZE_VAULT_NCN_TICKET_DISCRIMINATOR = 4;
 
@@ -48,7 +48,7 @@ export type InitializeVaultNcnTicketInstruction<
   TAccountPayer extends string | IAccountMeta<string> = string,
   TAccountSystemProgram extends
     | string
-    | IAccountMeta<string> = '11111111111111111111111111111111',
+    | IAccountMeta<string> = "11111111111111111111111111111111",
   TRemainingAccounts extends readonly IAccountMeta<string>[] = [],
 > = IInstruction<TProgram> &
   IInstructionWithData<Uint8Array> &
@@ -88,16 +88,16 @@ export type InitializeVaultNcnTicketInstructionDataArgs = {};
 
 export function getInitializeVaultNcnTicketInstructionDataEncoder(): Encoder<InitializeVaultNcnTicketInstructionDataArgs> {
   return transformEncoder(
-    getStructEncoder([['discriminator', getU8Encoder()]]),
+    getStructEncoder([["discriminator", getU8Encoder()]]),
     (value) => ({
       ...value,
       discriminator: INITIALIZE_VAULT_NCN_TICKET_DISCRIMINATOR,
-    })
+    }),
   );
 }
 
 export function getInitializeVaultNcnTicketInstructionDataDecoder(): Decoder<InitializeVaultNcnTicketInstructionData> {
-  return getStructDecoder([['discriminator', getU8Decoder()]]);
+  return getStructDecoder([["discriminator", getU8Decoder()]]);
 }
 
 export function getInitializeVaultNcnTicketInstructionDataCodec(): Codec<
@@ -106,7 +106,7 @@ export function getInitializeVaultNcnTicketInstructionDataCodec(): Codec<
 > {
   return combineCodec(
     getInitializeVaultNcnTicketInstructionDataEncoder(),
-    getInitializeVaultNcnTicketInstructionDataDecoder()
+    getInitializeVaultNcnTicketInstructionDataDecoder(),
   );
 }
 
@@ -149,7 +149,7 @@ export function getInitializeVaultNcnTicketInstruction<
     TAccountAdmin,
     TAccountPayer,
     TAccountSystemProgram
-  >
+  >,
 ): InitializeVaultNcnTicketInstruction<
   typeof JITO_VAULT_PROGRAM_ADDRESS,
   TAccountConfig,
@@ -183,10 +183,10 @@ export function getInitializeVaultNcnTicketInstruction<
   // Resolve default values.
   if (!accounts.systemProgram.value) {
     accounts.systemProgram.value =
-      '11111111111111111111111111111111' as Address<'11111111111111111111111111111111'>;
+      "11111111111111111111111111111111" as Address<"11111111111111111111111111111111">;
   }
 
-  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
+  const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
   const instruction = {
     accounts: [
       getAccountMeta(accounts.config),
@@ -239,11 +239,11 @@ export function parseInitializeVaultNcnTicketInstruction<
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>
+    IInstructionWithData<Uint8Array>,
 ): ParsedInitializeVaultNcnTicketInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 8) {
     // TODO: Coded error.
-    throw new Error('Not enough accounts');
+    throw new Error("Not enough accounts");
   }
   let accountIndex = 0;
   const getNextAccount = () => {
@@ -264,7 +264,7 @@ export function parseInitializeVaultNcnTicketInstruction<
       systemProgram: getNextAccount(),
     },
     data: getInitializeVaultNcnTicketInstructionDataDecoder().decode(
-      instruction.data
+      instruction.data,
     ),
   };
 }

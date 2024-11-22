@@ -27,7 +27,7 @@ import {
   type Encoder,
   type Option,
   type OptionOrNullable,
-} from '@solana/web3.js';
+} from "@solana/web3.js";
 
 export type DataV2 = {
   name: string;
@@ -51,25 +51,25 @@ export type DataV2Args = {
 
 export function getDataV2Encoder(): Encoder<DataV2Args> {
   return getStructEncoder([
-    ['name', addEncoderSizePrefix(getUtf8Encoder(), getU32Encoder())],
-    ['symbol', addEncoderSizePrefix(getUtf8Encoder(), getU32Encoder())],
-    ['uri', addEncoderSizePrefix(getUtf8Encoder(), getU32Encoder())],
-    ['sellerFeeBasisPoints', getU16Encoder()],
-    ['creators', getOptionEncoder(getU8Encoder())],
-    ['collection', getOptionEncoder(getU8Encoder())],
-    ['uses', getOptionEncoder(getU8Encoder())],
+    ["name", addEncoderSizePrefix(getUtf8Encoder(), getU32Encoder())],
+    ["symbol", addEncoderSizePrefix(getUtf8Encoder(), getU32Encoder())],
+    ["uri", addEncoderSizePrefix(getUtf8Encoder(), getU32Encoder())],
+    ["sellerFeeBasisPoints", getU16Encoder()],
+    ["creators", getOptionEncoder(getU8Encoder())],
+    ["collection", getOptionEncoder(getU8Encoder())],
+    ["uses", getOptionEncoder(getU8Encoder())],
   ]);
 }
 
 export function getDataV2Decoder(): Decoder<DataV2> {
   return getStructDecoder([
-    ['name', addDecoderSizePrefix(getUtf8Decoder(), getU32Decoder())],
-    ['symbol', addDecoderSizePrefix(getUtf8Decoder(), getU32Decoder())],
-    ['uri', addDecoderSizePrefix(getUtf8Decoder(), getU32Decoder())],
-    ['sellerFeeBasisPoints', getU16Decoder()],
-    ['creators', getOptionDecoder(getU8Decoder())],
-    ['collection', getOptionDecoder(getU8Decoder())],
-    ['uses', getOptionDecoder(getU8Decoder())],
+    ["name", addDecoderSizePrefix(getUtf8Decoder(), getU32Decoder())],
+    ["symbol", addDecoderSizePrefix(getUtf8Decoder(), getU32Decoder())],
+    ["uri", addDecoderSizePrefix(getUtf8Decoder(), getU32Decoder())],
+    ["sellerFeeBasisPoints", getU16Decoder()],
+    ["creators", getOptionDecoder(getU8Decoder())],
+    ["collection", getOptionDecoder(getU8Decoder())],
+    ["uses", getOptionDecoder(getU8Decoder())],
   ]);
 }
 

@@ -32,9 +32,9 @@ import {
   type ReadonlySignerAccount,
   type TransactionSigner,
   type WritableAccount,
-} from '@solana/web3.js';
-import { JITO_VAULT_PROGRAM_ADDRESS } from '../programs';
-import { getAccountMetaFactory, type ResolvedAccount } from '../shared';
+} from "@solana/web3.js";
+import { JITO_VAULT_PROGRAM_ADDRESS } from "../programs";
+import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
 
 export const SET_FEES_DISCRIMINATOR = 16;
 
@@ -82,21 +82,21 @@ export type SetFeesInstructionDataArgs = {
 export function getSetFeesInstructionDataEncoder(): Encoder<SetFeesInstructionDataArgs> {
   return transformEncoder(
     getStructEncoder([
-      ['discriminator', getU8Encoder()],
-      ['depositFeeBps', getOptionEncoder(getU16Encoder())],
-      ['withdrawalFeeBps', getOptionEncoder(getU16Encoder())],
-      ['rewardFeeBps', getOptionEncoder(getU16Encoder())],
+      ["discriminator", getU8Encoder()],
+      ["depositFeeBps", getOptionEncoder(getU16Encoder())],
+      ["withdrawalFeeBps", getOptionEncoder(getU16Encoder())],
+      ["rewardFeeBps", getOptionEncoder(getU16Encoder())],
     ]),
-    (value) => ({ ...value, discriminator: SET_FEES_DISCRIMINATOR })
+    (value) => ({ ...value, discriminator: SET_FEES_DISCRIMINATOR }),
   );
 }
 
 export function getSetFeesInstructionDataDecoder(): Decoder<SetFeesInstructionData> {
   return getStructDecoder([
-    ['discriminator', getU8Decoder()],
-    ['depositFeeBps', getOptionDecoder(getU16Decoder())],
-    ['withdrawalFeeBps', getOptionDecoder(getU16Decoder())],
-    ['rewardFeeBps', getOptionDecoder(getU16Decoder())],
+    ["discriminator", getU8Decoder()],
+    ["depositFeeBps", getOptionDecoder(getU16Decoder())],
+    ["withdrawalFeeBps", getOptionDecoder(getU16Decoder())],
+    ["rewardFeeBps", getOptionDecoder(getU16Decoder())],
   ]);
 }
 
@@ -106,7 +106,7 @@ export function getSetFeesInstructionDataCodec(): Codec<
 > {
   return combineCodec(
     getSetFeesInstructionDataEncoder(),
-    getSetFeesInstructionDataDecoder()
+    getSetFeesInstructionDataDecoder(),
   );
 }
 
@@ -118,9 +118,9 @@ export type SetFeesInput<
   config: Address<TAccountConfig>;
   vault: Address<TAccountVault>;
   admin: TransactionSigner<TAccountAdmin>;
-  depositFeeBps: SetFeesInstructionDataArgs['depositFeeBps'];
-  withdrawalFeeBps: SetFeesInstructionDataArgs['withdrawalFeeBps'];
-  rewardFeeBps: SetFeesInstructionDataArgs['rewardFeeBps'];
+  depositFeeBps: SetFeesInstructionDataArgs["depositFeeBps"];
+  withdrawalFeeBps: SetFeesInstructionDataArgs["withdrawalFeeBps"];
+  rewardFeeBps: SetFeesInstructionDataArgs["rewardFeeBps"];
 };
 
 export function getSetFeesInstruction<
@@ -128,7 +128,7 @@ export function getSetFeesInstruction<
   TAccountVault extends string,
   TAccountAdmin extends string,
 >(
-  input: SetFeesInput<TAccountConfig, TAccountVault, TAccountAdmin>
+  input: SetFeesInput<TAccountConfig, TAccountVault, TAccountAdmin>,
 ): SetFeesInstruction<
   typeof JITO_VAULT_PROGRAM_ADDRESS,
   TAccountConfig,
@@ -152,7 +152,7 @@ export function getSetFeesInstruction<
   // Original args.
   const args = { ...input };
 
-  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
+  const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
   const instruction = {
     accounts: [
       getAccountMeta(accounts.config),
@@ -161,7 +161,7 @@ export function getSetFeesInstruction<
     ],
     programAddress,
     data: getSetFeesInstructionDataEncoder().encode(
-      args as SetFeesInstructionDataArgs
+      args as SetFeesInstructionDataArgs,
     ),
   } as SetFeesInstruction<
     typeof JITO_VAULT_PROGRAM_ADDRESS,
@@ -192,11 +192,11 @@ export function parseSetFeesInstruction<
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>
+    IInstructionWithData<Uint8Array>,
 ): ParsedSetFeesInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 3) {
     // TODO: Coded error.
-    throw new Error('Not enough accounts');
+    throw new Error("Not enough accounts");
   }
   let accountIndex = 0;
   const getNextAccount = () => {

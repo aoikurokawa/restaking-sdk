@@ -11,8 +11,8 @@ import {
   type Address,
   type SOLANA_ERROR__INSTRUCTION_ERROR__CUSTOM,
   type SolanaError,
-} from '@solana/web3.js';
-import { JITO_RESTAKING_PROGRAM_ADDRESS } from '../programs';
+} from "@solana/web3.js";
+import { JITO_RESTAKING_PROGRAM_ADDRESS } from "../programs";
 
 /** NcnOperatorAdminInvalid: NcnOperatorAdminInvalid */
 export const JITO_RESTAKING_ERROR__NCN_OPERATOR_ADMIN_INVALID = 0x3e8; // 1000
@@ -105,7 +105,7 @@ export type JitoRestakingError =
   | typeof JITO_RESTAKING_ERROR__VAULT_OVERFLOW;
 
 let jitoRestakingErrorMessages: Record<JitoRestakingError, string> | undefined;
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== "production") {
   jitoRestakingErrorMessages = {
     [JITO_RESTAKING_ERROR__ARITHMETIC_OVERFLOW]: `ArithmeticOverflow`,
     [JITO_RESTAKING_ERROR__ARITHMETIC_UNDERFLOW]: `ArithmeticUnderflow`,
@@ -140,13 +140,13 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 export function getJitoRestakingErrorMessage(code: JitoRestakingError): string {
-  if (process.env.NODE_ENV !== 'production') {
+  if (process.env.NODE_ENV !== "production") {
     return (jitoRestakingErrorMessages as Record<JitoRestakingError, string>)[
       code
     ];
   }
 
-  return 'Error message not available in production bundles.';
+  return "Error message not available in production bundles.";
 }
 
 export function isJitoRestakingError<
@@ -156,13 +156,13 @@ export function isJitoRestakingError<
   transactionMessage: {
     instructions: Record<number, { programAddress: Address }>;
   },
-  code?: TProgramErrorCode
+  code?: TProgramErrorCode,
 ): error is SolanaError<typeof SOLANA_ERROR__INSTRUCTION_ERROR__CUSTOM> &
   Readonly<{ context: Readonly<{ code: TProgramErrorCode }> }> {
   return isProgramError<TProgramErrorCode>(
     error,
     transactionMessage,
     JITO_RESTAKING_PROGRAM_ADDRESS,
-    code
+    code,
   );
 }

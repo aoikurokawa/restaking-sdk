@@ -20,7 +20,7 @@ import {
   type Decoder,
   type Encoder,
   type ReadonlyUint8Array,
-} from '@solana/web3.js';
+} from "@solana/web3.js";
 
 export type SlotToggle = {
   slotAdded: bigint;
@@ -36,17 +36,17 @@ export type SlotToggleArgs = {
 
 export function getSlotToggleEncoder(): Encoder<SlotToggleArgs> {
   return getStructEncoder([
-    ['slotAdded', getU64Encoder()],
-    ['slotRemoved', getU64Encoder()],
-    ['reserved', fixEncoderSize(getBytesEncoder(), 32)],
+    ["slotAdded", getU64Encoder()],
+    ["slotRemoved", getU64Encoder()],
+    ["reserved", fixEncoderSize(getBytesEncoder(), 32)],
   ]);
 }
 
 export function getSlotToggleDecoder(): Decoder<SlotToggle> {
   return getStructDecoder([
-    ['slotAdded', getU64Decoder()],
-    ['slotRemoved', getU64Decoder()],
-    ['reserved', fixDecoderSize(getBytesDecoder(), 32)],
+    ["slotAdded", getU64Decoder()],
+    ["slotRemoved", getU64Decoder()],
+    ["reserved", fixDecoderSize(getBytesDecoder(), 32)],
   ]);
 }
 

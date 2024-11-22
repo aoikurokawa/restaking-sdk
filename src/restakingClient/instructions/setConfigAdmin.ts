@@ -26,9 +26,9 @@ import {
   type ReadonlySignerAccount,
   type TransactionSigner,
   type WritableAccount,
-} from '@solana/web3.js';
-import { JITO_RESTAKING_PROGRAM_ADDRESS } from '../programs';
-import { getAccountMetaFactory, type ResolvedAccount } from '../shared';
+} from "@solana/web3.js";
+import { JITO_RESTAKING_PROGRAM_ADDRESS } from "../programs";
+import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
 
 export const SET_CONFIG_ADMIN_DISCRIMINATOR = 24;
 
@@ -66,13 +66,13 @@ export type SetConfigAdminInstructionDataArgs = {};
 
 export function getSetConfigAdminInstructionDataEncoder(): Encoder<SetConfigAdminInstructionDataArgs> {
   return transformEncoder(
-    getStructEncoder([['discriminator', getU8Encoder()]]),
-    (value) => ({ ...value, discriminator: SET_CONFIG_ADMIN_DISCRIMINATOR })
+    getStructEncoder([["discriminator", getU8Encoder()]]),
+    (value) => ({ ...value, discriminator: SET_CONFIG_ADMIN_DISCRIMINATOR }),
   );
 }
 
 export function getSetConfigAdminInstructionDataDecoder(): Decoder<SetConfigAdminInstructionData> {
-  return getStructDecoder([['discriminator', getU8Decoder()]]);
+  return getStructDecoder([["discriminator", getU8Decoder()]]);
 }
 
 export function getSetConfigAdminInstructionDataCodec(): Codec<
@@ -81,7 +81,7 @@ export function getSetConfigAdminInstructionDataCodec(): Codec<
 > {
   return combineCodec(
     getSetConfigAdminInstructionDataEncoder(),
-    getSetConfigAdminInstructionDataDecoder()
+    getSetConfigAdminInstructionDataDecoder(),
   );
 }
 
@@ -100,7 +100,11 @@ export function getSetConfigAdminInstruction<
   TAccountOldAdmin extends string,
   TAccountNewAdmin extends string,
 >(
-  input: SetConfigAdminInput<TAccountConfig, TAccountOldAdmin, TAccountNewAdmin>
+  input: SetConfigAdminInput<
+    TAccountConfig,
+    TAccountOldAdmin,
+    TAccountNewAdmin
+  >,
 ): SetConfigAdminInstruction<
   typeof JITO_RESTAKING_PROGRAM_ADDRESS,
   TAccountConfig,
@@ -121,7 +125,7 @@ export function getSetConfigAdminInstruction<
     ResolvedAccount
   >;
 
-  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
+  const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
   const instruction = {
     accounts: [
       getAccountMeta(accounts.config),
@@ -159,11 +163,11 @@ export function parseSetConfigAdminInstruction<
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>
+    IInstructionWithData<Uint8Array>,
 ): ParsedSetConfigAdminInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 3) {
     // TODO: Coded error.
-    throw new Error('Not enough accounts');
+    throw new Error("Not enough accounts");
   }
   let accountIndex = 0;
   const getNextAccount = () => {

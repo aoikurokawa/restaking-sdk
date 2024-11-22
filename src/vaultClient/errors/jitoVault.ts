@@ -11,8 +11,8 @@ import {
   type Address,
   type SOLANA_ERROR__INSTRUCTION_ERROR__CUSTOM,
   type SolanaError,
-} from '@solana/web3.js';
-import { JITO_VAULT_PROGRAM_ADDRESS } from '../programs';
+} from "@solana/web3.js";
+import { JITO_VAULT_PROGRAM_ADDRESS } from "../programs";
 
 /** VaultSlashUnderflow: VaultSlashUnderflow */
 export const JITO_VAULT_ERROR__VAULT_SLASH_UNDERFLOW = 0x3e8; // 1000
@@ -201,7 +201,7 @@ export type JitoVaultError =
   | typeof JITO_VAULT_ERROR__VAULT_UPDATE_STATE_NOT_FINISHED_UPDATING;
 
 let jitoVaultErrorMessages: Record<JitoVaultError, string> | undefined;
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== "production") {
   jitoVaultErrorMessages = {
     [JITO_VAULT_ERROR__ARITHMETIC_OVERFLOW]: `ArithmeticOverflow`,
     [JITO_VAULT_ERROR__ARITHMETIC_UNDERFLOW]: `ArithmeticUnderflow`,
@@ -268,11 +268,11 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 export function getJitoVaultErrorMessage(code: JitoVaultError): string {
-  if (process.env.NODE_ENV !== 'production') {
+  if (process.env.NODE_ENV !== "production") {
     return (jitoVaultErrorMessages as Record<JitoVaultError, string>)[code];
   }
 
-  return 'Error message not available in production bundles.';
+  return "Error message not available in production bundles.";
 }
 
 export function isJitoVaultError<TProgramErrorCode extends JitoVaultError>(
@@ -280,13 +280,13 @@ export function isJitoVaultError<TProgramErrorCode extends JitoVaultError>(
   transactionMessage: {
     instructions: Record<number, { programAddress: Address }>;
   },
-  code?: TProgramErrorCode
+  code?: TProgramErrorCode,
 ): error is SolanaError<typeof SOLANA_ERROR__INSTRUCTION_ERROR__CUSTOM> &
   Readonly<{ context: Readonly<{ code: TProgramErrorCode }> }> {
   return isProgramError<TProgramErrorCode>(
     error,
     transactionMessage,
     JITO_VAULT_PROGRAM_ADDRESS,
-    code
+    code,
   );
 }

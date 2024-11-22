@@ -29,9 +29,9 @@ import {
   type TransactionSigner,
   type WritableAccount,
   type WritableSignerAccount,
-} from '@solana/web3.js';
-import { JITO_VAULT_PROGRAM_ADDRESS } from '../programs';
-import { getAccountMetaFactory, type ResolvedAccount } from '../shared';
+} from "@solana/web3.js";
+import { JITO_VAULT_PROGRAM_ADDRESS } from "../programs";
+import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
 
 export const MINT_TO_DISCRIMINATOR = 11;
 
@@ -53,7 +53,7 @@ export type MintToInstruction<
   TAccountVaultFeeTokenAccount extends string | IAccountMeta<string> = string,
   TAccountTokenProgram extends
     | string
-    | IAccountMeta<string> = 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
+    | IAccountMeta<string> = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
   TAccountMintSigner extends string | IAccountMeta<string> = string,
   TRemainingAccounts extends readonly IAccountMeta<string>[] = [],
 > = IInstruction<TProgram> &
@@ -110,19 +110,19 @@ export type MintToInstructionDataArgs = {
 export function getMintToInstructionDataEncoder(): Encoder<MintToInstructionDataArgs> {
   return transformEncoder(
     getStructEncoder([
-      ['discriminator', getU8Encoder()],
-      ['amountIn', getU64Encoder()],
-      ['minAmountOut', getU64Encoder()],
+      ["discriminator", getU8Encoder()],
+      ["amountIn", getU64Encoder()],
+      ["minAmountOut", getU64Encoder()],
     ]),
-    (value) => ({ ...value, discriminator: MINT_TO_DISCRIMINATOR })
+    (value) => ({ ...value, discriminator: MINT_TO_DISCRIMINATOR }),
   );
 }
 
 export function getMintToInstructionDataDecoder(): Decoder<MintToInstructionData> {
   return getStructDecoder([
-    ['discriminator', getU8Decoder()],
-    ['amountIn', getU64Decoder()],
-    ['minAmountOut', getU64Decoder()],
+    ["discriminator", getU8Decoder()],
+    ["amountIn", getU64Decoder()],
+    ["minAmountOut", getU64Decoder()],
   ]);
 }
 
@@ -132,7 +132,7 @@ export function getMintToInstructionDataCodec(): Codec<
 > {
   return combineCodec(
     getMintToInstructionDataEncoder(),
-    getMintToInstructionDataDecoder()
+    getMintToInstructionDataDecoder(),
   );
 }
 
@@ -159,8 +159,8 @@ export type MintToInput<
   tokenProgram?: Address<TAccountTokenProgram>;
   /** Signer for minting */
   mintSigner?: TransactionSigner<TAccountMintSigner>;
-  amountIn: MintToInstructionDataArgs['amountIn'];
-  minAmountOut: MintToInstructionDataArgs['minAmountOut'];
+  amountIn: MintToInstructionDataArgs["amountIn"];
+  minAmountOut: MintToInstructionDataArgs["minAmountOut"];
 };
 
 export function getMintToInstruction<
@@ -186,7 +186,7 @@ export function getMintToInstruction<
     TAccountVaultFeeTokenAccount,
     TAccountTokenProgram,
     TAccountMintSigner
-  >
+  >,
 ): MintToInstruction<
   typeof JITO_VAULT_PROGRAM_ADDRESS,
   TAccountConfig,
@@ -239,10 +239,10 @@ export function getMintToInstruction<
   // Resolve default values.
   if (!accounts.tokenProgram.value) {
     accounts.tokenProgram.value =
-      'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA' as Address<'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'>;
+      "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA" as Address<"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA">;
   }
 
-  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
+  const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
   const instruction = {
     accounts: [
       getAccountMeta(accounts.config),
@@ -258,7 +258,7 @@ export function getMintToInstruction<
     ],
     programAddress,
     data: getMintToInstructionDataEncoder().encode(
-      args as MintToInstructionDataArgs
+      args as MintToInstructionDataArgs,
     ),
   } as MintToInstruction<
     typeof JITO_VAULT_PROGRAM_ADDRESS,
@@ -304,11 +304,11 @@ export function parseMintToInstruction<
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>
+    IInstructionWithData<Uint8Array>,
 ): ParsedMintToInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 10) {
     // TODO: Coded error.
-    throw new Error('Not enough accounts');
+    throw new Error("Not enough accounts");
   }
   let accountIndex = 0;
   const getNextAccount = () => {

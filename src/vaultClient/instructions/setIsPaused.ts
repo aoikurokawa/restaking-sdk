@@ -28,9 +28,9 @@ import {
   type ReadonlySignerAccount,
   type TransactionSigner,
   type WritableAccount,
-} from '@solana/web3.js';
-import { JITO_VAULT_PROGRAM_ADDRESS } from '../programs';
-import { getAccountMetaFactory, type ResolvedAccount } from '../shared';
+} from "@solana/web3.js";
+import { JITO_VAULT_PROGRAM_ADDRESS } from "../programs";
+import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
 
 export const SET_IS_PAUSED_DISCRIMINATOR = 19;
 
@@ -72,17 +72,17 @@ export type SetIsPausedInstructionDataArgs = { isPaused: boolean };
 export function getSetIsPausedInstructionDataEncoder(): Encoder<SetIsPausedInstructionDataArgs> {
   return transformEncoder(
     getStructEncoder([
-      ['discriminator', getU8Encoder()],
-      ['isPaused', getBooleanEncoder()],
+      ["discriminator", getU8Encoder()],
+      ["isPaused", getBooleanEncoder()],
     ]),
-    (value) => ({ ...value, discriminator: SET_IS_PAUSED_DISCRIMINATOR })
+    (value) => ({ ...value, discriminator: SET_IS_PAUSED_DISCRIMINATOR }),
   );
 }
 
 export function getSetIsPausedInstructionDataDecoder(): Decoder<SetIsPausedInstructionData> {
   return getStructDecoder([
-    ['discriminator', getU8Decoder()],
-    ['isPaused', getBooleanDecoder()],
+    ["discriminator", getU8Decoder()],
+    ["isPaused", getBooleanDecoder()],
   ]);
 }
 
@@ -92,7 +92,7 @@ export function getSetIsPausedInstructionDataCodec(): Codec<
 > {
   return combineCodec(
     getSetIsPausedInstructionDataEncoder(),
-    getSetIsPausedInstructionDataDecoder()
+    getSetIsPausedInstructionDataDecoder(),
   );
 }
 
@@ -104,7 +104,7 @@ export type SetIsPausedInput<
   config: Address<TAccountConfig>;
   vault: Address<TAccountVault>;
   admin: TransactionSigner<TAccountAdmin>;
-  isPaused: SetIsPausedInstructionDataArgs['isPaused'];
+  isPaused: SetIsPausedInstructionDataArgs["isPaused"];
 };
 
 export function getSetIsPausedInstruction<
@@ -112,7 +112,7 @@ export function getSetIsPausedInstruction<
   TAccountVault extends string,
   TAccountAdmin extends string,
 >(
-  input: SetIsPausedInput<TAccountConfig, TAccountVault, TAccountAdmin>
+  input: SetIsPausedInput<TAccountConfig, TAccountVault, TAccountAdmin>,
 ): SetIsPausedInstruction<
   typeof JITO_VAULT_PROGRAM_ADDRESS,
   TAccountConfig,
@@ -136,7 +136,7 @@ export function getSetIsPausedInstruction<
   // Original args.
   const args = { ...input };
 
-  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
+  const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
   const instruction = {
     accounts: [
       getAccountMeta(accounts.config),
@@ -145,7 +145,7 @@ export function getSetIsPausedInstruction<
     ],
     programAddress,
     data: getSetIsPausedInstructionDataEncoder().encode(
-      args as SetIsPausedInstructionDataArgs
+      args as SetIsPausedInstructionDataArgs,
     ),
   } as SetIsPausedInstruction<
     typeof JITO_VAULT_PROGRAM_ADDRESS,
@@ -176,11 +176,11 @@ export function parseSetIsPausedInstruction<
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>
+    IInstructionWithData<Uint8Array>,
 ): ParsedSetIsPausedInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 3) {
     // TODO: Coded error.
-    throw new Error('Not enough accounts');
+    throw new Error("Not enough accounts");
   }
   let accountIndex = 0;
   const getNextAccount = () => {

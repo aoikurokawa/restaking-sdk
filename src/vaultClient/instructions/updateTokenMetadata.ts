@@ -32,9 +32,9 @@ import {
   type ReadonlySignerAccount,
   type TransactionSigner,
   type WritableAccount,
-} from '@solana/web3.js';
-import { JITO_VAULT_PROGRAM_ADDRESS } from '../programs';
-import { getAccountMetaFactory, type ResolvedAccount } from '../shared';
+} from "@solana/web3.js";
+import { JITO_VAULT_PROGRAM_ADDRESS } from "../programs";
+import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
 
 export const UPDATE_TOKEN_METADATA_DISCRIMINATOR = 30;
 
@@ -50,7 +50,7 @@ export type UpdateTokenMetadataInstruction<
   TAccountMetadata extends string | IAccountMeta<string> = string,
   TAccountMplTokenMetadataProgram extends
     | string
-    | IAccountMeta<string> = 'metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s',
+    | IAccountMeta<string> = "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s",
   TRemainingAccounts extends readonly IAccountMeta<string>[] = [],
 > = IInstruction<TProgram> &
   IInstructionWithData<Uint8Array> &
@@ -92,24 +92,24 @@ export type UpdateTokenMetadataInstructionDataArgs = {
 export function getUpdateTokenMetadataInstructionDataEncoder(): Encoder<UpdateTokenMetadataInstructionDataArgs> {
   return transformEncoder(
     getStructEncoder([
-      ['discriminator', getU8Encoder()],
-      ['name', addEncoderSizePrefix(getUtf8Encoder(), getU32Encoder())],
-      ['symbol', addEncoderSizePrefix(getUtf8Encoder(), getU32Encoder())],
-      ['uri', addEncoderSizePrefix(getUtf8Encoder(), getU32Encoder())],
+      ["discriminator", getU8Encoder()],
+      ["name", addEncoderSizePrefix(getUtf8Encoder(), getU32Encoder())],
+      ["symbol", addEncoderSizePrefix(getUtf8Encoder(), getU32Encoder())],
+      ["uri", addEncoderSizePrefix(getUtf8Encoder(), getU32Encoder())],
     ]),
     (value) => ({
       ...value,
       discriminator: UPDATE_TOKEN_METADATA_DISCRIMINATOR,
-    })
+    }),
   );
 }
 
 export function getUpdateTokenMetadataInstructionDataDecoder(): Decoder<UpdateTokenMetadataInstructionData> {
   return getStructDecoder([
-    ['discriminator', getU8Decoder()],
-    ['name', addDecoderSizePrefix(getUtf8Decoder(), getU32Decoder())],
-    ['symbol', addDecoderSizePrefix(getUtf8Decoder(), getU32Decoder())],
-    ['uri', addDecoderSizePrefix(getUtf8Decoder(), getU32Decoder())],
+    ["discriminator", getU8Decoder()],
+    ["name", addDecoderSizePrefix(getUtf8Decoder(), getU32Decoder())],
+    ["symbol", addDecoderSizePrefix(getUtf8Decoder(), getU32Decoder())],
+    ["uri", addDecoderSizePrefix(getUtf8Decoder(), getU32Decoder())],
   ]);
 }
 
@@ -119,7 +119,7 @@ export function getUpdateTokenMetadataInstructionDataCodec(): Codec<
 > {
   return combineCodec(
     getUpdateTokenMetadataInstructionDataEncoder(),
-    getUpdateTokenMetadataInstructionDataDecoder()
+    getUpdateTokenMetadataInstructionDataDecoder(),
   );
 }
 
@@ -135,9 +135,9 @@ export type UpdateTokenMetadataInput<
   vrtMint: Address<TAccountVrtMint>;
   metadata: Address<TAccountMetadata>;
   mplTokenMetadataProgram?: Address<TAccountMplTokenMetadataProgram>;
-  name: UpdateTokenMetadataInstructionDataArgs['name'];
-  symbol: UpdateTokenMetadataInstructionDataArgs['symbol'];
-  uri: UpdateTokenMetadataInstructionDataArgs['uri'];
+  name: UpdateTokenMetadataInstructionDataArgs["name"];
+  symbol: UpdateTokenMetadataInstructionDataArgs["symbol"];
+  uri: UpdateTokenMetadataInstructionDataArgs["uri"];
 };
 
 export function getUpdateTokenMetadataInstruction<
@@ -153,7 +153,7 @@ export function getUpdateTokenMetadataInstruction<
     TAccountVrtMint,
     TAccountMetadata,
     TAccountMplTokenMetadataProgram
-  >
+  >,
 ): UpdateTokenMetadataInstruction<
   typeof JITO_VAULT_PROGRAM_ADDRESS,
   TAccountVault,
@@ -187,10 +187,10 @@ export function getUpdateTokenMetadataInstruction<
   // Resolve default values.
   if (!accounts.mplTokenMetadataProgram.value) {
     accounts.mplTokenMetadataProgram.value =
-      'metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s' as Address<'metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s'>;
+      "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s" as Address<"metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s">;
   }
 
-  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
+  const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
   const instruction = {
     accounts: [
       getAccountMeta(accounts.vault),
@@ -201,7 +201,7 @@ export function getUpdateTokenMetadataInstruction<
     ],
     programAddress,
     data: getUpdateTokenMetadataInstructionDataEncoder().encode(
-      args as UpdateTokenMetadataInstructionDataArgs
+      args as UpdateTokenMetadataInstructionDataArgs,
     ),
   } as UpdateTokenMetadataInstruction<
     typeof JITO_VAULT_PROGRAM_ADDRESS,
@@ -236,11 +236,11 @@ export function parseUpdateTokenMetadataInstruction<
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>
+    IInstructionWithData<Uint8Array>,
 ): ParsedUpdateTokenMetadataInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 5) {
     // TODO: Coded error.
-    throw new Error('Not enough accounts');
+    throw new Error("Not enough accounts");
   }
   let accountIndex = 0;
   const getNextAccount = () => {
@@ -258,7 +258,7 @@ export function parseUpdateTokenMetadataInstruction<
       mplTokenMetadataProgram: getNextAccount(),
     },
     data: getUpdateTokenMetadataInstructionDataDecoder().decode(
-      instruction.data
+      instruction.data,
     ),
   };
 }

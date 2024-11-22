@@ -33,13 +33,13 @@ import {
   type FetchAccountsConfig,
   type MaybeAccount,
   type MaybeEncodedAccount,
-} from '@solana/web3.js';
+} from "@solana/web3.js";
 import {
   getDelegationStateDecoder,
   getDelegationStateEncoder,
   type DelegationState,
   type DelegationStateArgs,
-} from '../types';
+} from "../types";
 
 export type VaultUpdateStateTracker = {
   discriminator: bigint;
@@ -63,25 +63,25 @@ export type VaultUpdateStateTrackerArgs = {
 
 export function getVaultUpdateStateTrackerEncoder(): Encoder<VaultUpdateStateTrackerArgs> {
   return getStructEncoder([
-    ['discriminator', getU64Encoder()],
-    ['vault', getAddressEncoder()],
-    ['ncnEpoch', getU64Encoder()],
-    ['lastUpdatedIndex', getU64Encoder()],
-    ['delegationState', getDelegationStateEncoder()],
-    ['withdrawalAllocationMethod', getU8Encoder()],
-    ['reserved', getArrayEncoder(getU8Encoder(), { size: 263 })],
+    ["discriminator", getU64Encoder()],
+    ["vault", getAddressEncoder()],
+    ["ncnEpoch", getU64Encoder()],
+    ["lastUpdatedIndex", getU64Encoder()],
+    ["delegationState", getDelegationStateEncoder()],
+    ["withdrawalAllocationMethod", getU8Encoder()],
+    ["reserved", getArrayEncoder(getU8Encoder(), { size: 263 })],
   ]);
 }
 
 export function getVaultUpdateStateTrackerDecoder(): Decoder<VaultUpdateStateTracker> {
   return getStructDecoder([
-    ['discriminator', getU64Decoder()],
-    ['vault', getAddressDecoder()],
-    ['ncnEpoch', getU64Decoder()],
-    ['lastUpdatedIndex', getU64Decoder()],
-    ['delegationState', getDelegationStateDecoder()],
-    ['withdrawalAllocationMethod', getU8Decoder()],
-    ['reserved', getArrayDecoder(getU8Decoder(), { size: 263 })],
+    ["discriminator", getU64Decoder()],
+    ["vault", getAddressDecoder()],
+    ["ncnEpoch", getU64Decoder()],
+    ["lastUpdatedIndex", getU64Decoder()],
+    ["delegationState", getDelegationStateDecoder()],
+    ["withdrawalAllocationMethod", getU8Decoder()],
+    ["reserved", getArrayDecoder(getU8Decoder(), { size: 263 })],
   ]);
 }
 
@@ -91,24 +91,24 @@ export function getVaultUpdateStateTrackerCodec(): Codec<
 > {
   return combineCodec(
     getVaultUpdateStateTrackerEncoder(),
-    getVaultUpdateStateTrackerDecoder()
+    getVaultUpdateStateTrackerDecoder(),
   );
 }
 
 export function decodeVaultUpdateStateTracker<TAddress extends string = string>(
-  encodedAccount: EncodedAccount<TAddress>
+  encodedAccount: EncodedAccount<TAddress>,
 ): Account<VaultUpdateStateTracker, TAddress>;
 export function decodeVaultUpdateStateTracker<TAddress extends string = string>(
-  encodedAccount: MaybeEncodedAccount<TAddress>
+  encodedAccount: MaybeEncodedAccount<TAddress>,
 ): MaybeAccount<VaultUpdateStateTracker, TAddress>;
 export function decodeVaultUpdateStateTracker<TAddress extends string = string>(
-  encodedAccount: EncodedAccount<TAddress> | MaybeEncodedAccount<TAddress>
+  encodedAccount: EncodedAccount<TAddress> | MaybeEncodedAccount<TAddress>,
 ):
   | Account<VaultUpdateStateTracker, TAddress>
   | MaybeAccount<VaultUpdateStateTracker, TAddress> {
   return decodeAccount(
     encodedAccount as MaybeEncodedAccount<TAddress>,
-    getVaultUpdateStateTrackerDecoder()
+    getVaultUpdateStateTrackerDecoder(),
   );
 }
 
@@ -117,12 +117,12 @@ export async function fetchVaultUpdateStateTracker<
 >(
   rpc: Parameters<typeof fetchEncodedAccount>[0],
   address: Address<TAddress>,
-  config?: FetchAccountConfig
+  config?: FetchAccountConfig,
 ): Promise<Account<VaultUpdateStateTracker, TAddress>> {
   const maybeAccount = await fetchMaybeVaultUpdateStateTracker(
     rpc,
     address,
-    config
+    config,
   );
   assertAccountExists(maybeAccount);
   return maybeAccount;
@@ -133,7 +133,7 @@ export async function fetchMaybeVaultUpdateStateTracker<
 >(
   rpc: Parameters<typeof fetchEncodedAccount>[0],
   address: Address<TAddress>,
-  config?: FetchAccountConfig
+  config?: FetchAccountConfig,
 ): Promise<MaybeAccount<VaultUpdateStateTracker, TAddress>> {
   const maybeAccount = await fetchEncodedAccount(rpc, address, config);
   return decodeVaultUpdateStateTracker(maybeAccount);
@@ -142,12 +142,12 @@ export async function fetchMaybeVaultUpdateStateTracker<
 export async function fetchAllVaultUpdateStateTracker(
   rpc: Parameters<typeof fetchEncodedAccounts>[0],
   addresses: Array<Address>,
-  config?: FetchAccountsConfig
+  config?: FetchAccountsConfig,
 ): Promise<Account<VaultUpdateStateTracker>[]> {
   const maybeAccounts = await fetchAllMaybeVaultUpdateStateTracker(
     rpc,
     addresses,
-    config
+    config,
   );
   assertAccountsExist(maybeAccounts);
   return maybeAccounts;
@@ -156,10 +156,10 @@ export async function fetchAllVaultUpdateStateTracker(
 export async function fetchAllMaybeVaultUpdateStateTracker(
   rpc: Parameters<typeof fetchEncodedAccounts>[0],
   addresses: Array<Address>,
-  config?: FetchAccountsConfig
+  config?: FetchAccountsConfig,
 ): Promise<MaybeAccount<VaultUpdateStateTracker>[]> {
   const maybeAccounts = await fetchEncodedAccounts(rpc, addresses, config);
   return maybeAccounts.map((maybeAccount) =>
-    decodeVaultUpdateStateTracker(maybeAccount)
+    decodeVaultUpdateStateTracker(maybeAccount),
   );
 }
