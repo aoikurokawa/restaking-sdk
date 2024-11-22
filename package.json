@@ -1,28 +1,27 @@
 {
-  "name": "english_auction",
-  "version": "1.0.0",
-  "description": "",
-  "main": "truffle-config.js",
-  "directories": {
-    "test": "test"
-  },
+  "name": "restaking-sdk",
+  "version": "0.0.3",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "MIT",
   "scripts": {
-    "start": "node graphql/viewer.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsup",
+    "clean": "rm -rf dist",
+    "lint": "eslint src",
+    "prettify": "yarn prettier src --check",
+    "prettier:fix": "yarn prettier -- --write",
+    "test": "mocha --require ts-node/register test/**/*.ts"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Aoi1011/English_Auction_DApp.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Aoi1011/English_Auction_DApp/issues"
-  },
-  "homepage": "https://github.com/Aoi1011/English_Auction_DApp#readme",
   "dependencies": {
-    "superagent": "^6.1.0",
-    "web3": "^1.6.0"
+    "@solana/web3.js": "2.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.15.0",
+    "@typescript-eslint/parser": "^8.15.0",
+    "prettier": "^3.3.3",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.5"
+  },
+  "devDependencies": {
+    "eslint": "^9.15.0"
   }
 }
