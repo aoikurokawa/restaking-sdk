@@ -7,9 +7,9 @@
   "scripts": {
     "build": "tsup",
     "clean": "rm -rf dist",
-    "lint": "yarn eslint src",
-    "prettier": "yarn prettier src --check",
-    "prettier:fix": "yarn prettier -- --write",
+    "lint": "eslint src",
+    "prettify": "prettier src --check",
+    "prettier:fix": "prettier -- --write",
     "test": "mocha --require ts-node/register test/**/*.ts"
   },
   "dependencies": {
