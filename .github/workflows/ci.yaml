@@ -23,7 +23,7 @@ jobs:
       - name: Print prettier version
         run: npx prettier --version
       - name: Run prettier
-        run: yarn run prettier
+        run: yarn prettier
 
   yarn-lint:
     runs-on: ubuntu-latest
