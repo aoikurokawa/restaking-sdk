@@ -1,0 +1,40 @@
+name: ci
+
+on:
+  push:
+    branches: [ master ]
+    tags:
+      - 'v*'
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  yarn-prettier:
+    runs-on: ubicloud
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: "18.x"
+          registry-url: "https://registry.npmjs.org"
+      - name: Install yarn
+        run: yarn
+      - name: Print prettier version
+        run: npx prettier --version
+      - name: Run prettier
+        run: yarn run prettier
+
+  yarn-lint:
+    runs-on: ubicloud
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: "18.x"
+          registry-url: "https://registry.npmjs.org"
+      - name: Install yarn
+        run: yarn
+      - name: Run lint
+        run: yarn lint

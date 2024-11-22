@@ -8,7 +8,7 @@
     "build": "tsup",
     "clean": "rm -rf dist",
     "lint": "yarn eslint src",
-    "prettier": "npx prettier src --check",
+    "prettier": "yarn run prettier src --check",
     "prettier:fix": "yarn run prettier -- --write",
     "test": "mocha --require ts-node/register test/**/*.ts"
   },
