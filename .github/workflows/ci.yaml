@@ -10,7 +10,7 @@ on:
 
 jobs:
   yarn-prettier:
-    runs-on: ubicloud
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Setup node
@@ -26,7 +26,7 @@ jobs:
         run: yarn run prettier
 
   yarn-lint:
-    runs-on: ubicloud
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Setup node
