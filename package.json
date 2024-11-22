@@ -8,8 +8,8 @@
     "build": "tsup",
     "clean": "rm -rf dist",
     "lint": "eslint src",
-    "prettify": "prettier src --check",
-    "prettier:fix": "prettier -- --write",
+    "prettify": "yarn prettier src --check",
+    "prettier:fix": "yarn prettier -- --write",
     "test": "mocha --require ts-node/register test/**/*.ts"
   },
   "dependencies": {
