@@ -1,0 +1,18 @@
+{
+  "name": "fetch-restaking-config-example",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "run:example": "tsx src/example.ts"
+  },
+  "dependencies": {
+    "@solana/web3.js": "workspace:*",
+    "@types/node": "^22.9.2",
+    "re-client": "^0.0.3",
+    "start-server-and-test": "^2.0.8",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.2"
+  }
+}
