@@ -2,6 +2,7 @@ import { address, type Address } from "@solana/web3.js";
 
 export * as restakincClient from "./restakingClient";
 export * as vaultClient from "./vaultClient";
+export * from "./client";
 
 /**
  * Jito Restaking Program address
