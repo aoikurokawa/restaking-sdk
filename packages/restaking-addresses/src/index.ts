@@ -1,6 +1,6 @@
 import { address, type Address } from "@solana/web3.js";
 
-export * from "./pda.js";
+export * from "./restakingPda.js";
 
 /**
  * Jito Restaking Program address
