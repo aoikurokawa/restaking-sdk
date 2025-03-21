@@ -171,6 +171,7 @@ export function getEnqueueWithdrawalInstruction<
   TAccountTokenProgram extends string,
   TAccountSystemProgram extends string,
   TAccountBurnSigner extends string,
+  TProgramAddress extends Address = typeof JITO_VAULT_PROGRAM_ADDRESS,
 >(
   input: EnqueueWithdrawalInput<
     TAccountConfig,
@@ -184,8 +185,9 @@ export function getEnqueueWithdrawalInstruction<
     TAccountSystemProgram,
     TAccountBurnSigner
   >,
+  config?: { programAddress?: TProgramAddress },
 ): EnqueueWithdrawalInstruction<
-  typeof JITO_VAULT_PROGRAM_ADDRESS,
+  TProgramAddress,
   TAccountConfig,
   TAccountVault,
   TAccountVaultStakerWithdrawalTicket,
@@ -198,7 +200,7 @@ export function getEnqueueWithdrawalInstruction<
   TAccountBurnSigner
 > {
   // Program address.
-  const programAddress = JITO_VAULT_PROGRAM_ADDRESS;
+  const programAddress = config?.programAddress ?? JITO_VAULT_PROGRAM_ADDRESS;
 
   // Original accounts.
   const originalAccounts = {
@@ -259,7 +261,7 @@ export function getEnqueueWithdrawalInstruction<
       args as EnqueueWithdrawalInstructionDataArgs,
     ),
   } as EnqueueWithdrawalInstruction<
-    typeof JITO_VAULT_PROGRAM_ADDRESS,
+    TProgramAddress,
     TAccountConfig,
     TAccountVault,
     TAccountVaultStakerWithdrawalTicket,

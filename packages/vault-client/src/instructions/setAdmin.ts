@@ -107,6 +107,7 @@ export function getSetAdminInstruction<
   TAccountVault extends string,
   TAccountOldAdmin extends string,
   TAccountNewAdmin extends string,
+  TProgramAddress extends Address = typeof JITO_VAULT_PROGRAM_ADDRESS,
 >(
   input: SetAdminInput<
     TAccountConfig,
@@ -114,15 +115,16 @@ export function getSetAdminInstruction<
     TAccountOldAdmin,
     TAccountNewAdmin
   >,
+  config?: { programAddress?: TProgramAddress },
 ): SetAdminInstruction<
-  typeof JITO_VAULT_PROGRAM_ADDRESS,
+  TProgramAddress,
   TAccountConfig,
   TAccountVault,
   TAccountOldAdmin,
   TAccountNewAdmin
 > {
   // Program address.
-  const programAddress = JITO_VAULT_PROGRAM_ADDRESS;
+  const programAddress = config?.programAddress ?? JITO_VAULT_PROGRAM_ADDRESS;
 
   // Original accounts.
   const originalAccounts = {
@@ -147,7 +149,7 @@ export function getSetAdminInstruction<
     programAddress,
     data: getSetAdminInstructionDataEncoder().encode({}),
   } as SetAdminInstruction<
-    typeof JITO_VAULT_PROGRAM_ADDRESS,
+    TProgramAddress,
     TAccountConfig,
     TAccountVault,
     TAccountOldAdmin,

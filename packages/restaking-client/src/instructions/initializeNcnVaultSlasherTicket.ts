@@ -92,18 +92,18 @@ export type InitializeNcnVaultSlasherTicketInstruction<
 
 export type InitializeNcnVaultSlasherTicketInstructionData = {
   discriminator: number;
-  maxSlashablePerEpoch: bigint;
+  args: bigint;
 };
 
 export type InitializeNcnVaultSlasherTicketInstructionDataArgs = {
-  maxSlashablePerEpoch: number | bigint;
+  args: number | bigint;
 };
 
 export function getInitializeNcnVaultSlasherTicketInstructionDataEncoder(): Encoder<InitializeNcnVaultSlasherTicketInstructionDataArgs> {
   return transformEncoder(
     getStructEncoder([
       ["discriminator", getU8Encoder()],
-      ["maxSlashablePerEpoch", getU64Encoder()],
+      ["args", getU64Encoder()],
     ]),
     (value) => ({
       ...value,
@@ -115,7 +115,7 @@ export function getInitializeNcnVaultSlasherTicketInstructionDataEncoder(): Enco
 export function getInitializeNcnVaultSlasherTicketInstructionDataDecoder(): Decoder<InitializeNcnVaultSlasherTicketInstructionData> {
   return getStructDecoder([
     ["discriminator", getU8Decoder()],
-    ["maxSlashablePerEpoch", getU64Decoder()],
+    ["args", getU64Decoder()],
   ]);
 }
 
@@ -149,7 +149,7 @@ export type InitializeNcnVaultSlasherTicketInput<
   admin: TransactionSigner<TAccountAdmin>;
   payer: TransactionSigner<TAccountPayer>;
   systemProgram?: Address<TAccountSystemProgram>;
-  maxSlashablePerEpoch: InitializeNcnVaultSlasherTicketInstructionDataArgs["maxSlashablePerEpoch"];
+  args: InitializeNcnVaultSlasherTicketInstructionDataArgs["args"];
 };
 
 export function getInitializeNcnVaultSlasherTicketInstruction<
@@ -162,6 +162,7 @@ export function getInitializeNcnVaultSlasherTicketInstruction<
   TAccountAdmin extends string,
   TAccountPayer extends string,
   TAccountSystemProgram extends string,
+  TProgramAddress extends Address = typeof JITO_RESTAKING_PROGRAM_ADDRESS,
 >(
   input: InitializeNcnVaultSlasherTicketInput<
     TAccountConfig,
@@ -174,8 +175,9 @@ export function getInitializeNcnVaultSlasherTicketInstruction<
     TAccountPayer,
     TAccountSystemProgram
   >,
+  config?: { programAddress?: TProgramAddress },
 ): InitializeNcnVaultSlasherTicketInstruction<
-  typeof JITO_RESTAKING_PROGRAM_ADDRESS,
+  TProgramAddress,
   TAccountConfig,
   TAccountNcn,
   TAccountVault,
@@ -187,7 +189,8 @@ export function getInitializeNcnVaultSlasherTicketInstruction<
   TAccountSystemProgram
 > {
   // Program address.
-  const programAddress = JITO_RESTAKING_PROGRAM_ADDRESS;
+  const programAddress =
+    config?.programAddress ?? JITO_RESTAKING_PROGRAM_ADDRESS;
 
   // Original accounts.
   const originalAccounts = {
@@ -236,7 +239,7 @@ export function getInitializeNcnVaultSlasherTicketInstruction<
       args as InitializeNcnVaultSlasherTicketInstructionDataArgs,
     ),
   } as InitializeNcnVaultSlasherTicketInstruction<
-    typeof JITO_RESTAKING_PROGRAM_ADDRESS,
+    TProgramAddress,
     TAccountConfig,
     TAccountNcn,
     TAccountVault,

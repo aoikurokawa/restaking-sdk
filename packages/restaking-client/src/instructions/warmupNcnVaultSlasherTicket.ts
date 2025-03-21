@@ -130,6 +130,7 @@ export function getWarmupNcnVaultSlasherTicketInstruction<
   TAccountNcnVaultTicket extends string,
   TAccountNcnVaultSlasherTicket extends string,
   TAccountAdmin extends string,
+  TProgramAddress extends Address = typeof JITO_RESTAKING_PROGRAM_ADDRESS,
 >(
   input: WarmupNcnVaultSlasherTicketInput<
     TAccountConfig,
@@ -140,8 +141,9 @@ export function getWarmupNcnVaultSlasherTicketInstruction<
     TAccountNcnVaultSlasherTicket,
     TAccountAdmin
   >,
+  config?: { programAddress?: TProgramAddress },
 ): WarmupNcnVaultSlasherTicketInstruction<
-  typeof JITO_RESTAKING_PROGRAM_ADDRESS,
+  TProgramAddress,
   TAccountConfig,
   TAccountNcn,
   TAccountVault,
@@ -151,7 +153,8 @@ export function getWarmupNcnVaultSlasherTicketInstruction<
   TAccountAdmin
 > {
   // Program address.
-  const programAddress = JITO_RESTAKING_PROGRAM_ADDRESS;
+  const programAddress =
+    config?.programAddress ?? JITO_RESTAKING_PROGRAM_ADDRESS;
 
   // Original accounts.
   const originalAccounts = {
@@ -185,7 +188,7 @@ export function getWarmupNcnVaultSlasherTicketInstruction<
     programAddress,
     data: getWarmupNcnVaultSlasherTicketInstructionDataEncoder().encode({}),
   } as WarmupNcnVaultSlasherTicketInstruction<
-    typeof JITO_RESTAKING_PROGRAM_ADDRESS,
+    TProgramAddress,
     TAccountConfig,
     TAccountNcn,
     TAccountVault,
