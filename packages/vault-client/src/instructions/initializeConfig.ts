@@ -28,9 +28,9 @@ import {
   type TransactionSigner,
   type WritableAccount,
   type WritableSignerAccount,
-} from "@solana/web3.js";
-import { JITO_VAULT_PROGRAM_ADDRESS } from "../programs";
-import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
+} from '@solana/web3.js';
+import { JITO_VAULT_PROGRAM_ADDRESS } from '../programs';
+import { getAccountMetaFactory, type ResolvedAccount } from '../shared';
 
 export const INITIALIZE_CONFIG_DISCRIMINATOR = 0;
 
@@ -46,7 +46,7 @@ export type InitializeConfigInstruction<
   TAccountProgramFeeWallet extends string | IAccountMeta<string> = string,
   TAccountSystemProgram extends
     | string
-    | IAccountMeta<string> = "11111111111111111111111111111111",
+    | IAccountMeta<string> = '11111111111111111111111111111111',
   TRemainingAccounts extends readonly IAccountMeta<string>[] = [],
 > = IInstruction<TProgram> &
   IInstructionWithData<Uint8Array> &
@@ -82,17 +82,17 @@ export type InitializeConfigInstructionDataArgs = { programFeeBps: number };
 export function getInitializeConfigInstructionDataEncoder(): Encoder<InitializeConfigInstructionDataArgs> {
   return transformEncoder(
     getStructEncoder([
-      ["discriminator", getU8Encoder()],
-      ["programFeeBps", getU16Encoder()],
+      ['discriminator', getU8Encoder()],
+      ['programFeeBps', getU16Encoder()],
     ]),
-    (value) => ({ ...value, discriminator: INITIALIZE_CONFIG_DISCRIMINATOR }),
+    (value) => ({ ...value, discriminator: INITIALIZE_CONFIG_DISCRIMINATOR })
   );
 }
 
 export function getInitializeConfigInstructionDataDecoder(): Decoder<InitializeConfigInstructionData> {
   return getStructDecoder([
-    ["discriminator", getU8Decoder()],
-    ["programFeeBps", getU16Decoder()],
+    ['discriminator', getU8Decoder()],
+    ['programFeeBps', getU16Decoder()],
   ]);
 }
 
@@ -102,7 +102,7 @@ export function getInitializeConfigInstructionDataCodec(): Codec<
 > {
   return combineCodec(
     getInitializeConfigInstructionDataEncoder(),
-    getInitializeConfigInstructionDataDecoder(),
+    getInitializeConfigInstructionDataDecoder()
   );
 }
 
@@ -118,7 +118,7 @@ export type InitializeConfigInput<
   restakingProgram: Address<TAccountRestakingProgram>;
   programFeeWallet: Address<TAccountProgramFeeWallet>;
   systemProgram?: Address<TAccountSystemProgram>;
-  programFeeBps: InitializeConfigInstructionDataArgs["programFeeBps"];
+  programFeeBps: InitializeConfigInstructionDataArgs['programFeeBps'];
 };
 
 export function getInitializeConfigInstruction<
@@ -127,6 +127,7 @@ export function getInitializeConfigInstruction<
   TAccountRestakingProgram extends string,
   TAccountProgramFeeWallet extends string,
   TAccountSystemProgram extends string,
+  TProgramAddress extends Address = typeof JITO_VAULT_PROGRAM_ADDRESS,
 >(
   input: InitializeConfigInput<
     TAccountConfig,
@@ -135,8 +136,9 @@ export function getInitializeConfigInstruction<
     TAccountProgramFeeWallet,
     TAccountSystemProgram
   >,
+  config?: { programAddress?: TProgramAddress }
 ): InitializeConfigInstruction<
-  typeof JITO_VAULT_PROGRAM_ADDRESS,
+  TProgramAddress,
   TAccountConfig,
   TAccountAdmin,
   TAccountRestakingProgram,
@@ -144,7 +146,7 @@ export function getInitializeConfigInstruction<
   TAccountSystemProgram
 > {
   // Program address.
-  const programAddress = JITO_VAULT_PROGRAM_ADDRESS;
+  const programAddress = config?.programAddress ?? JITO_VAULT_PROGRAM_ADDRESS;
 
   // Original accounts.
   const originalAccounts = {
@@ -171,10 +173,10 @@ export function getInitializeConfigInstruction<
   // Resolve default values.
   if (!accounts.systemProgram.value) {
     accounts.systemProgram.value =
-      "11111111111111111111111111111111" as Address<"11111111111111111111111111111111">;
+      '11111111111111111111111111111111' as Address<'11111111111111111111111111111111'>;
   }
 
-  const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
+  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
   const instruction = {
     accounts: [
       getAccountMeta(accounts.config),
@@ -185,10 +187,10 @@ export function getInitializeConfigInstruction<
     ],
     programAddress,
     data: getInitializeConfigInstructionDataEncoder().encode(
-      args as InitializeConfigInstructionDataArgs,
+      args as InitializeConfigInstructionDataArgs
     ),
   } as InitializeConfigInstruction<
-    typeof JITO_VAULT_PROGRAM_ADDRESS,
+    TProgramAddress,
     TAccountConfig,
     TAccountAdmin,
     TAccountRestakingProgram,
@@ -220,11 +222,11 @@ export function parseInitializeConfigInstruction<
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>,
+    IInstructionWithData<Uint8Array>
 ): ParsedInitializeConfigInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 5) {
     // TODO: Coded error.
-    throw new Error("Not enough accounts");
+    throw new Error('Not enough accounts');
   }
   let accountIndex = 0;
   const getNextAccount = () => {

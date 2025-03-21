@@ -26,9 +26,9 @@ import {
   type ReadonlySignerAccount,
   type TransactionSigner,
   type WritableAccount,
-} from "@solana/web3.js";
-import { JITO_VAULT_PROGRAM_ADDRESS } from "../programs";
-import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
+} from '@solana/web3.js';
+import { JITO_VAULT_PROGRAM_ADDRESS } from '../programs';
+import { getAccountMetaFactory, type ResolvedAccount } from '../shared';
 
 export const DELEGATE_TOKEN_ACCOUNT_DISCRIMINATOR = 20;
 
@@ -46,7 +46,7 @@ export type DelegateTokenAccountInstruction<
   TAccountDelegate extends string | IAccountMeta<string> = string,
   TAccountTokenProgram extends
     | string
-    | IAccountMeta<string> = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+    | IAccountMeta<string> = 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
   TRemainingAccounts extends readonly IAccountMeta<string>[] = [],
 > = IInstruction<TProgram> &
   IInstructionWithData<Uint8Array> &
@@ -84,16 +84,16 @@ export type DelegateTokenAccountInstructionDataArgs = {};
 
 export function getDelegateTokenAccountInstructionDataEncoder(): Encoder<DelegateTokenAccountInstructionDataArgs> {
   return transformEncoder(
-    getStructEncoder([["discriminator", getU8Encoder()]]),
+    getStructEncoder([['discriminator', getU8Encoder()]]),
     (value) => ({
       ...value,
       discriminator: DELEGATE_TOKEN_ACCOUNT_DISCRIMINATOR,
-    }),
+    })
   );
 }
 
 export function getDelegateTokenAccountInstructionDataDecoder(): Decoder<DelegateTokenAccountInstructionData> {
-  return getStructDecoder([["discriminator", getU8Decoder()]]);
+  return getStructDecoder([['discriminator', getU8Decoder()]]);
 }
 
 export function getDelegateTokenAccountInstructionDataCodec(): Codec<
@@ -102,7 +102,7 @@ export function getDelegateTokenAccountInstructionDataCodec(): Codec<
 > {
   return combineCodec(
     getDelegateTokenAccountInstructionDataEncoder(),
-    getDelegateTokenAccountInstructionDataDecoder(),
+    getDelegateTokenAccountInstructionDataDecoder()
   );
 }
 
@@ -132,6 +132,7 @@ export function getDelegateTokenAccountInstruction<
   TAccountTokenAccount extends string,
   TAccountDelegate extends string,
   TAccountTokenProgram extends string,
+  TProgramAddress extends Address = typeof JITO_VAULT_PROGRAM_ADDRESS,
 >(
   input: DelegateTokenAccountInput<
     TAccountConfig,
@@ -142,8 +143,9 @@ export function getDelegateTokenAccountInstruction<
     TAccountDelegate,
     TAccountTokenProgram
   >,
+  config?: { programAddress?: TProgramAddress }
 ): DelegateTokenAccountInstruction<
-  typeof JITO_VAULT_PROGRAM_ADDRESS,
+  TProgramAddress,
   TAccountConfig,
   TAccountVault,
   TAccountDelegateAssetAdmin,
@@ -153,7 +155,7 @@ export function getDelegateTokenAccountInstruction<
   TAccountTokenProgram
 > {
   // Program address.
-  const programAddress = JITO_VAULT_PROGRAM_ADDRESS;
+  const programAddress = config?.programAddress ?? JITO_VAULT_PROGRAM_ADDRESS;
 
   // Original accounts.
   const originalAccounts = {
@@ -176,10 +178,10 @@ export function getDelegateTokenAccountInstruction<
   // Resolve default values.
   if (!accounts.tokenProgram.value) {
     accounts.tokenProgram.value =
-      "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA" as Address<"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA">;
+      'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA' as Address<'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'>;
   }
 
-  const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
+  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
   const instruction = {
     accounts: [
       getAccountMeta(accounts.config),
@@ -193,7 +195,7 @@ export function getDelegateTokenAccountInstruction<
     programAddress,
     data: getDelegateTokenAccountInstructionDataEncoder().encode({}),
   } as DelegateTokenAccountInstruction<
-    typeof JITO_VAULT_PROGRAM_ADDRESS,
+    TProgramAddress,
     TAccountConfig,
     TAccountVault,
     TAccountDelegateAssetAdmin,
@@ -229,11 +231,11 @@ export function parseDelegateTokenAccountInstruction<
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>,
+    IInstructionWithData<Uint8Array>
 ): ParsedDelegateTokenAccountInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 7) {
     // TODO: Coded error.
-    throw new Error("Not enough accounts");
+    throw new Error('Not enough accounts');
   }
   let accountIndex = 0;
   const getNextAccount = () => {
@@ -253,7 +255,7 @@ export function parseDelegateTokenAccountInstruction<
       tokenProgram: getNextAccount(),
     },
     data: getDelegateTokenAccountInstructionDataDecoder().decode(
-      instruction.data,
+      instruction.data
     ),
   };
 }

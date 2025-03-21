@@ -26,9 +26,9 @@ import {
   type ReadonlySignerAccount,
   type TransactionSigner,
   type WritableAccount,
-} from "@solana/web3.js";
-import { JITO_VAULT_PROGRAM_ADDRESS } from "../programs";
-import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
+} from '@solana/web3.js';
+import { JITO_VAULT_PROGRAM_ADDRESS } from '../programs';
+import { getAccountMetaFactory, type ResolvedAccount } from '../shared';
 
 export const WARMUP_VAULT_NCN_SLASHER_TICKET_DISCRIMINATOR = 9;
 
@@ -78,16 +78,16 @@ export type WarmupVaultNcnSlasherTicketInstructionDataArgs = {};
 
 export function getWarmupVaultNcnSlasherTicketInstructionDataEncoder(): Encoder<WarmupVaultNcnSlasherTicketInstructionDataArgs> {
   return transformEncoder(
-    getStructEncoder([["discriminator", getU8Encoder()]]),
+    getStructEncoder([['discriminator', getU8Encoder()]]),
     (value) => ({
       ...value,
       discriminator: WARMUP_VAULT_NCN_SLASHER_TICKET_DISCRIMINATOR,
-    }),
+    })
   );
 }
 
 export function getWarmupVaultNcnSlasherTicketInstructionDataDecoder(): Decoder<WarmupVaultNcnSlasherTicketInstructionData> {
-  return getStructDecoder([["discriminator", getU8Decoder()]]);
+  return getStructDecoder([['discriminator', getU8Decoder()]]);
 }
 
 export function getWarmupVaultNcnSlasherTicketInstructionDataCodec(): Codec<
@@ -96,7 +96,7 @@ export function getWarmupVaultNcnSlasherTicketInstructionDataCodec(): Codec<
 > {
   return combineCodec(
     getWarmupVaultNcnSlasherTicketInstructionDataEncoder(),
-    getWarmupVaultNcnSlasherTicketInstructionDataDecoder(),
+    getWarmupVaultNcnSlasherTicketInstructionDataDecoder()
   );
 }
 
@@ -123,6 +123,7 @@ export function getWarmupVaultNcnSlasherTicketInstruction<
   TAccountSlasher extends string,
   TAccountVaultSlasherTicket extends string,
   TAccountAdmin extends string,
+  TProgramAddress extends Address = typeof JITO_VAULT_PROGRAM_ADDRESS,
 >(
   input: WarmupVaultNcnSlasherTicketInput<
     TAccountConfig,
@@ -132,8 +133,9 @@ export function getWarmupVaultNcnSlasherTicketInstruction<
     TAccountVaultSlasherTicket,
     TAccountAdmin
   >,
+  config?: { programAddress?: TProgramAddress }
 ): WarmupVaultNcnSlasherTicketInstruction<
-  typeof JITO_VAULT_PROGRAM_ADDRESS,
+  TProgramAddress,
   TAccountConfig,
   TAccountVault,
   TAccountNcn,
@@ -142,7 +144,7 @@ export function getWarmupVaultNcnSlasherTicketInstruction<
   TAccountAdmin
 > {
   // Program address.
-  const programAddress = JITO_VAULT_PROGRAM_ADDRESS;
+  const programAddress = config?.programAddress ?? JITO_VAULT_PROGRAM_ADDRESS;
 
   // Original accounts.
   const originalAccounts = {
@@ -161,7 +163,7 @@ export function getWarmupVaultNcnSlasherTicketInstruction<
     ResolvedAccount
   >;
 
-  const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
+  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
   const instruction = {
     accounts: [
       getAccountMeta(accounts.config),
@@ -174,7 +176,7 @@ export function getWarmupVaultNcnSlasherTicketInstruction<
     programAddress,
     data: getWarmupVaultNcnSlasherTicketInstructionDataEncoder().encode({}),
   } as WarmupVaultNcnSlasherTicketInstruction<
-    typeof JITO_VAULT_PROGRAM_ADDRESS,
+    TProgramAddress,
     TAccountConfig,
     TAccountVault,
     TAccountNcn,
@@ -208,11 +210,11 @@ export function parseWarmupVaultNcnSlasherTicketInstruction<
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>,
+    IInstructionWithData<Uint8Array>
 ): ParsedWarmupVaultNcnSlasherTicketInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 6) {
     // TODO: Coded error.
-    throw new Error("Not enough accounts");
+    throw new Error('Not enough accounts');
   }
   let accountIndex = 0;
   const getNextAccount = () => {
@@ -231,7 +233,7 @@ export function parseWarmupVaultNcnSlasherTicketInstruction<
       admin: getNextAccount(),
     },
     data: getWarmupVaultNcnSlasherTicketInstructionDataDecoder().decode(
-      instruction.data,
+      instruction.data
     ),
   };
 }

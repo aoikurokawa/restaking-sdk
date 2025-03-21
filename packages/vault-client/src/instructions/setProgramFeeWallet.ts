@@ -26,9 +26,9 @@ import {
   type ReadonlySignerAccount,
   type TransactionSigner,
   type WritableAccount,
-} from "@solana/web3.js";
-import { JITO_VAULT_PROGRAM_ADDRESS } from "../programs";
-import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
+} from '@solana/web3.js';
+import { JITO_VAULT_PROGRAM_ADDRESS } from '../programs';
+import { getAccountMetaFactory, type ResolvedAccount } from '../shared';
 
 export const SET_PROGRAM_FEE_WALLET_DISCRIMINATOR = 18;
 
@@ -66,16 +66,16 @@ export type SetProgramFeeWalletInstructionDataArgs = {};
 
 export function getSetProgramFeeWalletInstructionDataEncoder(): Encoder<SetProgramFeeWalletInstructionDataArgs> {
   return transformEncoder(
-    getStructEncoder([["discriminator", getU8Encoder()]]),
+    getStructEncoder([['discriminator', getU8Encoder()]]),
     (value) => ({
       ...value,
       discriminator: SET_PROGRAM_FEE_WALLET_DISCRIMINATOR,
-    }),
+    })
   );
 }
 
 export function getSetProgramFeeWalletInstructionDataDecoder(): Decoder<SetProgramFeeWalletInstructionData> {
-  return getStructDecoder([["discriminator", getU8Decoder()]]);
+  return getStructDecoder([['discriminator', getU8Decoder()]]);
 }
 
 export function getSetProgramFeeWalletInstructionDataCodec(): Codec<
@@ -84,7 +84,7 @@ export function getSetProgramFeeWalletInstructionDataCodec(): Codec<
 > {
   return combineCodec(
     getSetProgramFeeWalletInstructionDataEncoder(),
-    getSetProgramFeeWalletInstructionDataDecoder(),
+    getSetProgramFeeWalletInstructionDataDecoder()
   );
 }
 
@@ -102,20 +102,22 @@ export function getSetProgramFeeWalletInstruction<
   TAccountConfig extends string,
   TAccountProgramFeeAdmin extends string,
   TAccountNewFeeWallet extends string,
+  TProgramAddress extends Address = typeof JITO_VAULT_PROGRAM_ADDRESS,
 >(
   input: SetProgramFeeWalletInput<
     TAccountConfig,
     TAccountProgramFeeAdmin,
     TAccountNewFeeWallet
   >,
+  config?: { programAddress?: TProgramAddress }
 ): SetProgramFeeWalletInstruction<
-  typeof JITO_VAULT_PROGRAM_ADDRESS,
+  TProgramAddress,
   TAccountConfig,
   TAccountProgramFeeAdmin,
   TAccountNewFeeWallet
 > {
   // Program address.
-  const programAddress = JITO_VAULT_PROGRAM_ADDRESS;
+  const programAddress = config?.programAddress ?? JITO_VAULT_PROGRAM_ADDRESS;
 
   // Original accounts.
   const originalAccounts = {
@@ -131,7 +133,7 @@ export function getSetProgramFeeWalletInstruction<
     ResolvedAccount
   >;
 
-  const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
+  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
   const instruction = {
     accounts: [
       getAccountMeta(accounts.config),
@@ -141,7 +143,7 @@ export function getSetProgramFeeWalletInstruction<
     programAddress,
     data: getSetProgramFeeWalletInstructionDataEncoder().encode({}),
   } as SetProgramFeeWalletInstruction<
-    typeof JITO_VAULT_PROGRAM_ADDRESS,
+    TProgramAddress,
     TAccountConfig,
     TAccountProgramFeeAdmin,
     TAccountNewFeeWallet
@@ -169,11 +171,11 @@ export function parseSetProgramFeeWalletInstruction<
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>,
+    IInstructionWithData<Uint8Array>
 ): ParsedSetProgramFeeWalletInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 3) {
     // TODO: Coded error.
-    throw new Error("Not enough accounts");
+    throw new Error('Not enough accounts');
   }
   let accountIndex = 0;
   const getNextAccount = () => {
@@ -189,7 +191,7 @@ export function parseSetProgramFeeWalletInstruction<
       newFeeWallet: getNextAccount(),
     },
     data: getSetProgramFeeWalletInstructionDataDecoder().decode(
-      instruction.data,
+      instruction.data
     ),
   };
 }

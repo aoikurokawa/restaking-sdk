@@ -11,7 +11,7 @@ import {
   getU8Encoder,
   type Address,
   type ReadonlyUint8Array,
-} from "@solana/web3.js";
+} from '@solana/web3.js';
 import {
   type ParsedAddDelegationInstruction,
   type ParsedBurnWithdrawalTicketInstruction,
@@ -45,10 +45,10 @@ import {
   type ParsedUpdateVaultBalanceInstruction,
   type ParsedWarmupVaultNcnSlasherTicketInstruction,
   type ParsedWarmupVaultNcnTicketInstruction,
-} from "../instructions";
+} from '../instructions';
 
 export const JITO_VAULT_PROGRAM_ADDRESS =
-  "Vau1t6sLNxnzB7ZDsef8TLbPLfyZMYXH8WTNqUdm9g8" as Address<"Vau1t6sLNxnzB7ZDsef8TLbPLfyZMYXH8WTNqUdm9g8">;
+  'Vau1t6sLNxnzB7ZDsef8TLbPLfyZMYXH8WTNqUdm9g8' as Address<'Vau1t6sLNxnzB7ZDsef8TLbPLfyZMYXH8WTNqUdm9g8'>;
 
 export enum JitoVaultAccount {
   Config,
@@ -97,9 +97,9 @@ export enum JitoVaultInstruction {
 }
 
 export function identifyJitoVaultInstruction(
-  instruction: { data: ReadonlyUint8Array } | ReadonlyUint8Array,
+  instruction: { data: ReadonlyUint8Array } | ReadonlyUint8Array
 ): JitoVaultInstruction {
-  const data = "data" in instruction ? instruction.data : instruction;
+  const data = 'data' in instruction ? instruction.data : instruction;
   if (containsBytes(data, getU8Encoder().encode(0), 0)) {
     return JitoVaultInstruction.InitializeConfig;
   }
@@ -197,12 +197,12 @@ export function identifyJitoVaultInstruction(
     return JitoVaultInstruction.SetConfigAdmin;
   }
   throw new Error(
-    "The provided instruction could not be identified as a jitoVault instruction.",
+    'The provided instruction could not be identified as a jitoVault instruction.'
   );
 }
 
 export type ParsedJitoVaultInstruction<
-  TProgram extends string = "Vau1t6sLNxnzB7ZDsef8TLbPLfyZMYXH8WTNqUdm9g8",
+  TProgram extends string = 'Vau1t6sLNxnzB7ZDsef8TLbPLfyZMYXH8WTNqUdm9g8',
 > =
   | ({
       instructionType: JitoVaultInstruction.InitializeConfig;

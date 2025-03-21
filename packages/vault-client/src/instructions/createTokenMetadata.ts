@@ -33,9 +33,9 @@ import {
   type TransactionSigner,
   type WritableAccount,
   type WritableSignerAccount,
-} from "@solana/web3.js";
-import { JITO_VAULT_PROGRAM_ADDRESS } from "../programs";
-import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
+} from '@solana/web3.js';
+import { JITO_VAULT_PROGRAM_ADDRESS } from '../programs';
+import { getAccountMetaFactory, type ResolvedAccount } from '../shared';
 
 export const CREATE_TOKEN_METADATA_DISCRIMINATOR = 29;
 
@@ -52,10 +52,10 @@ export type CreateTokenMetadataInstruction<
   TAccountMetadata extends string | IAccountMeta<string> = string,
   TAccountMplTokenMetadataProgram extends
     | string
-    | IAccountMeta<string> = "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s",
+    | IAccountMeta<string> = 'metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s',
   TAccountSystemProgram extends
     | string
-    | IAccountMeta<string> = "11111111111111111111111111111111",
+    | IAccountMeta<string> = '11111111111111111111111111111111',
   TRemainingAccounts extends readonly IAccountMeta<string>[] = [],
 > = IInstruction<TProgram> &
   IInstructionWithData<Uint8Array> &
@@ -104,24 +104,24 @@ export type CreateTokenMetadataInstructionDataArgs = {
 export function getCreateTokenMetadataInstructionDataEncoder(): Encoder<CreateTokenMetadataInstructionDataArgs> {
   return transformEncoder(
     getStructEncoder([
-      ["discriminator", getU8Encoder()],
-      ["name", addEncoderSizePrefix(getUtf8Encoder(), getU32Encoder())],
-      ["symbol", addEncoderSizePrefix(getUtf8Encoder(), getU32Encoder())],
-      ["uri", addEncoderSizePrefix(getUtf8Encoder(), getU32Encoder())],
+      ['discriminator', getU8Encoder()],
+      ['name', addEncoderSizePrefix(getUtf8Encoder(), getU32Encoder())],
+      ['symbol', addEncoderSizePrefix(getUtf8Encoder(), getU32Encoder())],
+      ['uri', addEncoderSizePrefix(getUtf8Encoder(), getU32Encoder())],
     ]),
     (value) => ({
       ...value,
       discriminator: CREATE_TOKEN_METADATA_DISCRIMINATOR,
-    }),
+    })
   );
 }
 
 export function getCreateTokenMetadataInstructionDataDecoder(): Decoder<CreateTokenMetadataInstructionData> {
   return getStructDecoder([
-    ["discriminator", getU8Decoder()],
-    ["name", addDecoderSizePrefix(getUtf8Decoder(), getU32Decoder())],
-    ["symbol", addDecoderSizePrefix(getUtf8Decoder(), getU32Decoder())],
-    ["uri", addDecoderSizePrefix(getUtf8Decoder(), getU32Decoder())],
+    ['discriminator', getU8Decoder()],
+    ['name', addDecoderSizePrefix(getUtf8Decoder(), getU32Decoder())],
+    ['symbol', addDecoderSizePrefix(getUtf8Decoder(), getU32Decoder())],
+    ['uri', addDecoderSizePrefix(getUtf8Decoder(), getU32Decoder())],
   ]);
 }
 
@@ -131,7 +131,7 @@ export function getCreateTokenMetadataInstructionDataCodec(): Codec<
 > {
   return combineCodec(
     getCreateTokenMetadataInstructionDataEncoder(),
-    getCreateTokenMetadataInstructionDataDecoder(),
+    getCreateTokenMetadataInstructionDataDecoder()
   );
 }
 
@@ -151,9 +151,9 @@ export type CreateTokenMetadataInput<
   metadata: Address<TAccountMetadata>;
   mplTokenMetadataProgram?: Address<TAccountMplTokenMetadataProgram>;
   systemProgram?: Address<TAccountSystemProgram>;
-  name: CreateTokenMetadataInstructionDataArgs["name"];
-  symbol: CreateTokenMetadataInstructionDataArgs["symbol"];
-  uri: CreateTokenMetadataInstructionDataArgs["uri"];
+  name: CreateTokenMetadataInstructionDataArgs['name'];
+  symbol: CreateTokenMetadataInstructionDataArgs['symbol'];
+  uri: CreateTokenMetadataInstructionDataArgs['uri'];
 };
 
 export function getCreateTokenMetadataInstruction<
@@ -164,6 +164,7 @@ export function getCreateTokenMetadataInstruction<
   TAccountMetadata extends string,
   TAccountMplTokenMetadataProgram extends string,
   TAccountSystemProgram extends string,
+  TProgramAddress extends Address = typeof JITO_VAULT_PROGRAM_ADDRESS,
 >(
   input: CreateTokenMetadataInput<
     TAccountVault,
@@ -174,8 +175,9 @@ export function getCreateTokenMetadataInstruction<
     TAccountMplTokenMetadataProgram,
     TAccountSystemProgram
   >,
+  config?: { programAddress?: TProgramAddress }
 ): CreateTokenMetadataInstruction<
-  typeof JITO_VAULT_PROGRAM_ADDRESS,
+  TProgramAddress,
   TAccountVault,
   TAccountAdmin,
   TAccountVrtMint,
@@ -185,7 +187,7 @@ export function getCreateTokenMetadataInstruction<
   TAccountSystemProgram
 > {
   // Program address.
-  const programAddress = JITO_VAULT_PROGRAM_ADDRESS;
+  const programAddress = config?.programAddress ?? JITO_VAULT_PROGRAM_ADDRESS;
 
   // Original accounts.
   const originalAccounts = {
@@ -211,14 +213,14 @@ export function getCreateTokenMetadataInstruction<
   // Resolve default values.
   if (!accounts.mplTokenMetadataProgram.value) {
     accounts.mplTokenMetadataProgram.value =
-      "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s" as Address<"metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s">;
+      'metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s' as Address<'metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s'>;
   }
   if (!accounts.systemProgram.value) {
     accounts.systemProgram.value =
-      "11111111111111111111111111111111" as Address<"11111111111111111111111111111111">;
+      '11111111111111111111111111111111' as Address<'11111111111111111111111111111111'>;
   }
 
-  const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
+  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
   const instruction = {
     accounts: [
       getAccountMeta(accounts.vault),
@@ -231,10 +233,10 @@ export function getCreateTokenMetadataInstruction<
     ],
     programAddress,
     data: getCreateTokenMetadataInstructionDataEncoder().encode(
-      args as CreateTokenMetadataInstructionDataArgs,
+      args as CreateTokenMetadataInstructionDataArgs
     ),
   } as CreateTokenMetadataInstruction<
-    typeof JITO_VAULT_PROGRAM_ADDRESS,
+    TProgramAddress,
     TAccountVault,
     TAccountAdmin,
     TAccountVrtMint,
@@ -270,11 +272,11 @@ export function parseCreateTokenMetadataInstruction<
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>,
+    IInstructionWithData<Uint8Array>
 ): ParsedCreateTokenMetadataInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 7) {
     // TODO: Coded error.
-    throw new Error("Not enough accounts");
+    throw new Error('Not enough accounts');
   }
   let accountIndex = 0;
   const getNextAccount = () => {
@@ -294,7 +296,7 @@ export function parseCreateTokenMetadataInstruction<
       systemProgram: getNextAccount(),
     },
     data: getCreateTokenMetadataInstructionDataDecoder().decode(
-      instruction.data,
+      instruction.data
     ),
   };
 }

@@ -6,6 +6,6 @@
  * @see https://github.com/kinobi-so/kinobi
  */
 
-export * from "./ncnAdminRole";
-export * from "./operatorAdminRole";
-export * from "./slotToggle";
+export * from './ncnAdminRole';
+export * from './operatorAdminRole';
+export * from './slotToggle';

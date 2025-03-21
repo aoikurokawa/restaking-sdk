@@ -26,9 +26,9 @@ import {
   type ReadonlySignerAccount,
   type TransactionSigner,
   type WritableAccount,
-} from "@solana/web3.js";
-import { JITO_RESTAKING_PROGRAM_ADDRESS } from "../programs";
-import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
+} from '@solana/web3.js';
+import { JITO_RESTAKING_PROGRAM_ADDRESS } from '../programs';
+import { getAccountMetaFactory, type ResolvedAccount } from '../shared';
 
 export const OPERATOR_WARMUP_NCN_DISCRIMINATOR = 11;
 
@@ -72,13 +72,13 @@ export type OperatorWarmupNcnInstructionDataArgs = {};
 
 export function getOperatorWarmupNcnInstructionDataEncoder(): Encoder<OperatorWarmupNcnInstructionDataArgs> {
   return transformEncoder(
-    getStructEncoder([["discriminator", getU8Encoder()]]),
-    (value) => ({ ...value, discriminator: OPERATOR_WARMUP_NCN_DISCRIMINATOR }),
+    getStructEncoder([['discriminator', getU8Encoder()]]),
+    (value) => ({ ...value, discriminator: OPERATOR_WARMUP_NCN_DISCRIMINATOR })
   );
 }
 
 export function getOperatorWarmupNcnInstructionDataDecoder(): Decoder<OperatorWarmupNcnInstructionData> {
-  return getStructDecoder([["discriminator", getU8Decoder()]]);
+  return getStructDecoder([['discriminator', getU8Decoder()]]);
 }
 
 export function getOperatorWarmupNcnInstructionDataCodec(): Codec<
@@ -87,7 +87,7 @@ export function getOperatorWarmupNcnInstructionDataCodec(): Codec<
 > {
   return combineCodec(
     getOperatorWarmupNcnInstructionDataEncoder(),
-    getOperatorWarmupNcnInstructionDataDecoder(),
+    getOperatorWarmupNcnInstructionDataDecoder()
   );
 }
 
@@ -111,6 +111,7 @@ export function getOperatorWarmupNcnInstruction<
   TAccountOperator extends string,
   TAccountNcnOperatorState extends string,
   TAccountAdmin extends string,
+  TProgramAddress extends Address = typeof JITO_RESTAKING_PROGRAM_ADDRESS,
 >(
   input: OperatorWarmupNcnInput<
     TAccountConfig,
@@ -119,8 +120,9 @@ export function getOperatorWarmupNcnInstruction<
     TAccountNcnOperatorState,
     TAccountAdmin
   >,
+  config?: { programAddress?: TProgramAddress }
 ): OperatorWarmupNcnInstruction<
-  typeof JITO_RESTAKING_PROGRAM_ADDRESS,
+  TProgramAddress,
   TAccountConfig,
   TAccountNcn,
   TAccountOperator,
@@ -128,7 +130,8 @@ export function getOperatorWarmupNcnInstruction<
   TAccountAdmin
 > {
   // Program address.
-  const programAddress = JITO_RESTAKING_PROGRAM_ADDRESS;
+  const programAddress =
+    config?.programAddress ?? JITO_RESTAKING_PROGRAM_ADDRESS;
 
   // Original accounts.
   const originalAccounts = {
@@ -146,7 +149,7 @@ export function getOperatorWarmupNcnInstruction<
     ResolvedAccount
   >;
 
-  const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
+  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
   const instruction = {
     accounts: [
       getAccountMeta(accounts.config),
@@ -158,7 +161,7 @@ export function getOperatorWarmupNcnInstruction<
     programAddress,
     data: getOperatorWarmupNcnInstructionDataEncoder().encode({}),
   } as OperatorWarmupNcnInstruction<
-    typeof JITO_RESTAKING_PROGRAM_ADDRESS,
+    TProgramAddress,
     TAccountConfig,
     TAccountNcn,
     TAccountOperator,
@@ -190,11 +193,11 @@ export function parseOperatorWarmupNcnInstruction<
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>,
+    IInstructionWithData<Uint8Array>
 ): ParsedOperatorWarmupNcnInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 5) {
     // TODO: Coded error.
-    throw new Error("Not enough accounts");
+    throw new Error('Not enough accounts');
   }
   let accountIndex = 0;
   const getNextAccount = () => {

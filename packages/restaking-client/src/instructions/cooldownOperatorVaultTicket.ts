@@ -26,9 +26,9 @@ import {
   type ReadonlySignerAccount,
   type TransactionSigner,
   type WritableAccount,
-} from "@solana/web3.js";
-import { JITO_RESTAKING_PROGRAM_ADDRESS } from "../programs";
-import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
+} from '@solana/web3.js';
+import { JITO_RESTAKING_PROGRAM_ADDRESS } from '../programs';
+import { getAccountMetaFactory, type ResolvedAccount } from '../shared';
 
 export const COOLDOWN_OPERATOR_VAULT_TICKET_DISCRIMINATOR = 16;
 
@@ -76,16 +76,16 @@ export type CooldownOperatorVaultTicketInstructionDataArgs = {};
 
 export function getCooldownOperatorVaultTicketInstructionDataEncoder(): Encoder<CooldownOperatorVaultTicketInstructionDataArgs> {
   return transformEncoder(
-    getStructEncoder([["discriminator", getU8Encoder()]]),
+    getStructEncoder([['discriminator', getU8Encoder()]]),
     (value) => ({
       ...value,
       discriminator: COOLDOWN_OPERATOR_VAULT_TICKET_DISCRIMINATOR,
-    }),
+    })
   );
 }
 
 export function getCooldownOperatorVaultTicketInstructionDataDecoder(): Decoder<CooldownOperatorVaultTicketInstructionData> {
-  return getStructDecoder([["discriminator", getU8Decoder()]]);
+  return getStructDecoder([['discriminator', getU8Decoder()]]);
 }
 
 export function getCooldownOperatorVaultTicketInstructionDataCodec(): Codec<
@@ -94,7 +94,7 @@ export function getCooldownOperatorVaultTicketInstructionDataCodec(): Codec<
 > {
   return combineCodec(
     getCooldownOperatorVaultTicketInstructionDataEncoder(),
-    getCooldownOperatorVaultTicketInstructionDataDecoder(),
+    getCooldownOperatorVaultTicketInstructionDataDecoder()
   );
 }
 
@@ -118,6 +118,7 @@ export function getCooldownOperatorVaultTicketInstruction<
   TAccountVault extends string,
   TAccountOperatorVaultTicket extends string,
   TAccountAdmin extends string,
+  TProgramAddress extends Address = typeof JITO_RESTAKING_PROGRAM_ADDRESS,
 >(
   input: CooldownOperatorVaultTicketInput<
     TAccountConfig,
@@ -126,8 +127,9 @@ export function getCooldownOperatorVaultTicketInstruction<
     TAccountOperatorVaultTicket,
     TAccountAdmin
   >,
+  config?: { programAddress?: TProgramAddress }
 ): CooldownOperatorVaultTicketInstruction<
-  typeof JITO_RESTAKING_PROGRAM_ADDRESS,
+  TProgramAddress,
   TAccountConfig,
   TAccountOperator,
   TAccountVault,
@@ -135,7 +137,8 @@ export function getCooldownOperatorVaultTicketInstruction<
   TAccountAdmin
 > {
   // Program address.
-  const programAddress = JITO_RESTAKING_PROGRAM_ADDRESS;
+  const programAddress =
+    config?.programAddress ?? JITO_RESTAKING_PROGRAM_ADDRESS;
 
   // Original accounts.
   const originalAccounts = {
@@ -153,7 +156,7 @@ export function getCooldownOperatorVaultTicketInstruction<
     ResolvedAccount
   >;
 
-  const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
+  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
   const instruction = {
     accounts: [
       getAccountMeta(accounts.config),
@@ -165,7 +168,7 @@ export function getCooldownOperatorVaultTicketInstruction<
     programAddress,
     data: getCooldownOperatorVaultTicketInstructionDataEncoder().encode({}),
   } as CooldownOperatorVaultTicketInstruction<
-    typeof JITO_RESTAKING_PROGRAM_ADDRESS,
+    TProgramAddress,
     TAccountConfig,
     TAccountOperator,
     TAccountVault,
@@ -197,11 +200,11 @@ export function parseCooldownOperatorVaultTicketInstruction<
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>,
+    IInstructionWithData<Uint8Array>
 ): ParsedCooldownOperatorVaultTicketInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 5) {
     // TODO: Coded error.
-    throw new Error("Not enough accounts");
+    throw new Error('Not enough accounts');
   }
   let accountIndex = 0;
   const getNextAccount = () => {
@@ -219,7 +222,7 @@ export function parseCooldownOperatorVaultTicketInstruction<
       admin: getNextAccount(),
     },
     data: getCooldownOperatorVaultTicketInstructionDataDecoder().decode(
-      instruction.data,
+      instruction.data
     ),
   };
 }

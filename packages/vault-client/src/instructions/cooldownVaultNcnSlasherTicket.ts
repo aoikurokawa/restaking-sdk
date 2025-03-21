@@ -26,9 +26,9 @@ import {
   type ReadonlySignerAccount,
   type TransactionSigner,
   type WritableAccount,
-} from "@solana/web3.js";
-import { JITO_VAULT_PROGRAM_ADDRESS } from "../programs";
-import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
+} from '@solana/web3.js';
+import { JITO_VAULT_PROGRAM_ADDRESS } from '../programs';
+import { getAccountMetaFactory, type ResolvedAccount } from '../shared';
 
 export const COOLDOWN_VAULT_NCN_SLASHER_TICKET_DISCRIMINATOR = 10;
 
@@ -78,16 +78,16 @@ export type CooldownVaultNcnSlasherTicketInstructionDataArgs = {};
 
 export function getCooldownVaultNcnSlasherTicketInstructionDataEncoder(): Encoder<CooldownVaultNcnSlasherTicketInstructionDataArgs> {
   return transformEncoder(
-    getStructEncoder([["discriminator", getU8Encoder()]]),
+    getStructEncoder([['discriminator', getU8Encoder()]]),
     (value) => ({
       ...value,
       discriminator: COOLDOWN_VAULT_NCN_SLASHER_TICKET_DISCRIMINATOR,
-    }),
+    })
   );
 }
 
 export function getCooldownVaultNcnSlasherTicketInstructionDataDecoder(): Decoder<CooldownVaultNcnSlasherTicketInstructionData> {
-  return getStructDecoder([["discriminator", getU8Decoder()]]);
+  return getStructDecoder([['discriminator', getU8Decoder()]]);
 }
 
 export function getCooldownVaultNcnSlasherTicketInstructionDataCodec(): Codec<
@@ -96,7 +96,7 @@ export function getCooldownVaultNcnSlasherTicketInstructionDataCodec(): Codec<
 > {
   return combineCodec(
     getCooldownVaultNcnSlasherTicketInstructionDataEncoder(),
-    getCooldownVaultNcnSlasherTicketInstructionDataDecoder(),
+    getCooldownVaultNcnSlasherTicketInstructionDataDecoder()
   );
 }
 
@@ -123,6 +123,7 @@ export function getCooldownVaultNcnSlasherTicketInstruction<
   TAccountSlasher extends string,
   TAccountVaultNcnSlasherTicket extends string,
   TAccountAdmin extends string,
+  TProgramAddress extends Address = typeof JITO_VAULT_PROGRAM_ADDRESS,
 >(
   input: CooldownVaultNcnSlasherTicketInput<
     TAccountConfig,
@@ -132,8 +133,9 @@ export function getCooldownVaultNcnSlasherTicketInstruction<
     TAccountVaultNcnSlasherTicket,
     TAccountAdmin
   >,
+  config?: { programAddress?: TProgramAddress }
 ): CooldownVaultNcnSlasherTicketInstruction<
-  typeof JITO_VAULT_PROGRAM_ADDRESS,
+  TProgramAddress,
   TAccountConfig,
   TAccountVault,
   TAccountNcn,
@@ -142,7 +144,7 @@ export function getCooldownVaultNcnSlasherTicketInstruction<
   TAccountAdmin
 > {
   // Program address.
-  const programAddress = JITO_VAULT_PROGRAM_ADDRESS;
+  const programAddress = config?.programAddress ?? JITO_VAULT_PROGRAM_ADDRESS;
 
   // Original accounts.
   const originalAccounts = {
@@ -161,7 +163,7 @@ export function getCooldownVaultNcnSlasherTicketInstruction<
     ResolvedAccount
   >;
 
-  const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
+  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
   const instruction = {
     accounts: [
       getAccountMeta(accounts.config),
@@ -174,7 +176,7 @@ export function getCooldownVaultNcnSlasherTicketInstruction<
     programAddress,
     data: getCooldownVaultNcnSlasherTicketInstructionDataEncoder().encode({}),
   } as CooldownVaultNcnSlasherTicketInstruction<
-    typeof JITO_VAULT_PROGRAM_ADDRESS,
+    TProgramAddress,
     TAccountConfig,
     TAccountVault,
     TAccountNcn,
@@ -208,11 +210,11 @@ export function parseCooldownVaultNcnSlasherTicketInstruction<
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>,
+    IInstructionWithData<Uint8Array>
 ): ParsedCooldownVaultNcnSlasherTicketInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 6) {
     // TODO: Coded error.
-    throw new Error("Not enough accounts");
+    throw new Error('Not enough accounts');
   }
   let accountIndex = 0;
   const getNextAccount = () => {
@@ -231,7 +233,7 @@ export function parseCooldownVaultNcnSlasherTicketInstruction<
       admin: getNextAccount(),
     },
     data: getCooldownVaultNcnSlasherTicketInstructionDataDecoder().decode(
-      instruction.data,
+      instruction.data
     ),
   };
 }

@@ -29,9 +29,9 @@ import {
   type TransactionSigner,
   type WritableAccount,
   type WritableSignerAccount,
-} from "@solana/web3.js";
-import { JITO_VAULT_PROGRAM_ADDRESS } from "../programs";
-import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
+} from '@solana/web3.js';
+import { JITO_VAULT_PROGRAM_ADDRESS } from '../programs';
+import { getAccountMetaFactory, type ResolvedAccount } from '../shared';
 
 export const ENQUEUE_WITHDRAWAL_DISCRIMINATOR = 12;
 
@@ -54,10 +54,10 @@ export type EnqueueWithdrawalInstruction<
   TAccountBase extends string | IAccountMeta<string> = string,
   TAccountTokenProgram extends
     | string
-    | IAccountMeta<string> = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+    | IAccountMeta<string> = 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
   TAccountSystemProgram extends
     | string
-    | IAccountMeta<string> = "11111111111111111111111111111111",
+    | IAccountMeta<string> = '11111111111111111111111111111111',
   TAccountBurnSigner extends string | IAccountMeta<string> = string,
   TRemainingAccounts extends readonly IAccountMeta<string>[] = [],
 > = IInstruction<TProgram> &
@@ -110,17 +110,17 @@ export type EnqueueWithdrawalInstructionDataArgs = { amount: number | bigint };
 export function getEnqueueWithdrawalInstructionDataEncoder(): Encoder<EnqueueWithdrawalInstructionDataArgs> {
   return transformEncoder(
     getStructEncoder([
-      ["discriminator", getU8Encoder()],
-      ["amount", getU64Encoder()],
+      ['discriminator', getU8Encoder()],
+      ['amount', getU64Encoder()],
     ]),
-    (value) => ({ ...value, discriminator: ENQUEUE_WITHDRAWAL_DISCRIMINATOR }),
+    (value) => ({ ...value, discriminator: ENQUEUE_WITHDRAWAL_DISCRIMINATOR })
   );
 }
 
 export function getEnqueueWithdrawalInstructionDataDecoder(): Decoder<EnqueueWithdrawalInstructionData> {
   return getStructDecoder([
-    ["discriminator", getU8Decoder()],
-    ["amount", getU64Decoder()],
+    ['discriminator', getU8Decoder()],
+    ['amount', getU64Decoder()],
   ]);
 }
 
@@ -130,7 +130,7 @@ export function getEnqueueWithdrawalInstructionDataCodec(): Codec<
 > {
   return combineCodec(
     getEnqueueWithdrawalInstructionDataEncoder(),
-    getEnqueueWithdrawalInstructionDataDecoder(),
+    getEnqueueWithdrawalInstructionDataDecoder()
   );
 }
 
@@ -157,7 +157,7 @@ export type EnqueueWithdrawalInput<
   systemProgram?: Address<TAccountSystemProgram>;
   /** Signer for burning */
   burnSigner?: TransactionSigner<TAccountBurnSigner>;
-  amount: EnqueueWithdrawalInstructionDataArgs["amount"];
+  amount: EnqueueWithdrawalInstructionDataArgs['amount'];
 };
 
 export function getEnqueueWithdrawalInstruction<
@@ -171,6 +171,7 @@ export function getEnqueueWithdrawalInstruction<
   TAccountTokenProgram extends string,
   TAccountSystemProgram extends string,
   TAccountBurnSigner extends string,
+  TProgramAddress extends Address = typeof JITO_VAULT_PROGRAM_ADDRESS,
 >(
   input: EnqueueWithdrawalInput<
     TAccountConfig,
@@ -184,8 +185,9 @@ export function getEnqueueWithdrawalInstruction<
     TAccountSystemProgram,
     TAccountBurnSigner
   >,
+  config?: { programAddress?: TProgramAddress }
 ): EnqueueWithdrawalInstruction<
-  typeof JITO_VAULT_PROGRAM_ADDRESS,
+  TProgramAddress,
   TAccountConfig,
   TAccountVault,
   TAccountVaultStakerWithdrawalTicket,
@@ -198,7 +200,7 @@ export function getEnqueueWithdrawalInstruction<
   TAccountBurnSigner
 > {
   // Program address.
-  const programAddress = JITO_VAULT_PROGRAM_ADDRESS;
+  const programAddress = config?.programAddress ?? JITO_VAULT_PROGRAM_ADDRESS;
 
   // Original accounts.
   const originalAccounts = {
@@ -233,14 +235,14 @@ export function getEnqueueWithdrawalInstruction<
   // Resolve default values.
   if (!accounts.tokenProgram.value) {
     accounts.tokenProgram.value =
-      "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA" as Address<"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA">;
+      'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA' as Address<'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'>;
   }
   if (!accounts.systemProgram.value) {
     accounts.systemProgram.value =
-      "11111111111111111111111111111111" as Address<"11111111111111111111111111111111">;
+      '11111111111111111111111111111111' as Address<'11111111111111111111111111111111'>;
   }
 
-  const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
+  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
   const instruction = {
     accounts: [
       getAccountMeta(accounts.config),
@@ -256,10 +258,10 @@ export function getEnqueueWithdrawalInstruction<
     ],
     programAddress,
     data: getEnqueueWithdrawalInstructionDataEncoder().encode(
-      args as EnqueueWithdrawalInstructionDataArgs,
+      args as EnqueueWithdrawalInstructionDataArgs
     ),
   } as EnqueueWithdrawalInstruction<
-    typeof JITO_VAULT_PROGRAM_ADDRESS,
+    TProgramAddress,
     TAccountConfig,
     TAccountVault,
     TAccountVaultStakerWithdrawalTicket,
@@ -302,11 +304,11 @@ export function parseEnqueueWithdrawalInstruction<
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>,
+    IInstructionWithData<Uint8Array>
 ): ParsedEnqueueWithdrawalInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 10) {
     // TODO: Coded error.
-    throw new Error("Not enough accounts");
+    throw new Error('Not enough accounts');
   }
   let accountIndex = 0;
   const getNextAccount = () => {

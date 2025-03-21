@@ -26,9 +26,9 @@ import {
   type ReadonlySignerAccount,
   type TransactionSigner,
   type WritableAccount,
-} from "@solana/web3.js";
-import { JITO_VAULT_PROGRAM_ADDRESS } from "../programs";
-import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
+} from '@solana/web3.js';
+import { JITO_VAULT_PROGRAM_ADDRESS } from '../programs';
+import { getAccountMetaFactory, type ResolvedAccount } from '../shared';
 
 export const BURN_WITHDRAWAL_TICKET_DISCRIMINATOR = 14;
 
@@ -54,10 +54,10 @@ export type BurnWithdrawalTicketInstruction<
   TAccountProgramFeeTokenAccount extends string | IAccountMeta<string> = string,
   TAccountTokenProgram extends
     | string
-    | IAccountMeta<string> = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+    | IAccountMeta<string> = 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
   TAccountSystemProgram extends
     | string
-    | IAccountMeta<string> = "11111111111111111111111111111111",
+    | IAccountMeta<string> = '11111111111111111111111111111111',
   TAccountBurnSigner extends string | IAccountMeta<string> = string,
   TRemainingAccounts extends readonly IAccountMeta<string>[] = [],
 > = IInstruction<TProgram> &
@@ -114,16 +114,16 @@ export type BurnWithdrawalTicketInstructionDataArgs = {};
 
 export function getBurnWithdrawalTicketInstructionDataEncoder(): Encoder<BurnWithdrawalTicketInstructionDataArgs> {
   return transformEncoder(
-    getStructEncoder([["discriminator", getU8Encoder()]]),
+    getStructEncoder([['discriminator', getU8Encoder()]]),
     (value) => ({
       ...value,
       discriminator: BURN_WITHDRAWAL_TICKET_DISCRIMINATOR,
-    }),
+    })
   );
 }
 
 export function getBurnWithdrawalTicketInstructionDataDecoder(): Decoder<BurnWithdrawalTicketInstructionData> {
-  return getStructDecoder([["discriminator", getU8Decoder()]]);
+  return getStructDecoder([['discriminator', getU8Decoder()]]);
 }
 
 export function getBurnWithdrawalTicketInstructionDataCodec(): Codec<
@@ -132,7 +132,7 @@ export function getBurnWithdrawalTicketInstructionDataCodec(): Codec<
 > {
   return combineCodec(
     getBurnWithdrawalTicketInstructionDataEncoder(),
-    getBurnWithdrawalTicketInstructionDataDecoder(),
+    getBurnWithdrawalTicketInstructionDataDecoder()
   );
 }
 
@@ -181,6 +181,7 @@ export function getBurnWithdrawalTicketInstruction<
   TAccountTokenProgram extends string,
   TAccountSystemProgram extends string,
   TAccountBurnSigner extends string,
+  TProgramAddress extends Address = typeof JITO_VAULT_PROGRAM_ADDRESS,
 >(
   input: BurnWithdrawalTicketInput<
     TAccountConfig,
@@ -197,8 +198,9 @@ export function getBurnWithdrawalTicketInstruction<
     TAccountSystemProgram,
     TAccountBurnSigner
   >,
+  config?: { programAddress?: TProgramAddress }
 ): BurnWithdrawalTicketInstruction<
-  typeof JITO_VAULT_PROGRAM_ADDRESS,
+  TProgramAddress,
   TAccountConfig,
   TAccountVault,
   TAccountVaultTokenAccount,
@@ -214,7 +216,7 @@ export function getBurnWithdrawalTicketInstruction<
   TAccountBurnSigner
 > {
   // Program address.
-  const programAddress = JITO_VAULT_PROGRAM_ADDRESS;
+  const programAddress = config?.programAddress ?? JITO_VAULT_PROGRAM_ADDRESS;
 
   // Original accounts.
   const originalAccounts = {
@@ -258,14 +260,14 @@ export function getBurnWithdrawalTicketInstruction<
   // Resolve default values.
   if (!accounts.tokenProgram.value) {
     accounts.tokenProgram.value =
-      "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA" as Address<"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA">;
+      'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA' as Address<'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'>;
   }
   if (!accounts.systemProgram.value) {
     accounts.systemProgram.value =
-      "11111111111111111111111111111111" as Address<"11111111111111111111111111111111">;
+      '11111111111111111111111111111111' as Address<'11111111111111111111111111111111'>;
   }
 
-  const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
+  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
   const instruction = {
     accounts: [
       getAccountMeta(accounts.config),
@@ -285,7 +287,7 @@ export function getBurnWithdrawalTicketInstruction<
     programAddress,
     data: getBurnWithdrawalTicketInstructionDataEncoder().encode({}),
   } as BurnWithdrawalTicketInstruction<
-    typeof JITO_VAULT_PROGRAM_ADDRESS,
+    TProgramAddress,
     TAccountConfig,
     TAccountVault,
     TAccountVaultTokenAccount,
@@ -334,11 +336,11 @@ export function parseBurnWithdrawalTicketInstruction<
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>,
+    IInstructionWithData<Uint8Array>
 ): ParsedBurnWithdrawalTicketInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 13) {
     // TODO: Coded error.
-    throw new Error("Not enough accounts");
+    throw new Error('Not enough accounts');
   }
   let accountIndex = 0;
   const getNextAccount = () => {
@@ -370,7 +372,7 @@ export function parseBurnWithdrawalTicketInstruction<
       burnSigner: getNextOptionalAccount(),
     },
     data: getBurnWithdrawalTicketInstructionDataDecoder().decode(
-      instruction.data,
+      instruction.data
     ),
   };
 }

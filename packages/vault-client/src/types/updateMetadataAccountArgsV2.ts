@@ -22,13 +22,13 @@ import {
   type Encoder,
   type Option,
   type OptionOrNullable,
-} from "@solana/web3.js";
+} from '@solana/web3.js';
 import {
   getDataV2Decoder,
   getDataV2Encoder,
   type DataV2,
   type DataV2Args,
-} from ".";
+} from '.';
 
 export type UpdateMetadataAccountArgsV2 = {
   data: Option<DataV2>;
@@ -46,19 +46,19 @@ export type UpdateMetadataAccountArgsV2Args = {
 
 export function getUpdateMetadataAccountArgsV2Encoder(): Encoder<UpdateMetadataAccountArgsV2Args> {
   return getStructEncoder([
-    ["data", getOptionEncoder(getDataV2Encoder())],
-    ["updateAuthority", getOptionEncoder(getAddressEncoder())],
-    ["primarySaleHappened", getOptionEncoder(getBooleanEncoder())],
-    ["isMutable", getOptionEncoder(getBooleanEncoder())],
+    ['data', getOptionEncoder(getDataV2Encoder())],
+    ['updateAuthority', getOptionEncoder(getAddressEncoder())],
+    ['primarySaleHappened', getOptionEncoder(getBooleanEncoder())],
+    ['isMutable', getOptionEncoder(getBooleanEncoder())],
   ]);
 }
 
 export function getUpdateMetadataAccountArgsV2Decoder(): Decoder<UpdateMetadataAccountArgsV2> {
   return getStructDecoder([
-    ["data", getOptionDecoder(getDataV2Decoder())],
-    ["updateAuthority", getOptionDecoder(getAddressDecoder())],
-    ["primarySaleHappened", getOptionDecoder(getBooleanDecoder())],
-    ["isMutable", getOptionDecoder(getBooleanDecoder())],
+    ['data', getOptionDecoder(getDataV2Decoder())],
+    ['updateAuthority', getOptionDecoder(getAddressDecoder())],
+    ['primarySaleHappened', getOptionDecoder(getBooleanDecoder())],
+    ['isMutable', getOptionDecoder(getBooleanDecoder())],
   ]);
 }
 
@@ -68,6 +68,6 @@ export function getUpdateMetadataAccountArgsV2Codec(): Codec<
 > {
   return combineCodec(
     getUpdateMetadataAccountArgsV2Encoder(),
-    getUpdateMetadataAccountArgsV2Decoder(),
+    getUpdateMetadataAccountArgsV2Decoder()
   );
 }

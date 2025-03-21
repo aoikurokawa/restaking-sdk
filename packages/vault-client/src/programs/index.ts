@@ -6,4 +6,4 @@
  * @see https://github.com/kinobi-so/kinobi
  */
 
-export * from "./jitoVault";
+export * from './jitoVault';
