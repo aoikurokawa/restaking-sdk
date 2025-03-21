@@ -31,9 +31,9 @@ import {
   type TransactionSigner,
   type WritableAccount,
   type WritableSignerAccount,
-} from '@solana/web3.js';
-import { JITO_VAULT_PROGRAM_ADDRESS } from '../programs';
-import { getAccountMetaFactory, type ResolvedAccount } from '../shared';
+} from "@solana/web3.js";
+import { JITO_VAULT_PROGRAM_ADDRESS } from "../programs";
+import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
 
 export const INITIALIZE_VAULT_DISCRIMINATOR = 1;
 
@@ -57,10 +57,10 @@ export type InitializeVaultInstruction<
   TAccountBase extends string | IAccountMeta<string> = string,
   TAccountSystemProgram extends
     | string
-    | IAccountMeta<string> = '11111111111111111111111111111111',
+    | IAccountMeta<string> = "11111111111111111111111111111111",
   TAccountTokenProgram extends
     | string
-    | IAccountMeta<string> = 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
+    | IAccountMeta<string> = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
   TAccountAssociatedTokenProgram extends string | IAccountMeta<string> = string,
   TRemainingAccounts extends readonly IAccountMeta<string>[] = [],
 > = IInstruction<TProgram> &
@@ -132,25 +132,25 @@ export type InitializeVaultInstructionDataArgs = {
 export function getInitializeVaultInstructionDataEncoder(): Encoder<InitializeVaultInstructionDataArgs> {
   return transformEncoder(
     getStructEncoder([
-      ['discriminator', getU8Encoder()],
-      ['depositFeeBps', getU16Encoder()],
-      ['withdrawalFeeBps', getU16Encoder()],
-      ['rewardFeeBps', getU16Encoder()],
-      ['decimals', getU8Encoder()],
-      ['initializeTokenAmount', getU64Encoder()],
+      ["discriminator", getU8Encoder()],
+      ["depositFeeBps", getU16Encoder()],
+      ["withdrawalFeeBps", getU16Encoder()],
+      ["rewardFeeBps", getU16Encoder()],
+      ["decimals", getU8Encoder()],
+      ["initializeTokenAmount", getU64Encoder()],
     ]),
-    (value) => ({ ...value, discriminator: INITIALIZE_VAULT_DISCRIMINATOR })
+    (value) => ({ ...value, discriminator: INITIALIZE_VAULT_DISCRIMINATOR }),
   );
 }
 
 export function getInitializeVaultInstructionDataDecoder(): Decoder<InitializeVaultInstructionData> {
   return getStructDecoder([
-    ['discriminator', getU8Decoder()],
-    ['depositFeeBps', getU16Decoder()],
-    ['withdrawalFeeBps', getU16Decoder()],
-    ['rewardFeeBps', getU16Decoder()],
-    ['decimals', getU8Decoder()],
-    ['initializeTokenAmount', getU64Decoder()],
+    ["discriminator", getU8Decoder()],
+    ["depositFeeBps", getU16Decoder()],
+    ["withdrawalFeeBps", getU16Decoder()],
+    ["rewardFeeBps", getU16Decoder()],
+    ["decimals", getU8Decoder()],
+    ["initializeTokenAmount", getU64Decoder()],
   ]);
 }
 
@@ -160,7 +160,7 @@ export function getInitializeVaultInstructionDataCodec(): Codec<
 > {
   return combineCodec(
     getInitializeVaultInstructionDataEncoder(),
-    getInitializeVaultInstructionDataDecoder()
+    getInitializeVaultInstructionDataDecoder(),
   );
 }
 
@@ -192,11 +192,11 @@ export type InitializeVaultInput<
   systemProgram?: Address<TAccountSystemProgram>;
   tokenProgram?: Address<TAccountTokenProgram>;
   associatedTokenProgram: Address<TAccountAssociatedTokenProgram>;
-  depositFeeBps: InitializeVaultInstructionDataArgs['depositFeeBps'];
-  withdrawalFeeBps: InitializeVaultInstructionDataArgs['withdrawalFeeBps'];
-  rewardFeeBps: InitializeVaultInstructionDataArgs['rewardFeeBps'];
-  decimals: InitializeVaultInstructionDataArgs['decimals'];
-  initializeTokenAmount: InitializeVaultInstructionDataArgs['initializeTokenAmount'];
+  depositFeeBps: InitializeVaultInstructionDataArgs["depositFeeBps"];
+  withdrawalFeeBps: InitializeVaultInstructionDataArgs["withdrawalFeeBps"];
+  rewardFeeBps: InitializeVaultInstructionDataArgs["rewardFeeBps"];
+  decimals: InitializeVaultInstructionDataArgs["decimals"];
+  initializeTokenAmount: InitializeVaultInstructionDataArgs["initializeTokenAmount"];
 };
 
 export function getInitializeVaultInstruction<
@@ -230,7 +230,7 @@ export function getInitializeVaultInstruction<
     TAccountTokenProgram,
     TAccountAssociatedTokenProgram
   >,
-  config?: { programAddress?: TProgramAddress }
+  config?: { programAddress?: TProgramAddress },
 ): InitializeVaultInstruction<
   TProgramAddress,
   TAccountConfig,
@@ -289,14 +289,14 @@ export function getInitializeVaultInstruction<
   // Resolve default values.
   if (!accounts.systemProgram.value) {
     accounts.systemProgram.value =
-      '11111111111111111111111111111111' as Address<'11111111111111111111111111111111'>;
+      "11111111111111111111111111111111" as Address<"11111111111111111111111111111111">;
   }
   if (!accounts.tokenProgram.value) {
     accounts.tokenProgram.value =
-      'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA' as Address<'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'>;
+      "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA" as Address<"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA">;
   }
 
-  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
+  const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
   const instruction = {
     accounts: [
       getAccountMeta(accounts.config),
@@ -315,7 +315,7 @@ export function getInitializeVaultInstruction<
     ],
     programAddress,
     data: getInitializeVaultInstructionDataEncoder().encode(
-      args as InitializeVaultInstructionDataArgs
+      args as InitializeVaultInstructionDataArgs,
     ),
   } as InitializeVaultInstruction<
     TProgramAddress,
@@ -366,11 +366,11 @@ export function parseInitializeVaultInstruction<
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>
+    IInstructionWithData<Uint8Array>,
 ): ParsedInitializeVaultInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 13) {
     // TODO: Coded error.
-    throw new Error('Not enough accounts');
+    throw new Error("Not enough accounts");
   }
   let accountIndex = 0;
   const getNextAccount = () => {

@@ -23,9 +23,9 @@ import {
   type IInstructionWithData,
   type ReadonlyAccount,
   type WritableAccount,
-} from '@solana/web3.js';
-import { JITO_VAULT_PROGRAM_ADDRESS } from '../programs';
-import { getAccountMetaFactory, type ResolvedAccount } from '../shared';
+} from "@solana/web3.js";
+import { JITO_VAULT_PROGRAM_ADDRESS } from "../programs";
+import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
 
 export const CRANK_VAULT_UPDATE_STATE_TRACKER_DISCRIMINATOR = 27;
 
@@ -76,16 +76,16 @@ export type CrankVaultUpdateStateTrackerInstructionDataArgs = {};
 
 export function getCrankVaultUpdateStateTrackerInstructionDataEncoder(): Encoder<CrankVaultUpdateStateTrackerInstructionDataArgs> {
   return transformEncoder(
-    getStructEncoder([['discriminator', getU8Encoder()]]),
+    getStructEncoder([["discriminator", getU8Encoder()]]),
     (value) => ({
       ...value,
       discriminator: CRANK_VAULT_UPDATE_STATE_TRACKER_DISCRIMINATOR,
-    })
+    }),
   );
 }
 
 export function getCrankVaultUpdateStateTrackerInstructionDataDecoder(): Decoder<CrankVaultUpdateStateTrackerInstructionData> {
-  return getStructDecoder([['discriminator', getU8Decoder()]]);
+  return getStructDecoder([["discriminator", getU8Decoder()]]);
 }
 
 export function getCrankVaultUpdateStateTrackerInstructionDataCodec(): Codec<
@@ -94,7 +94,7 @@ export function getCrankVaultUpdateStateTrackerInstructionDataCodec(): Codec<
 > {
   return combineCodec(
     getCrankVaultUpdateStateTrackerInstructionDataEncoder(),
-    getCrankVaultUpdateStateTrackerInstructionDataDecoder()
+    getCrankVaultUpdateStateTrackerInstructionDataDecoder(),
   );
 }
 
@@ -127,7 +127,7 @@ export function getCrankVaultUpdateStateTrackerInstruction<
     TAccountVaultOperatorDelegation,
     TAccountVaultUpdateStateTracker
   >,
-  config?: { programAddress?: TProgramAddress }
+  config?: { programAddress?: TProgramAddress },
 ): CrankVaultUpdateStateTrackerInstruction<
   TProgramAddress,
   TAccountConfig,
@@ -158,7 +158,7 @@ export function getCrankVaultUpdateStateTrackerInstruction<
     ResolvedAccount
   >;
 
-  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
+  const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
   const instruction = {
     accounts: [
       getAccountMeta(accounts.config),
@@ -202,11 +202,11 @@ export function parseCrankVaultUpdateStateTrackerInstruction<
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>
+    IInstructionWithData<Uint8Array>,
 ): ParsedCrankVaultUpdateStateTrackerInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 5) {
     // TODO: Coded error.
-    throw new Error('Not enough accounts');
+    throw new Error("Not enough accounts");
   }
   let accountIndex = 0;
   const getNextAccount = () => {
@@ -224,7 +224,7 @@ export function parseCrankVaultUpdateStateTrackerInstruction<
       vaultUpdateStateTracker: getNextAccount(),
     },
     data: getCrankVaultUpdateStateTrackerInstructionDataDecoder().decode(
-      instruction.data
+      instruction.data,
     ),
   };
 }

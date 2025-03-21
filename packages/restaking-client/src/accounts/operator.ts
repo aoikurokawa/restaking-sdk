@@ -35,7 +35,7 @@ import {
   type FetchAccountsConfig,
   type MaybeAccount,
   type MaybeEncodedAccount,
-} from '@solana/web3.js';
+} from "@solana/web3.js";
 
 export type Operator = {
   discriminator: bigint;
@@ -73,39 +73,39 @@ export type OperatorArgs = {
 
 export function getOperatorEncoder(): Encoder<OperatorArgs> {
   return getStructEncoder([
-    ['discriminator', getU64Encoder()],
-    ['base', getAddressEncoder()],
-    ['admin', getAddressEncoder()],
-    ['ncnAdmin', getAddressEncoder()],
-    ['vaultAdmin', getAddressEncoder()],
-    ['delegateAdmin', getAddressEncoder()],
-    ['metadataAdmin', getAddressEncoder()],
-    ['voter', getAddressEncoder()],
-    ['index', getU64Encoder()],
-    ['ncnCount', getU64Encoder()],
-    ['vaultCount', getU64Encoder()],
-    ['operatorFeeBps', getU16Encoder()],
-    ['bump', getU8Encoder()],
-    ['reservedSpace', getArrayEncoder(getU8Encoder(), { size: 261 })],
+    ["discriminator", getU64Encoder()],
+    ["base", getAddressEncoder()],
+    ["admin", getAddressEncoder()],
+    ["ncnAdmin", getAddressEncoder()],
+    ["vaultAdmin", getAddressEncoder()],
+    ["delegateAdmin", getAddressEncoder()],
+    ["metadataAdmin", getAddressEncoder()],
+    ["voter", getAddressEncoder()],
+    ["index", getU64Encoder()],
+    ["ncnCount", getU64Encoder()],
+    ["vaultCount", getU64Encoder()],
+    ["operatorFeeBps", getU16Encoder()],
+    ["bump", getU8Encoder()],
+    ["reservedSpace", getArrayEncoder(getU8Encoder(), { size: 261 })],
   ]);
 }
 
 export function getOperatorDecoder(): Decoder<Operator> {
   return getStructDecoder([
-    ['discriminator', getU64Decoder()],
-    ['base', getAddressDecoder()],
-    ['admin', getAddressDecoder()],
-    ['ncnAdmin', getAddressDecoder()],
-    ['vaultAdmin', getAddressDecoder()],
-    ['delegateAdmin', getAddressDecoder()],
-    ['metadataAdmin', getAddressDecoder()],
-    ['voter', getAddressDecoder()],
-    ['index', getU64Decoder()],
-    ['ncnCount', getU64Decoder()],
-    ['vaultCount', getU64Decoder()],
-    ['operatorFeeBps', getU16Decoder()],
-    ['bump', getU8Decoder()],
-    ['reservedSpace', getArrayDecoder(getU8Decoder(), { size: 261 })],
+    ["discriminator", getU64Decoder()],
+    ["base", getAddressDecoder()],
+    ["admin", getAddressDecoder()],
+    ["ncnAdmin", getAddressDecoder()],
+    ["vaultAdmin", getAddressDecoder()],
+    ["delegateAdmin", getAddressDecoder()],
+    ["metadataAdmin", getAddressDecoder()],
+    ["voter", getAddressDecoder()],
+    ["index", getU64Decoder()],
+    ["ncnCount", getU64Decoder()],
+    ["vaultCount", getU64Decoder()],
+    ["operatorFeeBps", getU16Decoder()],
+    ["bump", getU8Decoder()],
+    ["reservedSpace", getArrayDecoder(getU8Decoder(), { size: 261 })],
   ]);
 }
 
@@ -114,24 +114,24 @@ export function getOperatorCodec(): Codec<OperatorArgs, Operator> {
 }
 
 export function decodeOperator<TAddress extends string = string>(
-  encodedAccount: EncodedAccount<TAddress>
+  encodedAccount: EncodedAccount<TAddress>,
 ): Account<Operator, TAddress>;
 export function decodeOperator<TAddress extends string = string>(
-  encodedAccount: MaybeEncodedAccount<TAddress>
+  encodedAccount: MaybeEncodedAccount<TAddress>,
 ): MaybeAccount<Operator, TAddress>;
 export function decodeOperator<TAddress extends string = string>(
-  encodedAccount: EncodedAccount<TAddress> | MaybeEncodedAccount<TAddress>
+  encodedAccount: EncodedAccount<TAddress> | MaybeEncodedAccount<TAddress>,
 ): Account<Operator, TAddress> | MaybeAccount<Operator, TAddress> {
   return decodeAccount(
     encodedAccount as MaybeEncodedAccount<TAddress>,
-    getOperatorDecoder()
+    getOperatorDecoder(),
   );
 }
 
 export async function fetchOperator<TAddress extends string = string>(
   rpc: Parameters<typeof fetchEncodedAccount>[0],
   address: Address<TAddress>,
-  config?: FetchAccountConfig
+  config?: FetchAccountConfig,
 ): Promise<Account<Operator, TAddress>> {
   const maybeAccount = await fetchMaybeOperator(rpc, address, config);
   assertAccountExists(maybeAccount);
@@ -141,7 +141,7 @@ export async function fetchOperator<TAddress extends string = string>(
 export async function fetchMaybeOperator<TAddress extends string = string>(
   rpc: Parameters<typeof fetchEncodedAccount>[0],
   address: Address<TAddress>,
-  config?: FetchAccountConfig
+  config?: FetchAccountConfig,
 ): Promise<MaybeAccount<Operator, TAddress>> {
   const maybeAccount = await fetchEncodedAccount(rpc, address, config);
   return decodeOperator(maybeAccount);
@@ -150,7 +150,7 @@ export async function fetchMaybeOperator<TAddress extends string = string>(
 export async function fetchAllOperator(
   rpc: Parameters<typeof fetchEncodedAccounts>[0],
   addresses: Array<Address>,
-  config?: FetchAccountsConfig
+  config?: FetchAccountsConfig,
 ): Promise<Account<Operator>[]> {
   const maybeAccounts = await fetchAllMaybeOperator(rpc, addresses, config);
   assertAccountsExist(maybeAccounts);
@@ -160,7 +160,7 @@ export async function fetchAllOperator(
 export async function fetchAllMaybeOperator(
   rpc: Parameters<typeof fetchEncodedAccounts>[0],
   addresses: Array<Address>,
-  config?: FetchAccountsConfig
+  config?: FetchAccountsConfig,
 ): Promise<MaybeAccount<Operator>[]> {
   const maybeAccounts = await fetchEncodedAccounts(rpc, addresses, config);
   return maybeAccounts.map((maybeAccount) => decodeOperator(maybeAccount));

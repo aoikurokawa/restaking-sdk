@@ -33,7 +33,7 @@ import {
   type FetchAccountsConfig,
   type MaybeAccount,
   type MaybeEncodedAccount,
-} from '@solana/web3.js';
+} from "@solana/web3.js";
 
 export type VaultStakerWithdrawalTicket = {
   discriminator: bigint;
@@ -59,27 +59,27 @@ export type VaultStakerWithdrawalTicketArgs = {
 
 export function getVaultStakerWithdrawalTicketEncoder(): Encoder<VaultStakerWithdrawalTicketArgs> {
   return getStructEncoder([
-    ['discriminator', getU64Encoder()],
-    ['vault', getAddressEncoder()],
-    ['staker', getAddressEncoder()],
-    ['base', getAddressEncoder()],
-    ['vrtAmount', getU64Encoder()],
-    ['slotUnstaked', getU64Encoder()],
-    ['bump', getU8Encoder()],
-    ['reserved', getArrayEncoder(getU8Encoder(), { size: 263 })],
+    ["discriminator", getU64Encoder()],
+    ["vault", getAddressEncoder()],
+    ["staker", getAddressEncoder()],
+    ["base", getAddressEncoder()],
+    ["vrtAmount", getU64Encoder()],
+    ["slotUnstaked", getU64Encoder()],
+    ["bump", getU8Encoder()],
+    ["reserved", getArrayEncoder(getU8Encoder(), { size: 263 })],
   ]);
 }
 
 export function getVaultStakerWithdrawalTicketDecoder(): Decoder<VaultStakerWithdrawalTicket> {
   return getStructDecoder([
-    ['discriminator', getU64Decoder()],
-    ['vault', getAddressDecoder()],
-    ['staker', getAddressDecoder()],
-    ['base', getAddressDecoder()],
-    ['vrtAmount', getU64Decoder()],
-    ['slotUnstaked', getU64Decoder()],
-    ['bump', getU8Decoder()],
-    ['reserved', getArrayDecoder(getU8Decoder(), { size: 263 })],
+    ["discriminator", getU64Decoder()],
+    ["vault", getAddressDecoder()],
+    ["staker", getAddressDecoder()],
+    ["base", getAddressDecoder()],
+    ["vrtAmount", getU64Decoder()],
+    ["slotUnstaked", getU64Decoder()],
+    ["bump", getU8Decoder()],
+    ["reserved", getArrayDecoder(getU8Decoder(), { size: 263 })],
   ]);
 }
 
@@ -89,30 +89,30 @@ export function getVaultStakerWithdrawalTicketCodec(): Codec<
 > {
   return combineCodec(
     getVaultStakerWithdrawalTicketEncoder(),
-    getVaultStakerWithdrawalTicketDecoder()
+    getVaultStakerWithdrawalTicketDecoder(),
   );
 }
 
 export function decodeVaultStakerWithdrawalTicket<
   TAddress extends string = string,
 >(
-  encodedAccount: EncodedAccount<TAddress>
+  encodedAccount: EncodedAccount<TAddress>,
 ): Account<VaultStakerWithdrawalTicket, TAddress>;
 export function decodeVaultStakerWithdrawalTicket<
   TAddress extends string = string,
 >(
-  encodedAccount: MaybeEncodedAccount<TAddress>
+  encodedAccount: MaybeEncodedAccount<TAddress>,
 ): MaybeAccount<VaultStakerWithdrawalTicket, TAddress>;
 export function decodeVaultStakerWithdrawalTicket<
   TAddress extends string = string,
 >(
-  encodedAccount: EncodedAccount<TAddress> | MaybeEncodedAccount<TAddress>
+  encodedAccount: EncodedAccount<TAddress> | MaybeEncodedAccount<TAddress>,
 ):
   | Account<VaultStakerWithdrawalTicket, TAddress>
   | MaybeAccount<VaultStakerWithdrawalTicket, TAddress> {
   return decodeAccount(
     encodedAccount as MaybeEncodedAccount<TAddress>,
-    getVaultStakerWithdrawalTicketDecoder()
+    getVaultStakerWithdrawalTicketDecoder(),
   );
 }
 
@@ -121,12 +121,12 @@ export async function fetchVaultStakerWithdrawalTicket<
 >(
   rpc: Parameters<typeof fetchEncodedAccount>[0],
   address: Address<TAddress>,
-  config?: FetchAccountConfig
+  config?: FetchAccountConfig,
 ): Promise<Account<VaultStakerWithdrawalTicket, TAddress>> {
   const maybeAccount = await fetchMaybeVaultStakerWithdrawalTicket(
     rpc,
     address,
-    config
+    config,
   );
   assertAccountExists(maybeAccount);
   return maybeAccount;
@@ -137,7 +137,7 @@ export async function fetchMaybeVaultStakerWithdrawalTicket<
 >(
   rpc: Parameters<typeof fetchEncodedAccount>[0],
   address: Address<TAddress>,
-  config?: FetchAccountConfig
+  config?: FetchAccountConfig,
 ): Promise<MaybeAccount<VaultStakerWithdrawalTicket, TAddress>> {
   const maybeAccount = await fetchEncodedAccount(rpc, address, config);
   return decodeVaultStakerWithdrawalTicket(maybeAccount);
@@ -146,12 +146,12 @@ export async function fetchMaybeVaultStakerWithdrawalTicket<
 export async function fetchAllVaultStakerWithdrawalTicket(
   rpc: Parameters<typeof fetchEncodedAccounts>[0],
   addresses: Array<Address>,
-  config?: FetchAccountsConfig
+  config?: FetchAccountsConfig,
 ): Promise<Account<VaultStakerWithdrawalTicket>[]> {
   const maybeAccounts = await fetchAllMaybeVaultStakerWithdrawalTicket(
     rpc,
     addresses,
-    config
+    config,
   );
   assertAccountsExist(maybeAccounts);
   return maybeAccounts;
@@ -160,10 +160,10 @@ export async function fetchAllVaultStakerWithdrawalTicket(
 export async function fetchAllMaybeVaultStakerWithdrawalTicket(
   rpc: Parameters<typeof fetchEncodedAccounts>[0],
   addresses: Array<Address>,
-  config?: FetchAccountsConfig
+  config?: FetchAccountsConfig,
 ): Promise<MaybeAccount<VaultStakerWithdrawalTicket>[]> {
   const maybeAccounts = await fetchEncodedAccounts(rpc, addresses, config);
   return maybeAccounts.map((maybeAccount) =>
-    decodeVaultStakerWithdrawalTicket(maybeAccount)
+    decodeVaultStakerWithdrawalTicket(maybeAccount),
   );
 }

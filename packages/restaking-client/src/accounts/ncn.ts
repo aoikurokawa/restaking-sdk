@@ -33,7 +33,7 @@ import {
   type FetchAccountsConfig,
   type MaybeAccount,
   type MaybeEncodedAccount,
-} from '@solana/web3.js';
+} from "@solana/web3.js";
 
 export type Ncn = {
   discriminator: bigint;
@@ -75,43 +75,43 @@ export type NcnArgs = {
 
 export function getNcnEncoder(): Encoder<NcnArgs> {
   return getStructEncoder([
-    ['discriminator', getU64Encoder()],
-    ['base', getAddressEncoder()],
-    ['admin', getAddressEncoder()],
-    ['operatorAdmin', getAddressEncoder()],
-    ['vaultAdmin', getAddressEncoder()],
-    ['slasherAdmin', getAddressEncoder()],
-    ['delegateAdmin', getAddressEncoder()],
-    ['metadataAdmin', getAddressEncoder()],
-    ['weightTableAdmin', getAddressEncoder()],
-    ['ncnProgramAdmin', getAddressEncoder()],
-    ['index', getU64Encoder()],
-    ['operatorCount', getU64Encoder()],
-    ['vaultCount', getU64Encoder()],
-    ['slasherCount', getU64Encoder()],
-    ['bump', getU8Encoder()],
-    ['reserved', getArrayEncoder(getU8Encoder(), { size: 263 })],
+    ["discriminator", getU64Encoder()],
+    ["base", getAddressEncoder()],
+    ["admin", getAddressEncoder()],
+    ["operatorAdmin", getAddressEncoder()],
+    ["vaultAdmin", getAddressEncoder()],
+    ["slasherAdmin", getAddressEncoder()],
+    ["delegateAdmin", getAddressEncoder()],
+    ["metadataAdmin", getAddressEncoder()],
+    ["weightTableAdmin", getAddressEncoder()],
+    ["ncnProgramAdmin", getAddressEncoder()],
+    ["index", getU64Encoder()],
+    ["operatorCount", getU64Encoder()],
+    ["vaultCount", getU64Encoder()],
+    ["slasherCount", getU64Encoder()],
+    ["bump", getU8Encoder()],
+    ["reserved", getArrayEncoder(getU8Encoder(), { size: 263 })],
   ]);
 }
 
 export function getNcnDecoder(): Decoder<Ncn> {
   return getStructDecoder([
-    ['discriminator', getU64Decoder()],
-    ['base', getAddressDecoder()],
-    ['admin', getAddressDecoder()],
-    ['operatorAdmin', getAddressDecoder()],
-    ['vaultAdmin', getAddressDecoder()],
-    ['slasherAdmin', getAddressDecoder()],
-    ['delegateAdmin', getAddressDecoder()],
-    ['metadataAdmin', getAddressDecoder()],
-    ['weightTableAdmin', getAddressDecoder()],
-    ['ncnProgramAdmin', getAddressDecoder()],
-    ['index', getU64Decoder()],
-    ['operatorCount', getU64Decoder()],
-    ['vaultCount', getU64Decoder()],
-    ['slasherCount', getU64Decoder()],
-    ['bump', getU8Decoder()],
-    ['reserved', getArrayDecoder(getU8Decoder(), { size: 263 })],
+    ["discriminator", getU64Decoder()],
+    ["base", getAddressDecoder()],
+    ["admin", getAddressDecoder()],
+    ["operatorAdmin", getAddressDecoder()],
+    ["vaultAdmin", getAddressDecoder()],
+    ["slasherAdmin", getAddressDecoder()],
+    ["delegateAdmin", getAddressDecoder()],
+    ["metadataAdmin", getAddressDecoder()],
+    ["weightTableAdmin", getAddressDecoder()],
+    ["ncnProgramAdmin", getAddressDecoder()],
+    ["index", getU64Decoder()],
+    ["operatorCount", getU64Decoder()],
+    ["vaultCount", getU64Decoder()],
+    ["slasherCount", getU64Decoder()],
+    ["bump", getU8Decoder()],
+    ["reserved", getArrayDecoder(getU8Decoder(), { size: 263 })],
   ]);
 }
 
@@ -120,24 +120,24 @@ export function getNcnCodec(): Codec<NcnArgs, Ncn> {
 }
 
 export function decodeNcn<TAddress extends string = string>(
-  encodedAccount: EncodedAccount<TAddress>
+  encodedAccount: EncodedAccount<TAddress>,
 ): Account<Ncn, TAddress>;
 export function decodeNcn<TAddress extends string = string>(
-  encodedAccount: MaybeEncodedAccount<TAddress>
+  encodedAccount: MaybeEncodedAccount<TAddress>,
 ): MaybeAccount<Ncn, TAddress>;
 export function decodeNcn<TAddress extends string = string>(
-  encodedAccount: EncodedAccount<TAddress> | MaybeEncodedAccount<TAddress>
+  encodedAccount: EncodedAccount<TAddress> | MaybeEncodedAccount<TAddress>,
 ): Account<Ncn, TAddress> | MaybeAccount<Ncn, TAddress> {
   return decodeAccount(
     encodedAccount as MaybeEncodedAccount<TAddress>,
-    getNcnDecoder()
+    getNcnDecoder(),
   );
 }
 
 export async function fetchNcn<TAddress extends string = string>(
   rpc: Parameters<typeof fetchEncodedAccount>[0],
   address: Address<TAddress>,
-  config?: FetchAccountConfig
+  config?: FetchAccountConfig,
 ): Promise<Account<Ncn, TAddress>> {
   const maybeAccount = await fetchMaybeNcn(rpc, address, config);
   assertAccountExists(maybeAccount);
@@ -147,7 +147,7 @@ export async function fetchNcn<TAddress extends string = string>(
 export async function fetchMaybeNcn<TAddress extends string = string>(
   rpc: Parameters<typeof fetchEncodedAccount>[0],
   address: Address<TAddress>,
-  config?: FetchAccountConfig
+  config?: FetchAccountConfig,
 ): Promise<MaybeAccount<Ncn, TAddress>> {
   const maybeAccount = await fetchEncodedAccount(rpc, address, config);
   return decodeNcn(maybeAccount);
@@ -156,7 +156,7 @@ export async function fetchMaybeNcn<TAddress extends string = string>(
 export async function fetchAllNcn(
   rpc: Parameters<typeof fetchEncodedAccounts>[0],
   addresses: Array<Address>,
-  config?: FetchAccountsConfig
+  config?: FetchAccountsConfig,
 ): Promise<Account<Ncn>[]> {
   const maybeAccounts = await fetchAllMaybeNcn(rpc, addresses, config);
   assertAccountsExist(maybeAccounts);
@@ -166,7 +166,7 @@ export async function fetchAllNcn(
 export async function fetchAllMaybeNcn(
   rpc: Parameters<typeof fetchEncodedAccounts>[0],
   addresses: Array<Address>,
-  config?: FetchAccountsConfig
+  config?: FetchAccountsConfig,
 ): Promise<MaybeAccount<Ncn>[]> {
   const maybeAccounts = await fetchEncodedAccounts(rpc, addresses, config);
   return maybeAccounts.map((maybeAccount) => decodeNcn(maybeAccount));

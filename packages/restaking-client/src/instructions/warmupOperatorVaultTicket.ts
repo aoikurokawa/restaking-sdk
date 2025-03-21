@@ -26,9 +26,9 @@ import {
   type ReadonlySignerAccount,
   type TransactionSigner,
   type WritableAccount,
-} from '@solana/web3.js';
-import { JITO_RESTAKING_PROGRAM_ADDRESS } from '../programs';
-import { getAccountMetaFactory, type ResolvedAccount } from '../shared';
+} from "@solana/web3.js";
+import { JITO_RESTAKING_PROGRAM_ADDRESS } from "../programs";
+import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
 
 export const WARMUP_OPERATOR_VAULT_TICKET_DISCRIMINATOR = 15;
 
@@ -76,16 +76,16 @@ export type WarmupOperatorVaultTicketInstructionDataArgs = {};
 
 export function getWarmupOperatorVaultTicketInstructionDataEncoder(): Encoder<WarmupOperatorVaultTicketInstructionDataArgs> {
   return transformEncoder(
-    getStructEncoder([['discriminator', getU8Encoder()]]),
+    getStructEncoder([["discriminator", getU8Encoder()]]),
     (value) => ({
       ...value,
       discriminator: WARMUP_OPERATOR_VAULT_TICKET_DISCRIMINATOR,
-    })
+    }),
   );
 }
 
 export function getWarmupOperatorVaultTicketInstructionDataDecoder(): Decoder<WarmupOperatorVaultTicketInstructionData> {
-  return getStructDecoder([['discriminator', getU8Decoder()]]);
+  return getStructDecoder([["discriminator", getU8Decoder()]]);
 }
 
 export function getWarmupOperatorVaultTicketInstructionDataCodec(): Codec<
@@ -94,7 +94,7 @@ export function getWarmupOperatorVaultTicketInstructionDataCodec(): Codec<
 > {
   return combineCodec(
     getWarmupOperatorVaultTicketInstructionDataEncoder(),
-    getWarmupOperatorVaultTicketInstructionDataDecoder()
+    getWarmupOperatorVaultTicketInstructionDataDecoder(),
   );
 }
 
@@ -127,7 +127,7 @@ export function getWarmupOperatorVaultTicketInstruction<
     TAccountOperatorVaultTicket,
     TAccountAdmin
   >,
-  config?: { programAddress?: TProgramAddress }
+  config?: { programAddress?: TProgramAddress },
 ): WarmupOperatorVaultTicketInstruction<
   TProgramAddress,
   TAccountConfig,
@@ -156,7 +156,7 @@ export function getWarmupOperatorVaultTicketInstruction<
     ResolvedAccount
   >;
 
-  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
+  const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
   const instruction = {
     accounts: [
       getAccountMeta(accounts.config),
@@ -200,11 +200,11 @@ export function parseWarmupOperatorVaultTicketInstruction<
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>
+    IInstructionWithData<Uint8Array>,
 ): ParsedWarmupOperatorVaultTicketInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 5) {
     // TODO: Coded error.
-    throw new Error('Not enough accounts');
+    throw new Error("Not enough accounts");
   }
   let accountIndex = 0;
   const getNextAccount = () => {
@@ -222,7 +222,7 @@ export function parseWarmupOperatorVaultTicketInstruction<
       admin: getNextAccount(),
     },
     data: getWarmupOperatorVaultTicketInstructionDataDecoder().decode(
-      instruction.data
+      instruction.data,
     ),
   };
 }

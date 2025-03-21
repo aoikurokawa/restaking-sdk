@@ -21,8 +21,8 @@ import {
   type IInstruction,
   type IInstructionWithAccounts,
   type IInstructionWithData,
-} from '@solana/web3.js';
-import { JITO_VAULT_PROGRAM_ADDRESS } from '../programs';
+} from "@solana/web3.js";
+import { JITO_VAULT_PROGRAM_ADDRESS } from "../programs";
 
 export const INITIALIZE_VAULT_WITH_MINT_DISCRIMINATOR = 2;
 
@@ -43,16 +43,16 @@ export type InitializeVaultWithMintInstructionDataArgs = {};
 
 export function getInitializeVaultWithMintInstructionDataEncoder(): Encoder<InitializeVaultWithMintInstructionDataArgs> {
   return transformEncoder(
-    getStructEncoder([['discriminator', getU8Encoder()]]),
+    getStructEncoder([["discriminator", getU8Encoder()]]),
     (value) => ({
       ...value,
       discriminator: INITIALIZE_VAULT_WITH_MINT_DISCRIMINATOR,
-    })
+    }),
   );
 }
 
 export function getInitializeVaultWithMintInstructionDataDecoder(): Decoder<InitializeVaultWithMintInstructionData> {
-  return getStructDecoder([['discriminator', getU8Decoder()]]);
+  return getStructDecoder([["discriminator", getU8Decoder()]]);
 }
 
 export function getInitializeVaultWithMintInstructionDataCodec(): Codec<
@@ -61,7 +61,7 @@ export function getInitializeVaultWithMintInstructionDataCodec(): Codec<
 > {
   return combineCodec(
     getInitializeVaultWithMintInstructionDataEncoder(),
-    getInitializeVaultWithMintInstructionDataDecoder()
+    getInitializeVaultWithMintInstructionDataDecoder(),
   );
 }
 
@@ -71,7 +71,7 @@ export function getInitializeVaultWithMintInstruction<
   TProgramAddress extends Address = typeof JITO_VAULT_PROGRAM_ADDRESS,
 >(
   input: InitializeVaultWithMintInput,
-  config?: { programAddress?: TProgramAddress }
+  config?: { programAddress?: TProgramAddress },
 ): InitializeVaultWithMintInstruction<TProgramAddress> {
   // Program address.
   const programAddress = config?.programAddress ?? JITO_VAULT_PROGRAM_ADDRESS;
@@ -94,12 +94,12 @@ export type ParsedInitializeVaultWithMintInstruction<
 export function parseInitializeVaultWithMintInstruction<
   TProgram extends string,
 >(
-  instruction: IInstruction<TProgram> & IInstructionWithData<Uint8Array>
+  instruction: IInstruction<TProgram> & IInstructionWithData<Uint8Array>,
 ): ParsedInitializeVaultWithMintInstruction<TProgram> {
   return {
     programAddress: instruction.programAddress,
     data: getInitializeVaultWithMintInstructionDataDecoder().decode(
-      instruction.data
+      instruction.data,
     ),
   };
 }

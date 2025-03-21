@@ -28,9 +28,9 @@ import {
   type ReadonlySignerAccount,
   type TransactionSigner,
   type WritableAccount,
-} from '@solana/web3.js';
-import { JITO_VAULT_PROGRAM_ADDRESS } from '../programs';
-import { getAccountMetaFactory, type ResolvedAccount } from '../shared';
+} from "@solana/web3.js";
+import { JITO_VAULT_PROGRAM_ADDRESS } from "../programs";
+import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
 
 export const SET_DEPOSIT_CAPACITY_DISCRIMINATOR = 15;
 
@@ -72,17 +72,20 @@ export type SetDepositCapacityInstructionDataArgs = { amount: number | bigint };
 export function getSetDepositCapacityInstructionDataEncoder(): Encoder<SetDepositCapacityInstructionDataArgs> {
   return transformEncoder(
     getStructEncoder([
-      ['discriminator', getU8Encoder()],
-      ['amount', getU64Encoder()],
+      ["discriminator", getU8Encoder()],
+      ["amount", getU64Encoder()],
     ]),
-    (value) => ({ ...value, discriminator: SET_DEPOSIT_CAPACITY_DISCRIMINATOR })
+    (value) => ({
+      ...value,
+      discriminator: SET_DEPOSIT_CAPACITY_DISCRIMINATOR,
+    }),
   );
 }
 
 export function getSetDepositCapacityInstructionDataDecoder(): Decoder<SetDepositCapacityInstructionData> {
   return getStructDecoder([
-    ['discriminator', getU8Decoder()],
-    ['amount', getU64Decoder()],
+    ["discriminator", getU8Decoder()],
+    ["amount", getU64Decoder()],
   ]);
 }
 
@@ -92,7 +95,7 @@ export function getSetDepositCapacityInstructionDataCodec(): Codec<
 > {
   return combineCodec(
     getSetDepositCapacityInstructionDataEncoder(),
-    getSetDepositCapacityInstructionDataDecoder()
+    getSetDepositCapacityInstructionDataDecoder(),
   );
 }
 
@@ -104,7 +107,7 @@ export type SetDepositCapacityInput<
   config: Address<TAccountConfig>;
   vault: Address<TAccountVault>;
   admin: TransactionSigner<TAccountAdmin>;
-  amount: SetDepositCapacityInstructionDataArgs['amount'];
+  amount: SetDepositCapacityInstructionDataArgs["amount"];
 };
 
 export function getSetDepositCapacityInstruction<
@@ -114,7 +117,7 @@ export function getSetDepositCapacityInstruction<
   TProgramAddress extends Address = typeof JITO_VAULT_PROGRAM_ADDRESS,
 >(
   input: SetDepositCapacityInput<TAccountConfig, TAccountVault, TAccountAdmin>,
-  config?: { programAddress?: TProgramAddress }
+  config?: { programAddress?: TProgramAddress },
 ): SetDepositCapacityInstruction<
   TProgramAddress,
   TAccountConfig,
@@ -138,7 +141,7 @@ export function getSetDepositCapacityInstruction<
   // Original args.
   const args = { ...input };
 
-  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
+  const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
   const instruction = {
     accounts: [
       getAccountMeta(accounts.config),
@@ -147,7 +150,7 @@ export function getSetDepositCapacityInstruction<
     ],
     programAddress,
     data: getSetDepositCapacityInstructionDataEncoder().encode(
-      args as SetDepositCapacityInstructionDataArgs
+      args as SetDepositCapacityInstructionDataArgs,
     ),
   } as SetDepositCapacityInstruction<
     TProgramAddress,
@@ -178,11 +181,11 @@ export function parseSetDepositCapacityInstruction<
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>
+    IInstructionWithData<Uint8Array>,
 ): ParsedSetDepositCapacityInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 3) {
     // TODO: Coded error.
-    throw new Error('Not enough accounts');
+    throw new Error("Not enough accounts");
   }
   let accountIndex = 0;
   const getNextAccount = () => {
@@ -198,7 +201,7 @@ export function parseSetDepositCapacityInstruction<
       admin: getNextAccount(),
     },
     data: getSetDepositCapacityInstructionDataDecoder().decode(
-      instruction.data
+      instruction.data,
     ),
   };
 }

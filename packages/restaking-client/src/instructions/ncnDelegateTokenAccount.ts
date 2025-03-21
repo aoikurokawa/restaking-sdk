@@ -26,9 +26,9 @@ import {
   type ReadonlySignerAccount,
   type TransactionSigner,
   type WritableAccount,
-} from '@solana/web3.js';
-import { JITO_RESTAKING_PROGRAM_ADDRESS } from '../programs';
-import { getAccountMetaFactory, type ResolvedAccount } from '../shared';
+} from "@solana/web3.js";
+import { JITO_RESTAKING_PROGRAM_ADDRESS } from "../programs";
+import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
 
 export const NCN_DELEGATE_TOKEN_ACCOUNT_DISCRIMINATOR = 22;
 
@@ -45,7 +45,7 @@ export type NcnDelegateTokenAccountInstruction<
   TAccountDelegate extends string | IAccountMeta<string> = string,
   TAccountTokenProgram extends
     | string
-    | IAccountMeta<string> = 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
+    | IAccountMeta<string> = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
   TRemainingAccounts extends readonly IAccountMeta<string>[] = [],
 > = IInstruction<TProgram> &
   IInstructionWithData<Uint8Array> &
@@ -78,16 +78,16 @@ export type NcnDelegateTokenAccountInstructionDataArgs = {};
 
 export function getNcnDelegateTokenAccountInstructionDataEncoder(): Encoder<NcnDelegateTokenAccountInstructionDataArgs> {
   return transformEncoder(
-    getStructEncoder([['discriminator', getU8Encoder()]]),
+    getStructEncoder([["discriminator", getU8Encoder()]]),
     (value) => ({
       ...value,
       discriminator: NCN_DELEGATE_TOKEN_ACCOUNT_DISCRIMINATOR,
-    })
+    }),
   );
 }
 
 export function getNcnDelegateTokenAccountInstructionDataDecoder(): Decoder<NcnDelegateTokenAccountInstructionData> {
-  return getStructDecoder([['discriminator', getU8Decoder()]]);
+  return getStructDecoder([["discriminator", getU8Decoder()]]);
 }
 
 export function getNcnDelegateTokenAccountInstructionDataCodec(): Codec<
@@ -96,7 +96,7 @@ export function getNcnDelegateTokenAccountInstructionDataCodec(): Codec<
 > {
   return combineCodec(
     getNcnDelegateTokenAccountInstructionDataEncoder(),
-    getNcnDelegateTokenAccountInstructionDataDecoder()
+    getNcnDelegateTokenAccountInstructionDataDecoder(),
   );
 }
 
@@ -133,7 +133,7 @@ export function getNcnDelegateTokenAccountInstruction<
     TAccountDelegate,
     TAccountTokenProgram
   >,
-  config?: { programAddress?: TProgramAddress }
+  config?: { programAddress?: TProgramAddress },
 ): NcnDelegateTokenAccountInstruction<
   TProgramAddress,
   TAccountNcn,
@@ -164,10 +164,10 @@ export function getNcnDelegateTokenAccountInstruction<
   // Resolve default values.
   if (!accounts.tokenProgram.value) {
     accounts.tokenProgram.value =
-      'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA' as Address<'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'>;
+      "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA" as Address<"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA">;
   }
 
-  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
+  const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
   const instruction = {
     accounts: [
       getAccountMeta(accounts.ncn),
@@ -214,11 +214,11 @@ export function parseNcnDelegateTokenAccountInstruction<
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>
+    IInstructionWithData<Uint8Array>,
 ): ParsedNcnDelegateTokenAccountInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 6) {
     // TODO: Coded error.
-    throw new Error('Not enough accounts');
+    throw new Error("Not enough accounts");
   }
   let accountIndex = 0;
   const getNextAccount = () => {
@@ -237,7 +237,7 @@ export function parseNcnDelegateTokenAccountInstruction<
       tokenProgram: getNextAccount(),
     },
     data: getNcnDelegateTokenAccountInstructionDataDecoder().decode(
-      instruction.data
+      instruction.data,
     ),
   };
 }

@@ -26,9 +26,9 @@ import {
   type ReadonlySignerAccount,
   type TransactionSigner,
   type WritableAccount,
-} from '@solana/web3.js';
-import { JITO_VAULT_PROGRAM_ADDRESS } from '../programs';
-import { getAccountMetaFactory, type ResolvedAccount } from '../shared';
+} from "@solana/web3.js";
+import { JITO_VAULT_PROGRAM_ADDRESS } from "../programs";
+import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
 
 export const CHANGE_WITHDRAWAL_TICKET_OWNER_DISCRIMINATOR = 13;
 
@@ -78,16 +78,16 @@ export type ChangeWithdrawalTicketOwnerInstructionDataArgs = {};
 
 export function getChangeWithdrawalTicketOwnerInstructionDataEncoder(): Encoder<ChangeWithdrawalTicketOwnerInstructionDataArgs> {
   return transformEncoder(
-    getStructEncoder([['discriminator', getU8Encoder()]]),
+    getStructEncoder([["discriminator", getU8Encoder()]]),
     (value) => ({
       ...value,
       discriminator: CHANGE_WITHDRAWAL_TICKET_OWNER_DISCRIMINATOR,
-    })
+    }),
   );
 }
 
 export function getChangeWithdrawalTicketOwnerInstructionDataDecoder(): Decoder<ChangeWithdrawalTicketOwnerInstructionData> {
-  return getStructDecoder([['discriminator', getU8Decoder()]]);
+  return getStructDecoder([["discriminator", getU8Decoder()]]);
 }
 
 export function getChangeWithdrawalTicketOwnerInstructionDataCodec(): Codec<
@@ -96,7 +96,7 @@ export function getChangeWithdrawalTicketOwnerInstructionDataCodec(): Codec<
 > {
   return combineCodec(
     getChangeWithdrawalTicketOwnerInstructionDataEncoder(),
-    getChangeWithdrawalTicketOwnerInstructionDataDecoder()
+    getChangeWithdrawalTicketOwnerInstructionDataDecoder(),
   );
 }
 
@@ -129,7 +129,7 @@ export function getChangeWithdrawalTicketOwnerInstruction<
     TAccountOldOwner,
     TAccountNewOwner
   >,
-  config?: { programAddress?: TProgramAddress }
+  config?: { programAddress?: TProgramAddress },
 ): ChangeWithdrawalTicketOwnerInstruction<
   TProgramAddress,
   TAccountConfig,
@@ -157,7 +157,7 @@ export function getChangeWithdrawalTicketOwnerInstruction<
     ResolvedAccount
   >;
 
-  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
+  const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
   const instruction = {
     accounts: [
       getAccountMeta(accounts.config),
@@ -201,11 +201,11 @@ export function parseChangeWithdrawalTicketOwnerInstruction<
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>
+    IInstructionWithData<Uint8Array>,
 ): ParsedChangeWithdrawalTicketOwnerInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 5) {
     // TODO: Coded error.
-    throw new Error('Not enough accounts');
+    throw new Error("Not enough accounts");
   }
   let accountIndex = 0;
   const getNextAccount = () => {
@@ -223,7 +223,7 @@ export function parseChangeWithdrawalTicketOwnerInstruction<
       newOwner: getNextAccount(),
     },
     data: getChangeWithdrawalTicketOwnerInstructionDataDecoder().decode(
-      instruction.data
+      instruction.data,
     ),
   };
 }

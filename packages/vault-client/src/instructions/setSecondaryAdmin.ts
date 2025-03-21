@@ -26,15 +26,15 @@ import {
   type ReadonlySignerAccount,
   type TransactionSigner,
   type WritableAccount,
-} from '@solana/web3.js';
-import { JITO_VAULT_PROGRAM_ADDRESS } from '../programs';
-import { getAccountMetaFactory, type ResolvedAccount } from '../shared';
+} from "@solana/web3.js";
+import { JITO_VAULT_PROGRAM_ADDRESS } from "../programs";
+import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
 import {
   getVaultAdminRoleDecoder,
   getVaultAdminRoleEncoder,
   type VaultAdminRole,
   type VaultAdminRoleArgs,
-} from '../types';
+} from "../types";
 
 export const SET_SECONDARY_ADMIN_DISCRIMINATOR = 22;
 
@@ -82,17 +82,17 @@ export type SetSecondaryAdminInstructionDataArgs = {
 export function getSetSecondaryAdminInstructionDataEncoder(): Encoder<SetSecondaryAdminInstructionDataArgs> {
   return transformEncoder(
     getStructEncoder([
-      ['discriminator', getU8Encoder()],
-      ['vaultAdminRole', getVaultAdminRoleEncoder()],
+      ["discriminator", getU8Encoder()],
+      ["vaultAdminRole", getVaultAdminRoleEncoder()],
     ]),
-    (value) => ({ ...value, discriminator: SET_SECONDARY_ADMIN_DISCRIMINATOR })
+    (value) => ({ ...value, discriminator: SET_SECONDARY_ADMIN_DISCRIMINATOR }),
   );
 }
 
 export function getSetSecondaryAdminInstructionDataDecoder(): Decoder<SetSecondaryAdminInstructionData> {
   return getStructDecoder([
-    ['discriminator', getU8Decoder()],
-    ['vaultAdminRole', getVaultAdminRoleDecoder()],
+    ["discriminator", getU8Decoder()],
+    ["vaultAdminRole", getVaultAdminRoleDecoder()],
   ]);
 }
 
@@ -102,7 +102,7 @@ export function getSetSecondaryAdminInstructionDataCodec(): Codec<
 > {
   return combineCodec(
     getSetSecondaryAdminInstructionDataEncoder(),
-    getSetSecondaryAdminInstructionDataDecoder()
+    getSetSecondaryAdminInstructionDataDecoder(),
   );
 }
 
@@ -116,7 +116,7 @@ export type SetSecondaryAdminInput<
   vault: Address<TAccountVault>;
   admin: TransactionSigner<TAccountAdmin>;
   newAdmin: Address<TAccountNewAdmin>;
-  vaultAdminRole: SetSecondaryAdminInstructionDataArgs['vaultAdminRole'];
+  vaultAdminRole: SetSecondaryAdminInstructionDataArgs["vaultAdminRole"];
 };
 
 export function getSetSecondaryAdminInstruction<
@@ -132,7 +132,7 @@ export function getSetSecondaryAdminInstruction<
     TAccountAdmin,
     TAccountNewAdmin
   >,
-  config?: { programAddress?: TProgramAddress }
+  config?: { programAddress?: TProgramAddress },
 ): SetSecondaryAdminInstruction<
   TProgramAddress,
   TAccountConfig,
@@ -158,7 +158,7 @@ export function getSetSecondaryAdminInstruction<
   // Original args.
   const args = { ...input };
 
-  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
+  const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
   const instruction = {
     accounts: [
       getAccountMeta(accounts.config),
@@ -168,7 +168,7 @@ export function getSetSecondaryAdminInstruction<
     ],
     programAddress,
     data: getSetSecondaryAdminInstructionDataEncoder().encode(
-      args as SetSecondaryAdminInstructionDataArgs
+      args as SetSecondaryAdminInstructionDataArgs,
     ),
   } as SetSecondaryAdminInstruction<
     TProgramAddress,
@@ -201,11 +201,11 @@ export function parseSetSecondaryAdminInstruction<
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>
+    IInstructionWithData<Uint8Array>,
 ): ParsedSetSecondaryAdminInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 4) {
     // TODO: Coded error.
-    throw new Error('Not enough accounts');
+    throw new Error("Not enough accounts");
   }
   let accountIndex = 0;
   const getNextAccount = () => {

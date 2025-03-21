@@ -37,13 +37,13 @@ import {
   type FetchAccountsConfig,
   type MaybeAccount,
   type MaybeEncodedAccount,
-} from '@solana/web3.js';
+} from "@solana/web3.js";
 import {
   getDelegationStateDecoder,
   getDelegationStateEncoder,
   type DelegationState,
   type DelegationStateArgs,
-} from '../types';
+} from "../types";
 
 export type Vault = {
   discriminator: bigint;
@@ -129,87 +129,87 @@ export type VaultArgs = {
 
 export function getVaultEncoder(): Encoder<VaultArgs> {
   return getStructEncoder([
-    ['discriminator', getU64Encoder()],
-    ['base', getAddressEncoder()],
-    ['vrtMint', getAddressEncoder()],
-    ['supportedMint', getAddressEncoder()],
-    ['vrtSupply', getU64Encoder()],
-    ['tokensDeposited', getU64Encoder()],
-    ['depositCapacity', getU64Encoder()],
-    ['delegationState', getDelegationStateEncoder()],
-    ['additionalAssetsNeedUnstaking', getU64Encoder()],
-    ['vrtEnqueuedForCooldownAmount', getU64Encoder()],
-    ['vrtCoolingDownAmount', getU64Encoder()],
-    ['vrtReadyToClaimAmount', getU64Encoder()],
-    ['admin', getAddressEncoder()],
-    ['delegationAdmin', getAddressEncoder()],
-    ['operatorAdmin', getAddressEncoder()],
-    ['ncnAdmin', getAddressEncoder()],
-    ['slasherAdmin', getAddressEncoder()],
-    ['capacityAdmin', getAddressEncoder()],
-    ['feeAdmin', getAddressEncoder()],
-    ['delegateAssetAdmin', getAddressEncoder()],
-    ['feeWallet', getAddressEncoder()],
-    ['mintBurnAdmin', getAddressEncoder()],
-    ['metadataAdmin', getAddressEncoder()],
-    ['vaultIndex', getU64Encoder()],
-    ['ncnCount', getU64Encoder()],
-    ['operatorCount', getU64Encoder()],
-    ['slasherCount', getU64Encoder()],
-    ['lastFeeChangeSlot', getU64Encoder()],
-    ['lastFullStateUpdateSlot', getU64Encoder()],
-    ['depositFeeBps', getU16Encoder()],
-    ['withdrawalFeeBps', getU16Encoder()],
-    ['nextWithdrawalFeeBps', getU16Encoder()],
-    ['rewardFeeBps', getU16Encoder()],
-    ['programFeeBps', getU16Encoder()],
-    ['bump', getU8Encoder()],
-    ['isPaused', getBoolEncoder()],
-    ['lastStartStateUpdateSlot', getU64Encoder()],
-    ['reserved', getArrayEncoder(getU8Encoder(), { size: 251 })],
+    ["discriminator", getU64Encoder()],
+    ["base", getAddressEncoder()],
+    ["vrtMint", getAddressEncoder()],
+    ["supportedMint", getAddressEncoder()],
+    ["vrtSupply", getU64Encoder()],
+    ["tokensDeposited", getU64Encoder()],
+    ["depositCapacity", getU64Encoder()],
+    ["delegationState", getDelegationStateEncoder()],
+    ["additionalAssetsNeedUnstaking", getU64Encoder()],
+    ["vrtEnqueuedForCooldownAmount", getU64Encoder()],
+    ["vrtCoolingDownAmount", getU64Encoder()],
+    ["vrtReadyToClaimAmount", getU64Encoder()],
+    ["admin", getAddressEncoder()],
+    ["delegationAdmin", getAddressEncoder()],
+    ["operatorAdmin", getAddressEncoder()],
+    ["ncnAdmin", getAddressEncoder()],
+    ["slasherAdmin", getAddressEncoder()],
+    ["capacityAdmin", getAddressEncoder()],
+    ["feeAdmin", getAddressEncoder()],
+    ["delegateAssetAdmin", getAddressEncoder()],
+    ["feeWallet", getAddressEncoder()],
+    ["mintBurnAdmin", getAddressEncoder()],
+    ["metadataAdmin", getAddressEncoder()],
+    ["vaultIndex", getU64Encoder()],
+    ["ncnCount", getU64Encoder()],
+    ["operatorCount", getU64Encoder()],
+    ["slasherCount", getU64Encoder()],
+    ["lastFeeChangeSlot", getU64Encoder()],
+    ["lastFullStateUpdateSlot", getU64Encoder()],
+    ["depositFeeBps", getU16Encoder()],
+    ["withdrawalFeeBps", getU16Encoder()],
+    ["nextWithdrawalFeeBps", getU16Encoder()],
+    ["rewardFeeBps", getU16Encoder()],
+    ["programFeeBps", getU16Encoder()],
+    ["bump", getU8Encoder()],
+    ["isPaused", getBoolEncoder()],
+    ["lastStartStateUpdateSlot", getU64Encoder()],
+    ["reserved", getArrayEncoder(getU8Encoder(), { size: 251 })],
   ]);
 }
 
 export function getVaultDecoder(): Decoder<Vault> {
   return getStructDecoder([
-    ['discriminator', getU64Decoder()],
-    ['base', getAddressDecoder()],
-    ['vrtMint', getAddressDecoder()],
-    ['supportedMint', getAddressDecoder()],
-    ['vrtSupply', getU64Decoder()],
-    ['tokensDeposited', getU64Decoder()],
-    ['depositCapacity', getU64Decoder()],
-    ['delegationState', getDelegationStateDecoder()],
-    ['additionalAssetsNeedUnstaking', getU64Decoder()],
-    ['vrtEnqueuedForCooldownAmount', getU64Decoder()],
-    ['vrtCoolingDownAmount', getU64Decoder()],
-    ['vrtReadyToClaimAmount', getU64Decoder()],
-    ['admin', getAddressDecoder()],
-    ['delegationAdmin', getAddressDecoder()],
-    ['operatorAdmin', getAddressDecoder()],
-    ['ncnAdmin', getAddressDecoder()],
-    ['slasherAdmin', getAddressDecoder()],
-    ['capacityAdmin', getAddressDecoder()],
-    ['feeAdmin', getAddressDecoder()],
-    ['delegateAssetAdmin', getAddressDecoder()],
-    ['feeWallet', getAddressDecoder()],
-    ['mintBurnAdmin', getAddressDecoder()],
-    ['metadataAdmin', getAddressDecoder()],
-    ['vaultIndex', getU64Decoder()],
-    ['ncnCount', getU64Decoder()],
-    ['operatorCount', getU64Decoder()],
-    ['slasherCount', getU64Decoder()],
-    ['lastFeeChangeSlot', getU64Decoder()],
-    ['lastFullStateUpdateSlot', getU64Decoder()],
-    ['depositFeeBps', getU16Decoder()],
-    ['withdrawalFeeBps', getU16Decoder()],
-    ['nextWithdrawalFeeBps', getU16Decoder()],
-    ['rewardFeeBps', getU16Decoder()],
-    ['programFeeBps', getU16Decoder()],
-    ['bump', getU8Decoder()],
-    ['isPaused', getBoolDecoder()],
-    ['lastStartStateUpdateSlot', getU64Decoder()],
-    ['reserved', getArrayDecoder(getU8Decoder(), { size: 251 })],
+    ["discriminator", getU64Decoder()],
+    ["base", getAddressDecoder()],
+    ["vrtMint", getAddressDecoder()],
+    ["supportedMint", getAddressDecoder()],
+    ["vrtSupply", getU64Decoder()],
+    ["tokensDeposited", getU64Decoder()],
+    ["depositCapacity", getU64Decoder()],
+    ["delegationState", getDelegationStateDecoder()],
+    ["additionalAssetsNeedUnstaking", getU64Decoder()],
+    ["vrtEnqueuedForCooldownAmount", getU64Decoder()],
+    ["vrtCoolingDownAmount", getU64Decoder()],
+    ["vrtReadyToClaimAmount", getU64Decoder()],
+    ["admin", getAddressDecoder()],
+    ["delegationAdmin", getAddressDecoder()],
+    ["operatorAdmin", getAddressDecoder()],
+    ["ncnAdmin", getAddressDecoder()],
+    ["slasherAdmin", getAddressDecoder()],
+    ["capacityAdmin", getAddressDecoder()],
+    ["feeAdmin", getAddressDecoder()],
+    ["delegateAssetAdmin", getAddressDecoder()],
+    ["feeWallet", getAddressDecoder()],
+    ["mintBurnAdmin", getAddressDecoder()],
+    ["metadataAdmin", getAddressDecoder()],
+    ["vaultIndex", getU64Decoder()],
+    ["ncnCount", getU64Decoder()],
+    ["operatorCount", getU64Decoder()],
+    ["slasherCount", getU64Decoder()],
+    ["lastFeeChangeSlot", getU64Decoder()],
+    ["lastFullStateUpdateSlot", getU64Decoder()],
+    ["depositFeeBps", getU16Decoder()],
+    ["withdrawalFeeBps", getU16Decoder()],
+    ["nextWithdrawalFeeBps", getU16Decoder()],
+    ["rewardFeeBps", getU16Decoder()],
+    ["programFeeBps", getU16Decoder()],
+    ["bump", getU8Decoder()],
+    ["isPaused", getBoolDecoder()],
+    ["lastStartStateUpdateSlot", getU64Decoder()],
+    ["reserved", getArrayDecoder(getU8Decoder(), { size: 251 })],
   ]);
 }
 
@@ -218,24 +218,24 @@ export function getVaultCodec(): Codec<VaultArgs, Vault> {
 }
 
 export function decodeVault<TAddress extends string = string>(
-  encodedAccount: EncodedAccount<TAddress>
+  encodedAccount: EncodedAccount<TAddress>,
 ): Account<Vault, TAddress>;
 export function decodeVault<TAddress extends string = string>(
-  encodedAccount: MaybeEncodedAccount<TAddress>
+  encodedAccount: MaybeEncodedAccount<TAddress>,
 ): MaybeAccount<Vault, TAddress>;
 export function decodeVault<TAddress extends string = string>(
-  encodedAccount: EncodedAccount<TAddress> | MaybeEncodedAccount<TAddress>
+  encodedAccount: EncodedAccount<TAddress> | MaybeEncodedAccount<TAddress>,
 ): Account<Vault, TAddress> | MaybeAccount<Vault, TAddress> {
   return decodeAccount(
     encodedAccount as MaybeEncodedAccount<TAddress>,
-    getVaultDecoder()
+    getVaultDecoder(),
   );
 }
 
 export async function fetchVault<TAddress extends string = string>(
   rpc: Parameters<typeof fetchEncodedAccount>[0],
   address: Address<TAddress>,
-  config?: FetchAccountConfig
+  config?: FetchAccountConfig,
 ): Promise<Account<Vault, TAddress>> {
   const maybeAccount = await fetchMaybeVault(rpc, address, config);
   assertAccountExists(maybeAccount);
@@ -245,7 +245,7 @@ export async function fetchVault<TAddress extends string = string>(
 export async function fetchMaybeVault<TAddress extends string = string>(
   rpc: Parameters<typeof fetchEncodedAccount>[0],
   address: Address<TAddress>,
-  config?: FetchAccountConfig
+  config?: FetchAccountConfig,
 ): Promise<MaybeAccount<Vault, TAddress>> {
   const maybeAccount = await fetchEncodedAccount(rpc, address, config);
   return decodeVault(maybeAccount);
@@ -254,7 +254,7 @@ export async function fetchMaybeVault<TAddress extends string = string>(
 export async function fetchAllVault(
   rpc: Parameters<typeof fetchEncodedAccounts>[0],
   addresses: Array<Address>,
-  config?: FetchAccountsConfig
+  config?: FetchAccountsConfig,
 ): Promise<Account<Vault>[]> {
   const maybeAccounts = await fetchAllMaybeVault(rpc, addresses, config);
   assertAccountsExist(maybeAccounts);
@@ -264,7 +264,7 @@ export async function fetchAllVault(
 export async function fetchAllMaybeVault(
   rpc: Parameters<typeof fetchEncodedAccounts>[0],
   addresses: Array<Address>,
-  config?: FetchAccountsConfig
+  config?: FetchAccountsConfig,
 ): Promise<MaybeAccount<Vault>[]> {
   const maybeAccounts = await fetchEncodedAccounts(rpc, addresses, config);
   return maybeAccounts.map((maybeAccount) => decodeVault(maybeAccount));

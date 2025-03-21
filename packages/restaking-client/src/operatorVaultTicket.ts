@@ -33,13 +33,13 @@ import {
   type FetchAccountsConfig,
   type MaybeAccount,
   type MaybeEncodedAccount,
-} from '@solana/web3.js';
+} from "@solana/web3.js";
 import {
   getSlotToggleDecoder,
   getSlotToggleEncoder,
   type SlotToggle,
   type SlotToggleArgs,
-} from '../types';
+} from "../types";
 
 export type OperatorVaultTicket = {
   discriminator: bigint;
@@ -63,25 +63,25 @@ export type OperatorVaultTicketArgs = {
 
 export function getOperatorVaultTicketEncoder(): Encoder<OperatorVaultTicketArgs> {
   return getStructEncoder([
-    ['discriminator', getU64Encoder()],
-    ['operator', getAddressEncoder()],
-    ['vault', getAddressEncoder()],
-    ['index', getU64Encoder()],
-    ['state', getSlotToggleEncoder()],
-    ['bump', getU8Encoder()],
-    ['reserved', getArrayEncoder(getU8Encoder(), { size: 263 })],
+    ["discriminator", getU64Encoder()],
+    ["operator", getAddressEncoder()],
+    ["vault", getAddressEncoder()],
+    ["index", getU64Encoder()],
+    ["state", getSlotToggleEncoder()],
+    ["bump", getU8Encoder()],
+    ["reserved", getArrayEncoder(getU8Encoder(), { size: 263 })],
   ]);
 }
 
 export function getOperatorVaultTicketDecoder(): Decoder<OperatorVaultTicket> {
   return getStructDecoder([
-    ['discriminator', getU64Decoder()],
-    ['operator', getAddressDecoder()],
-    ['vault', getAddressDecoder()],
-    ['index', getU64Decoder()],
-    ['state', getSlotToggleDecoder()],
-    ['bump', getU8Decoder()],
-    ['reserved', getArrayDecoder(getU8Decoder(), { size: 263 })],
+    ["discriminator", getU64Decoder()],
+    ["operator", getAddressDecoder()],
+    ["vault", getAddressDecoder()],
+    ["index", getU64Decoder()],
+    ["state", getSlotToggleDecoder()],
+    ["bump", getU8Decoder()],
+    ["reserved", getArrayDecoder(getU8Decoder(), { size: 263 })],
   ]);
 }
 
@@ -91,24 +91,24 @@ export function getOperatorVaultTicketCodec(): Codec<
 > {
   return combineCodec(
     getOperatorVaultTicketEncoder(),
-    getOperatorVaultTicketDecoder()
+    getOperatorVaultTicketDecoder(),
   );
 }
 
 export function decodeOperatorVaultTicket<TAddress extends string = string>(
-  encodedAccount: EncodedAccount<TAddress>
+  encodedAccount: EncodedAccount<TAddress>,
 ): Account<OperatorVaultTicket, TAddress>;
 export function decodeOperatorVaultTicket<TAddress extends string = string>(
-  encodedAccount: MaybeEncodedAccount<TAddress>
+  encodedAccount: MaybeEncodedAccount<TAddress>,
 ): MaybeAccount<OperatorVaultTicket, TAddress>;
 export function decodeOperatorVaultTicket<TAddress extends string = string>(
-  encodedAccount: EncodedAccount<TAddress> | MaybeEncodedAccount<TAddress>
+  encodedAccount: EncodedAccount<TAddress> | MaybeEncodedAccount<TAddress>,
 ):
   | Account<OperatorVaultTicket, TAddress>
   | MaybeAccount<OperatorVaultTicket, TAddress> {
   return decodeAccount(
     encodedAccount as MaybeEncodedAccount<TAddress>,
-    getOperatorVaultTicketDecoder()
+    getOperatorVaultTicketDecoder(),
   );
 }
 
@@ -117,12 +117,12 @@ export async function fetchOperatorVaultTicket<
 >(
   rpc: Parameters<typeof fetchEncodedAccount>[0],
   address: Address<TAddress>,
-  config?: FetchAccountConfig
+  config?: FetchAccountConfig,
 ): Promise<Account<OperatorVaultTicket, TAddress>> {
   const maybeAccount = await fetchMaybeOperatorVaultTicket(
     rpc,
     address,
-    config
+    config,
   );
   assertAccountExists(maybeAccount);
   return maybeAccount;
@@ -133,7 +133,7 @@ export async function fetchMaybeOperatorVaultTicket<
 >(
   rpc: Parameters<typeof fetchEncodedAccount>[0],
   address: Address<TAddress>,
-  config?: FetchAccountConfig
+  config?: FetchAccountConfig,
 ): Promise<MaybeAccount<OperatorVaultTicket, TAddress>> {
   const maybeAccount = await fetchEncodedAccount(rpc, address, config);
   return decodeOperatorVaultTicket(maybeAccount);
@@ -142,12 +142,12 @@ export async function fetchMaybeOperatorVaultTicket<
 export async function fetchAllOperatorVaultTicket(
   rpc: Parameters<typeof fetchEncodedAccounts>[0],
   addresses: Array<Address>,
-  config?: FetchAccountsConfig
+  config?: FetchAccountsConfig,
 ): Promise<Account<OperatorVaultTicket>[]> {
   const maybeAccounts = await fetchAllMaybeOperatorVaultTicket(
     rpc,
     addresses,
-    config
+    config,
   );
   assertAccountsExist(maybeAccounts);
   return maybeAccounts;
@@ -156,10 +156,10 @@ export async function fetchAllOperatorVaultTicket(
 export async function fetchAllMaybeOperatorVaultTicket(
   rpc: Parameters<typeof fetchEncodedAccounts>[0],
   addresses: Array<Address>,
-  config?: FetchAccountsConfig
+  config?: FetchAccountsConfig,
 ): Promise<MaybeAccount<OperatorVaultTicket>[]> {
   const maybeAccounts = await fetchEncodedAccounts(rpc, addresses, config);
   return maybeAccounts.map((maybeAccount) =>
-    decodeOperatorVaultTicket(maybeAccount)
+    decodeOperatorVaultTicket(maybeAccount),
   );
 }

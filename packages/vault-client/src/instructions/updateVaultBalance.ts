@@ -23,9 +23,9 @@ import {
   type IInstructionWithData,
   type ReadonlyAccount,
   type WritableAccount,
-} from '@solana/web3.js';
-import { JITO_VAULT_PROGRAM_ADDRESS } from '../programs';
-import { getAccountMetaFactory, type ResolvedAccount } from '../shared';
+} from "@solana/web3.js";
+import { JITO_VAULT_PROGRAM_ADDRESS } from "../programs";
+import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
 
 export const UPDATE_VAULT_BALANCE_DISCRIMINATOR = 25;
 
@@ -42,7 +42,7 @@ export type UpdateVaultBalanceInstruction<
   TAccountVaultFeeTokenAccount extends string | IAccountMeta<string> = string,
   TAccountTokenProgram extends
     | string
-    | IAccountMeta<string> = 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
+    | IAccountMeta<string> = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
   TRemainingAccounts extends readonly IAccountMeta<string>[] = [],
 > = IInstruction<TProgram> &
   IInstructionWithData<Uint8Array> &
@@ -76,13 +76,16 @@ export type UpdateVaultBalanceInstructionDataArgs = {};
 
 export function getUpdateVaultBalanceInstructionDataEncoder(): Encoder<UpdateVaultBalanceInstructionDataArgs> {
   return transformEncoder(
-    getStructEncoder([['discriminator', getU8Encoder()]]),
-    (value) => ({ ...value, discriminator: UPDATE_VAULT_BALANCE_DISCRIMINATOR })
+    getStructEncoder([["discriminator", getU8Encoder()]]),
+    (value) => ({
+      ...value,
+      discriminator: UPDATE_VAULT_BALANCE_DISCRIMINATOR,
+    }),
   );
 }
 
 export function getUpdateVaultBalanceInstructionDataDecoder(): Decoder<UpdateVaultBalanceInstructionData> {
-  return getStructDecoder([['discriminator', getU8Decoder()]]);
+  return getStructDecoder([["discriminator", getU8Decoder()]]);
 }
 
 export function getUpdateVaultBalanceInstructionDataCodec(): Codec<
@@ -91,7 +94,7 @@ export function getUpdateVaultBalanceInstructionDataCodec(): Codec<
 > {
   return combineCodec(
     getUpdateVaultBalanceInstructionDataEncoder(),
-    getUpdateVaultBalanceInstructionDataDecoder()
+    getUpdateVaultBalanceInstructionDataDecoder(),
   );
 }
 
@@ -128,7 +131,7 @@ export function getUpdateVaultBalanceInstruction<
     TAccountVaultFeeTokenAccount,
     TAccountTokenProgram
   >,
-  config?: { programAddress?: TProgramAddress }
+  config?: { programAddress?: TProgramAddress },
 ): UpdateVaultBalanceInstruction<
   TProgramAddress,
   TAccountConfig,
@@ -164,10 +167,10 @@ export function getUpdateVaultBalanceInstruction<
   // Resolve default values.
   if (!accounts.tokenProgram.value) {
     accounts.tokenProgram.value =
-      'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA' as Address<'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'>;
+      "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA" as Address<"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA">;
   }
 
-  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
+  const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
   const instruction = {
     accounts: [
       getAccountMeta(accounts.config),
@@ -214,11 +217,11 @@ export function parseUpdateVaultBalanceInstruction<
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>
+    IInstructionWithData<Uint8Array>,
 ): ParsedUpdateVaultBalanceInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 6) {
     // TODO: Coded error.
-    throw new Error('Not enough accounts');
+    throw new Error("Not enough accounts");
   }
   let accountIndex = 0;
   const getNextAccount = () => {
@@ -237,7 +240,7 @@ export function parseUpdateVaultBalanceInstruction<
       tokenProgram: getNextAccount(),
     },
     data: getUpdateVaultBalanceInstructionDataDecoder().decode(
-      instruction.data
+      instruction.data,
     ),
   };
 }

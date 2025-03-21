@@ -28,9 +28,9 @@ import {
   type ReadonlySignerAccount,
   type TransactionSigner,
   type WritableAccount,
-} from '@solana/web3.js';
-import { JITO_VAULT_PROGRAM_ADDRESS } from '../programs';
-import { getAccountMetaFactory, type ResolvedAccount } from '../shared';
+} from "@solana/web3.js";
+import { JITO_VAULT_PROGRAM_ADDRESS } from "../programs";
+import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
 
 export const ADD_DELEGATION_DISCRIMINATOR = 23;
 
@@ -82,17 +82,17 @@ export type AddDelegationInstructionDataArgs = { amount: number | bigint };
 export function getAddDelegationInstructionDataEncoder(): Encoder<AddDelegationInstructionDataArgs> {
   return transformEncoder(
     getStructEncoder([
-      ['discriminator', getU8Encoder()],
-      ['amount', getU64Encoder()],
+      ["discriminator", getU8Encoder()],
+      ["amount", getU64Encoder()],
     ]),
-    (value) => ({ ...value, discriminator: ADD_DELEGATION_DISCRIMINATOR })
+    (value) => ({ ...value, discriminator: ADD_DELEGATION_DISCRIMINATOR }),
   );
 }
 
 export function getAddDelegationInstructionDataDecoder(): Decoder<AddDelegationInstructionData> {
   return getStructDecoder([
-    ['discriminator', getU8Decoder()],
-    ['amount', getU64Decoder()],
+    ["discriminator", getU8Decoder()],
+    ["amount", getU64Decoder()],
   ]);
 }
 
@@ -102,7 +102,7 @@ export function getAddDelegationInstructionDataCodec(): Codec<
 > {
   return combineCodec(
     getAddDelegationInstructionDataEncoder(),
-    getAddDelegationInstructionDataDecoder()
+    getAddDelegationInstructionDataDecoder(),
   );
 }
 
@@ -118,7 +118,7 @@ export type AddDelegationInput<
   operator: Address<TAccountOperator>;
   vaultOperatorDelegation: Address<TAccountVaultOperatorDelegation>;
   admin: TransactionSigner<TAccountAdmin>;
-  amount: AddDelegationInstructionDataArgs['amount'];
+  amount: AddDelegationInstructionDataArgs["amount"];
 };
 
 export function getAddDelegationInstruction<
@@ -136,7 +136,7 @@ export function getAddDelegationInstruction<
     TAccountVaultOperatorDelegation,
     TAccountAdmin
   >,
-  config?: { programAddress?: TProgramAddress }
+  config?: { programAddress?: TProgramAddress },
 ): AddDelegationInstruction<
   TProgramAddress,
   TAccountConfig,
@@ -167,7 +167,7 @@ export function getAddDelegationInstruction<
   // Original args.
   const args = { ...input };
 
-  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
+  const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
   const instruction = {
     accounts: [
       getAccountMeta(accounts.config),
@@ -178,7 +178,7 @@ export function getAddDelegationInstruction<
     ],
     programAddress,
     data: getAddDelegationInstructionDataEncoder().encode(
-      args as AddDelegationInstructionDataArgs
+      args as AddDelegationInstructionDataArgs,
     ),
   } as AddDelegationInstruction<
     TProgramAddress,
@@ -213,11 +213,11 @@ export function parseAddDelegationInstruction<
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>
+    IInstructionWithData<Uint8Array>,
 ): ParsedAddDelegationInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 5) {
     // TODO: Coded error.
-    throw new Error('Not enough accounts');
+    throw new Error("Not enough accounts");
   }
   let accountIndex = 0;
   const getNextAccount = () => {

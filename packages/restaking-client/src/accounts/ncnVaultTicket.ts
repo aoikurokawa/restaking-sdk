@@ -33,13 +33,13 @@ import {
   type FetchAccountsConfig,
   type MaybeAccount,
   type MaybeEncodedAccount,
-} from '@solana/web3.js';
+} from "@solana/web3.js";
 import {
   getSlotToggleDecoder,
   getSlotToggleEncoder,
   type SlotToggle,
   type SlotToggleArgs,
-} from '../types';
+} from "../types";
 
 export type NcnVaultTicket = {
   discriminator: bigint;
@@ -63,25 +63,25 @@ export type NcnVaultTicketArgs = {
 
 export function getNcnVaultTicketEncoder(): Encoder<NcnVaultTicketArgs> {
   return getStructEncoder([
-    ['discriminator', getU64Encoder()],
-    ['ncn', getAddressEncoder()],
-    ['vault', getAddressEncoder()],
-    ['index', getU64Encoder()],
-    ['state', getSlotToggleEncoder()],
-    ['bump', getU8Encoder()],
-    ['reserved', getArrayEncoder(getU8Encoder(), { size: 263 })],
+    ["discriminator", getU64Encoder()],
+    ["ncn", getAddressEncoder()],
+    ["vault", getAddressEncoder()],
+    ["index", getU64Encoder()],
+    ["state", getSlotToggleEncoder()],
+    ["bump", getU8Encoder()],
+    ["reserved", getArrayEncoder(getU8Encoder(), { size: 263 })],
   ]);
 }
 
 export function getNcnVaultTicketDecoder(): Decoder<NcnVaultTicket> {
   return getStructDecoder([
-    ['discriminator', getU64Decoder()],
-    ['ncn', getAddressDecoder()],
-    ['vault', getAddressDecoder()],
-    ['index', getU64Decoder()],
-    ['state', getSlotToggleDecoder()],
-    ['bump', getU8Decoder()],
-    ['reserved', getArrayDecoder(getU8Decoder(), { size: 263 })],
+    ["discriminator", getU64Decoder()],
+    ["ncn", getAddressDecoder()],
+    ["vault", getAddressDecoder()],
+    ["index", getU64Decoder()],
+    ["state", getSlotToggleDecoder()],
+    ["bump", getU8Decoder()],
+    ["reserved", getArrayDecoder(getU8Decoder(), { size: 263 })],
   ]);
 }
 
@@ -93,24 +93,24 @@ export function getNcnVaultTicketCodec(): Codec<
 }
 
 export function decodeNcnVaultTicket<TAddress extends string = string>(
-  encodedAccount: EncodedAccount<TAddress>
+  encodedAccount: EncodedAccount<TAddress>,
 ): Account<NcnVaultTicket, TAddress>;
 export function decodeNcnVaultTicket<TAddress extends string = string>(
-  encodedAccount: MaybeEncodedAccount<TAddress>
+  encodedAccount: MaybeEncodedAccount<TAddress>,
 ): MaybeAccount<NcnVaultTicket, TAddress>;
 export function decodeNcnVaultTicket<TAddress extends string = string>(
-  encodedAccount: EncodedAccount<TAddress> | MaybeEncodedAccount<TAddress>
+  encodedAccount: EncodedAccount<TAddress> | MaybeEncodedAccount<TAddress>,
 ): Account<NcnVaultTicket, TAddress> | MaybeAccount<NcnVaultTicket, TAddress> {
   return decodeAccount(
     encodedAccount as MaybeEncodedAccount<TAddress>,
-    getNcnVaultTicketDecoder()
+    getNcnVaultTicketDecoder(),
   );
 }
 
 export async function fetchNcnVaultTicket<TAddress extends string = string>(
   rpc: Parameters<typeof fetchEncodedAccount>[0],
   address: Address<TAddress>,
-  config?: FetchAccountConfig
+  config?: FetchAccountConfig,
 ): Promise<Account<NcnVaultTicket, TAddress>> {
   const maybeAccount = await fetchMaybeNcnVaultTicket(rpc, address, config);
   assertAccountExists(maybeAccount);
@@ -122,7 +122,7 @@ export async function fetchMaybeNcnVaultTicket<
 >(
   rpc: Parameters<typeof fetchEncodedAccount>[0],
   address: Address<TAddress>,
-  config?: FetchAccountConfig
+  config?: FetchAccountConfig,
 ): Promise<MaybeAccount<NcnVaultTicket, TAddress>> {
   const maybeAccount = await fetchEncodedAccount(rpc, address, config);
   return decodeNcnVaultTicket(maybeAccount);
@@ -131,12 +131,12 @@ export async function fetchMaybeNcnVaultTicket<
 export async function fetchAllNcnVaultTicket(
   rpc: Parameters<typeof fetchEncodedAccounts>[0],
   addresses: Array<Address>,
-  config?: FetchAccountsConfig
+  config?: FetchAccountsConfig,
 ): Promise<Account<NcnVaultTicket>[]> {
   const maybeAccounts = await fetchAllMaybeNcnVaultTicket(
     rpc,
     addresses,
-    config
+    config,
   );
   assertAccountsExist(maybeAccounts);
   return maybeAccounts;
@@ -145,10 +145,10 @@ export async function fetchAllNcnVaultTicket(
 export async function fetchAllMaybeNcnVaultTicket(
   rpc: Parameters<typeof fetchEncodedAccounts>[0],
   addresses: Array<Address>,
-  config?: FetchAccountsConfig
+  config?: FetchAccountsConfig,
 ): Promise<MaybeAccount<NcnVaultTicket>[]> {
   const maybeAccounts = await fetchEncodedAccounts(rpc, addresses, config);
   return maybeAccounts.map((maybeAccount) =>
-    decodeNcnVaultTicket(maybeAccount)
+    decodeNcnVaultTicket(maybeAccount),
   );
 }

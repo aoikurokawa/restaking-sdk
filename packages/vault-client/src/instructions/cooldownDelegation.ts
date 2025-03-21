@@ -28,9 +28,9 @@ import {
   type ReadonlySignerAccount,
   type TransactionSigner,
   type WritableAccount,
-} from '@solana/web3.js';
-import { JITO_VAULT_PROGRAM_ADDRESS } from '../programs';
-import { getAccountMetaFactory, type ResolvedAccount } from '../shared';
+} from "@solana/web3.js";
+import { JITO_VAULT_PROGRAM_ADDRESS } from "../programs";
+import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
 
 export const COOLDOWN_DELEGATION_DISCRIMINATOR = 24;
 
@@ -82,17 +82,17 @@ export type CooldownDelegationInstructionDataArgs = { amount: number | bigint };
 export function getCooldownDelegationInstructionDataEncoder(): Encoder<CooldownDelegationInstructionDataArgs> {
   return transformEncoder(
     getStructEncoder([
-      ['discriminator', getU8Encoder()],
-      ['amount', getU64Encoder()],
+      ["discriminator", getU8Encoder()],
+      ["amount", getU64Encoder()],
     ]),
-    (value) => ({ ...value, discriminator: COOLDOWN_DELEGATION_DISCRIMINATOR })
+    (value) => ({ ...value, discriminator: COOLDOWN_DELEGATION_DISCRIMINATOR }),
   );
 }
 
 export function getCooldownDelegationInstructionDataDecoder(): Decoder<CooldownDelegationInstructionData> {
   return getStructDecoder([
-    ['discriminator', getU8Decoder()],
-    ['amount', getU64Decoder()],
+    ["discriminator", getU8Decoder()],
+    ["amount", getU64Decoder()],
   ]);
 }
 
@@ -102,7 +102,7 @@ export function getCooldownDelegationInstructionDataCodec(): Codec<
 > {
   return combineCodec(
     getCooldownDelegationInstructionDataEncoder(),
-    getCooldownDelegationInstructionDataDecoder()
+    getCooldownDelegationInstructionDataDecoder(),
   );
 }
 
@@ -118,7 +118,7 @@ export type CooldownDelegationInput<
   operator: Address<TAccountOperator>;
   vaultOperatorDelegation: Address<TAccountVaultOperatorDelegation>;
   admin: TransactionSigner<TAccountAdmin>;
-  amount: CooldownDelegationInstructionDataArgs['amount'];
+  amount: CooldownDelegationInstructionDataArgs["amount"];
 };
 
 export function getCooldownDelegationInstruction<
@@ -136,7 +136,7 @@ export function getCooldownDelegationInstruction<
     TAccountVaultOperatorDelegation,
     TAccountAdmin
   >,
-  config?: { programAddress?: TProgramAddress }
+  config?: { programAddress?: TProgramAddress },
 ): CooldownDelegationInstruction<
   TProgramAddress,
   TAccountConfig,
@@ -167,7 +167,7 @@ export function getCooldownDelegationInstruction<
   // Original args.
   const args = { ...input };
 
-  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
+  const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
   const instruction = {
     accounts: [
       getAccountMeta(accounts.config),
@@ -178,7 +178,7 @@ export function getCooldownDelegationInstruction<
     ],
     programAddress,
     data: getCooldownDelegationInstructionDataEncoder().encode(
-      args as CooldownDelegationInstructionDataArgs
+      args as CooldownDelegationInstructionDataArgs,
     ),
   } as CooldownDelegationInstruction<
     TProgramAddress,
@@ -213,11 +213,11 @@ export function parseCooldownDelegationInstruction<
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>
+    IInstructionWithData<Uint8Array>,
 ): ParsedCooldownDelegationInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 5) {
     // TODO: Coded error.
-    throw new Error('Not enough accounts');
+    throw new Error("Not enough accounts");
   }
   let accountIndex = 0;
   const getNextAccount = () => {
@@ -235,7 +235,7 @@ export function parseCooldownDelegationInstruction<
       admin: getNextAccount(),
     },
     data: getCooldownDelegationInstructionDataDecoder().decode(
-      instruction.data
+      instruction.data,
     ),
   };
 }

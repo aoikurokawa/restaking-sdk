@@ -28,9 +28,9 @@ import {
   type ReadonlySignerAccount,
   type TransactionSigner,
   type WritableAccount,
-} from '@solana/web3.js';
-import { JITO_RESTAKING_PROGRAM_ADDRESS } from '../programs';
-import { getAccountMetaFactory, type ResolvedAccount } from '../shared';
+} from "@solana/web3.js";
+import { JITO_RESTAKING_PROGRAM_ADDRESS } from "../programs";
+import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
 
 export const OPERATOR_SET_FEE_DISCRIMINATOR = 21;
 
@@ -72,17 +72,17 @@ export type OperatorSetFeeInstructionDataArgs = { newFeeBps: number };
 export function getOperatorSetFeeInstructionDataEncoder(): Encoder<OperatorSetFeeInstructionDataArgs> {
   return transformEncoder(
     getStructEncoder([
-      ['discriminator', getU8Encoder()],
-      ['newFeeBps', getU16Encoder()],
+      ["discriminator", getU8Encoder()],
+      ["newFeeBps", getU16Encoder()],
     ]),
-    (value) => ({ ...value, discriminator: OPERATOR_SET_FEE_DISCRIMINATOR })
+    (value) => ({ ...value, discriminator: OPERATOR_SET_FEE_DISCRIMINATOR }),
   );
 }
 
 export function getOperatorSetFeeInstructionDataDecoder(): Decoder<OperatorSetFeeInstructionData> {
   return getStructDecoder([
-    ['discriminator', getU8Decoder()],
-    ['newFeeBps', getU16Decoder()],
+    ["discriminator", getU8Decoder()],
+    ["newFeeBps", getU16Decoder()],
   ]);
 }
 
@@ -92,7 +92,7 @@ export function getOperatorSetFeeInstructionDataCodec(): Codec<
 > {
   return combineCodec(
     getOperatorSetFeeInstructionDataEncoder(),
-    getOperatorSetFeeInstructionDataDecoder()
+    getOperatorSetFeeInstructionDataDecoder(),
   );
 }
 
@@ -104,7 +104,7 @@ export type OperatorSetFeeInput<
   config: Address<TAccountConfig>;
   operator: Address<TAccountOperator>;
   admin: TransactionSigner<TAccountAdmin>;
-  newFeeBps: OperatorSetFeeInstructionDataArgs['newFeeBps'];
+  newFeeBps: OperatorSetFeeInstructionDataArgs["newFeeBps"];
 };
 
 export function getOperatorSetFeeInstruction<
@@ -114,7 +114,7 @@ export function getOperatorSetFeeInstruction<
   TProgramAddress extends Address = typeof JITO_RESTAKING_PROGRAM_ADDRESS,
 >(
   input: OperatorSetFeeInput<TAccountConfig, TAccountOperator, TAccountAdmin>,
-  config?: { programAddress?: TProgramAddress }
+  config?: { programAddress?: TProgramAddress },
 ): OperatorSetFeeInstruction<
   TProgramAddress,
   TAccountConfig,
@@ -139,7 +139,7 @@ export function getOperatorSetFeeInstruction<
   // Original args.
   const args = { ...input };
 
-  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
+  const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
   const instruction = {
     accounts: [
       getAccountMeta(accounts.config),
@@ -148,7 +148,7 @@ export function getOperatorSetFeeInstruction<
     ],
     programAddress,
     data: getOperatorSetFeeInstructionDataEncoder().encode(
-      args as OperatorSetFeeInstructionDataArgs
+      args as OperatorSetFeeInstructionDataArgs,
     ),
   } as OperatorSetFeeInstruction<
     TProgramAddress,
@@ -179,11 +179,11 @@ export function parseOperatorSetFeeInstruction<
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>
+    IInstructionWithData<Uint8Array>,
 ): ParsedOperatorSetFeeInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 3) {
     // TODO: Coded error.
-    throw new Error('Not enough accounts');
+    throw new Error("Not enough accounts");
   }
   let accountIndex = 0;
   const getNextAccount = () => {

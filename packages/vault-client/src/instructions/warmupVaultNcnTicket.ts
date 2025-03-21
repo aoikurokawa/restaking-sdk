@@ -26,9 +26,9 @@ import {
   type ReadonlySignerAccount,
   type TransactionSigner,
   type WritableAccount,
-} from '@solana/web3.js';
-import { JITO_VAULT_PROGRAM_ADDRESS } from '../programs';
-import { getAccountMetaFactory, type ResolvedAccount } from '../shared';
+} from "@solana/web3.js";
+import { JITO_VAULT_PROGRAM_ADDRESS } from "../programs";
+import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
 
 export const WARMUP_VAULT_NCN_TICKET_DISCRIMINATOR = 7;
 
@@ -72,16 +72,16 @@ export type WarmupVaultNcnTicketInstructionDataArgs = {};
 
 export function getWarmupVaultNcnTicketInstructionDataEncoder(): Encoder<WarmupVaultNcnTicketInstructionDataArgs> {
   return transformEncoder(
-    getStructEncoder([['discriminator', getU8Encoder()]]),
+    getStructEncoder([["discriminator", getU8Encoder()]]),
     (value) => ({
       ...value,
       discriminator: WARMUP_VAULT_NCN_TICKET_DISCRIMINATOR,
-    })
+    }),
   );
 }
 
 export function getWarmupVaultNcnTicketInstructionDataDecoder(): Decoder<WarmupVaultNcnTicketInstructionData> {
-  return getStructDecoder([['discriminator', getU8Decoder()]]);
+  return getStructDecoder([["discriminator", getU8Decoder()]]);
 }
 
 export function getWarmupVaultNcnTicketInstructionDataCodec(): Codec<
@@ -90,7 +90,7 @@ export function getWarmupVaultNcnTicketInstructionDataCodec(): Codec<
 > {
   return combineCodec(
     getWarmupVaultNcnTicketInstructionDataEncoder(),
-    getWarmupVaultNcnTicketInstructionDataDecoder()
+    getWarmupVaultNcnTicketInstructionDataDecoder(),
   );
 }
 
@@ -123,7 +123,7 @@ export function getWarmupVaultNcnTicketInstruction<
     TAccountVaultNcnTicket,
     TAccountAdmin
   >,
-  config?: { programAddress?: TProgramAddress }
+  config?: { programAddress?: TProgramAddress },
 ): WarmupVaultNcnTicketInstruction<
   TProgramAddress,
   TAccountConfig,
@@ -148,7 +148,7 @@ export function getWarmupVaultNcnTicketInstruction<
     ResolvedAccount
   >;
 
-  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
+  const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
   const instruction = {
     accounts: [
       getAccountMeta(accounts.config),
@@ -192,11 +192,11 @@ export function parseWarmupVaultNcnTicketInstruction<
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>
+    IInstructionWithData<Uint8Array>,
 ): ParsedWarmupVaultNcnTicketInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 5) {
     // TODO: Coded error.
-    throw new Error('Not enough accounts');
+    throw new Error("Not enough accounts");
   }
   let accountIndex = 0;
   const getNextAccount = () => {
@@ -214,7 +214,7 @@ export function parseWarmupVaultNcnTicketInstruction<
       admin: getNextAccount(),
     },
     data: getWarmupVaultNcnTicketInstructionDataDecoder().decode(
-      instruction.data
+      instruction.data,
     ),
   };
 }

@@ -21,13 +21,13 @@ import {
   type Encoder,
   type Option,
   type OptionOrNullable,
-} from '@solana/web3.js';
+} from "@solana/web3.js";
 import {
   getDataV2Decoder,
   getDataV2Encoder,
   type DataV2,
   type DataV2Args,
-} from '.';
+} from ".";
 
 export type CreateMetadataAccountArgsV3 = {
   data: DataV2;
@@ -43,17 +43,17 @@ export type CreateMetadataAccountArgsV3Args = {
 
 export function getCreateMetadataAccountArgsV3Encoder(): Encoder<CreateMetadataAccountArgsV3Args> {
   return getStructEncoder([
-    ['data', getDataV2Encoder()],
-    ['isMutable', getBooleanEncoder()],
-    ['collectionDetails', getOptionEncoder(getU8Encoder())],
+    ["data", getDataV2Encoder()],
+    ["isMutable", getBooleanEncoder()],
+    ["collectionDetails", getOptionEncoder(getU8Encoder())],
   ]);
 }
 
 export function getCreateMetadataAccountArgsV3Decoder(): Decoder<CreateMetadataAccountArgsV3> {
   return getStructDecoder([
-    ['data', getDataV2Decoder()],
-    ['isMutable', getBooleanDecoder()],
-    ['collectionDetails', getOptionDecoder(getU8Decoder())],
+    ["data", getDataV2Decoder()],
+    ["isMutable", getBooleanDecoder()],
+    ["collectionDetails", getOptionDecoder(getU8Decoder())],
   ]);
 }
 
@@ -63,6 +63,6 @@ export function getCreateMetadataAccountArgsV3Codec(): Codec<
 > {
   return combineCodec(
     getCreateMetadataAccountArgsV3Encoder(),
-    getCreateMetadataAccountArgsV3Decoder()
+    getCreateMetadataAccountArgsV3Decoder(),
   );
 }

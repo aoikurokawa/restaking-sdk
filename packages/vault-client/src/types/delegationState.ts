@@ -19,7 +19,7 @@ import {
   type Codec,
   type Decoder,
   type Encoder,
-} from '@solana/web3.js';
+} from "@solana/web3.js";
 
 export type DelegationState = {
   stakedAmount: bigint;
@@ -37,19 +37,19 @@ export type DelegationStateArgs = {
 
 export function getDelegationStateEncoder(): Encoder<DelegationStateArgs> {
   return getStructEncoder([
-    ['stakedAmount', getU64Encoder()],
-    ['enqueuedForCooldownAmount', getU64Encoder()],
-    ['coolingDownAmount', getU64Encoder()],
-    ['reserved', getArrayEncoder(getU8Encoder(), { size: 256 })],
+    ["stakedAmount", getU64Encoder()],
+    ["enqueuedForCooldownAmount", getU64Encoder()],
+    ["coolingDownAmount", getU64Encoder()],
+    ["reserved", getArrayEncoder(getU8Encoder(), { size: 256 })],
   ]);
 }
 
 export function getDelegationStateDecoder(): Decoder<DelegationState> {
   return getStructDecoder([
-    ['stakedAmount', getU64Decoder()],
-    ['enqueuedForCooldownAmount', getU64Decoder()],
-    ['coolingDownAmount', getU64Decoder()],
-    ['reserved', getArrayDecoder(getU8Decoder(), { size: 256 })],
+    ["stakedAmount", getU64Decoder()],
+    ["enqueuedForCooldownAmount", getU64Decoder()],
+    ["coolingDownAmount", getU64Decoder()],
+    ["reserved", getArrayDecoder(getU8Decoder(), { size: 256 })],
   ]);
 }
 

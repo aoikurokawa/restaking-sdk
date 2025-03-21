@@ -26,15 +26,15 @@ import {
   type ReadonlySignerAccount,
   type TransactionSigner,
   type WritableAccount,
-} from '@solana/web3.js';
-import { JITO_RESTAKING_PROGRAM_ADDRESS } from '../programs';
-import { getAccountMetaFactory, type ResolvedAccount } from '../shared';
+} from "@solana/web3.js";
+import { JITO_RESTAKING_PROGRAM_ADDRESS } from "../programs";
+import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
 import {
   getOperatorAdminRoleDecoder,
   getOperatorAdminRoleEncoder,
   type OperatorAdminRole,
   type OperatorAdminRoleArgs,
-} from '../types';
+} from "../types";
 
 export const OPERATOR_SET_SECONDARY_ADMIN_DISCRIMINATOR = 20;
 
@@ -78,20 +78,20 @@ export type OperatorSetSecondaryAdminInstructionDataArgs = {
 export function getOperatorSetSecondaryAdminInstructionDataEncoder(): Encoder<OperatorSetSecondaryAdminInstructionDataArgs> {
   return transformEncoder(
     getStructEncoder([
-      ['discriminator', getU8Encoder()],
-      ['operatorAdminRole', getOperatorAdminRoleEncoder()],
+      ["discriminator", getU8Encoder()],
+      ["operatorAdminRole", getOperatorAdminRoleEncoder()],
     ]),
     (value) => ({
       ...value,
       discriminator: OPERATOR_SET_SECONDARY_ADMIN_DISCRIMINATOR,
-    })
+    }),
   );
 }
 
 export function getOperatorSetSecondaryAdminInstructionDataDecoder(): Decoder<OperatorSetSecondaryAdminInstructionData> {
   return getStructDecoder([
-    ['discriminator', getU8Decoder()],
-    ['operatorAdminRole', getOperatorAdminRoleDecoder()],
+    ["discriminator", getU8Decoder()],
+    ["operatorAdminRole", getOperatorAdminRoleDecoder()],
   ]);
 }
 
@@ -101,7 +101,7 @@ export function getOperatorSetSecondaryAdminInstructionDataCodec(): Codec<
 > {
   return combineCodec(
     getOperatorSetSecondaryAdminInstructionDataEncoder(),
-    getOperatorSetSecondaryAdminInstructionDataDecoder()
+    getOperatorSetSecondaryAdminInstructionDataDecoder(),
   );
 }
 
@@ -113,7 +113,7 @@ export type OperatorSetSecondaryAdminInput<
   operator: Address<TAccountOperator>;
   admin: TransactionSigner<TAccountAdmin>;
   newAdmin: Address<TAccountNewAdmin>;
-  operatorAdminRole: OperatorSetSecondaryAdminInstructionDataArgs['operatorAdminRole'];
+  operatorAdminRole: OperatorSetSecondaryAdminInstructionDataArgs["operatorAdminRole"];
 };
 
 export function getOperatorSetSecondaryAdminInstruction<
@@ -127,7 +127,7 @@ export function getOperatorSetSecondaryAdminInstruction<
     TAccountAdmin,
     TAccountNewAdmin
   >,
-  config?: { programAddress?: TProgramAddress }
+  config?: { programAddress?: TProgramAddress },
 ): OperatorSetSecondaryAdminInstruction<
   TProgramAddress,
   TAccountOperator,
@@ -152,7 +152,7 @@ export function getOperatorSetSecondaryAdminInstruction<
   // Original args.
   const args = { ...input };
 
-  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
+  const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
   const instruction = {
     accounts: [
       getAccountMeta(accounts.operator),
@@ -161,7 +161,7 @@ export function getOperatorSetSecondaryAdminInstruction<
     ],
     programAddress,
     data: getOperatorSetSecondaryAdminInstructionDataEncoder().encode(
-      args as OperatorSetSecondaryAdminInstructionDataArgs
+      args as OperatorSetSecondaryAdminInstructionDataArgs,
     ),
   } as OperatorSetSecondaryAdminInstruction<
     TProgramAddress,
@@ -192,11 +192,11 @@ export function parseOperatorSetSecondaryAdminInstruction<
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>
+    IInstructionWithData<Uint8Array>,
 ): ParsedOperatorSetSecondaryAdminInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 3) {
     // TODO: Coded error.
-    throw new Error('Not enough accounts');
+    throw new Error("Not enough accounts");
   }
   let accountIndex = 0;
   const getNextAccount = () => {
@@ -212,7 +212,7 @@ export function parseOperatorSetSecondaryAdminInstruction<
       newAdmin: getNextAccount(),
     },
     data: getOperatorSetSecondaryAdminInstructionDataDecoder().decode(
-      instruction.data
+      instruction.data,
     ),
   };
 }

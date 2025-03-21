@@ -33,13 +33,13 @@ import {
   type FetchAccountsConfig,
   type MaybeAccount,
   type MaybeEncodedAccount,
-} from '@solana/web3.js';
+} from "@solana/web3.js";
 import {
   getDelegationStateDecoder,
   getDelegationStateEncoder,
   type DelegationState,
   type DelegationStateArgs,
-} from '../types';
+} from "../types";
 
 export type VaultOperatorDelegation = {
   discriminator: bigint;
@@ -65,27 +65,27 @@ export type VaultOperatorDelegationArgs = {
 
 export function getVaultOperatorDelegationEncoder(): Encoder<VaultOperatorDelegationArgs> {
   return getStructEncoder([
-    ['discriminator', getU64Encoder()],
-    ['vault', getAddressEncoder()],
-    ['operator', getAddressEncoder()],
-    ['delegationState', getDelegationStateEncoder()],
-    ['lastUpdateSlot', getU64Encoder()],
-    ['index', getU64Encoder()],
-    ['bump', getU8Encoder()],
-    ['reserved', getArrayEncoder(getU8Encoder(), { size: 263 })],
+    ["discriminator", getU64Encoder()],
+    ["vault", getAddressEncoder()],
+    ["operator", getAddressEncoder()],
+    ["delegationState", getDelegationStateEncoder()],
+    ["lastUpdateSlot", getU64Encoder()],
+    ["index", getU64Encoder()],
+    ["bump", getU8Encoder()],
+    ["reserved", getArrayEncoder(getU8Encoder(), { size: 263 })],
   ]);
 }
 
 export function getVaultOperatorDelegationDecoder(): Decoder<VaultOperatorDelegation> {
   return getStructDecoder([
-    ['discriminator', getU64Decoder()],
-    ['vault', getAddressDecoder()],
-    ['operator', getAddressDecoder()],
-    ['delegationState', getDelegationStateDecoder()],
-    ['lastUpdateSlot', getU64Decoder()],
-    ['index', getU64Decoder()],
-    ['bump', getU8Decoder()],
-    ['reserved', getArrayDecoder(getU8Decoder(), { size: 263 })],
+    ["discriminator", getU64Decoder()],
+    ["vault", getAddressDecoder()],
+    ["operator", getAddressDecoder()],
+    ["delegationState", getDelegationStateDecoder()],
+    ["lastUpdateSlot", getU64Decoder()],
+    ["index", getU64Decoder()],
+    ["bump", getU8Decoder()],
+    ["reserved", getArrayDecoder(getU8Decoder(), { size: 263 })],
   ]);
 }
 
@@ -95,24 +95,24 @@ export function getVaultOperatorDelegationCodec(): Codec<
 > {
   return combineCodec(
     getVaultOperatorDelegationEncoder(),
-    getVaultOperatorDelegationDecoder()
+    getVaultOperatorDelegationDecoder(),
   );
 }
 
 export function decodeVaultOperatorDelegation<TAddress extends string = string>(
-  encodedAccount: EncodedAccount<TAddress>
+  encodedAccount: EncodedAccount<TAddress>,
 ): Account<VaultOperatorDelegation, TAddress>;
 export function decodeVaultOperatorDelegation<TAddress extends string = string>(
-  encodedAccount: MaybeEncodedAccount<TAddress>
+  encodedAccount: MaybeEncodedAccount<TAddress>,
 ): MaybeAccount<VaultOperatorDelegation, TAddress>;
 export function decodeVaultOperatorDelegation<TAddress extends string = string>(
-  encodedAccount: EncodedAccount<TAddress> | MaybeEncodedAccount<TAddress>
+  encodedAccount: EncodedAccount<TAddress> | MaybeEncodedAccount<TAddress>,
 ):
   | Account<VaultOperatorDelegation, TAddress>
   | MaybeAccount<VaultOperatorDelegation, TAddress> {
   return decodeAccount(
     encodedAccount as MaybeEncodedAccount<TAddress>,
-    getVaultOperatorDelegationDecoder()
+    getVaultOperatorDelegationDecoder(),
   );
 }
 
@@ -121,12 +121,12 @@ export async function fetchVaultOperatorDelegation<
 >(
   rpc: Parameters<typeof fetchEncodedAccount>[0],
   address: Address<TAddress>,
-  config?: FetchAccountConfig
+  config?: FetchAccountConfig,
 ): Promise<Account<VaultOperatorDelegation, TAddress>> {
   const maybeAccount = await fetchMaybeVaultOperatorDelegation(
     rpc,
     address,
-    config
+    config,
   );
   assertAccountExists(maybeAccount);
   return maybeAccount;
@@ -137,7 +137,7 @@ export async function fetchMaybeVaultOperatorDelegation<
 >(
   rpc: Parameters<typeof fetchEncodedAccount>[0],
   address: Address<TAddress>,
-  config?: FetchAccountConfig
+  config?: FetchAccountConfig,
 ): Promise<MaybeAccount<VaultOperatorDelegation, TAddress>> {
   const maybeAccount = await fetchEncodedAccount(rpc, address, config);
   return decodeVaultOperatorDelegation(maybeAccount);
@@ -146,12 +146,12 @@ export async function fetchMaybeVaultOperatorDelegation<
 export async function fetchAllVaultOperatorDelegation(
   rpc: Parameters<typeof fetchEncodedAccounts>[0],
   addresses: Array<Address>,
-  config?: FetchAccountsConfig
+  config?: FetchAccountsConfig,
 ): Promise<Account<VaultOperatorDelegation>[]> {
   const maybeAccounts = await fetchAllMaybeVaultOperatorDelegation(
     rpc,
     addresses,
-    config
+    config,
   );
   assertAccountsExist(maybeAccounts);
   return maybeAccounts;
@@ -160,10 +160,10 @@ export async function fetchAllVaultOperatorDelegation(
 export async function fetchAllMaybeVaultOperatorDelegation(
   rpc: Parameters<typeof fetchEncodedAccounts>[0],
   addresses: Array<Address>,
-  config?: FetchAccountsConfig
+  config?: FetchAccountsConfig,
 ): Promise<MaybeAccount<VaultOperatorDelegation>[]> {
   const maybeAccounts = await fetchEncodedAccounts(rpc, addresses, config);
   return maybeAccounts.map((maybeAccount) =>
-    decodeVaultOperatorDelegation(maybeAccount)
+    decodeVaultOperatorDelegation(maybeAccount),
   );
 }

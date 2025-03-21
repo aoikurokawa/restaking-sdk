@@ -26,9 +26,9 @@ import {
   type ReadonlySignerAccount,
   type TransactionSigner,
   type WritableAccount,
-} from '@solana/web3.js';
-import { JITO_RESTAKING_PROGRAM_ADDRESS } from '../programs';
-import { getAccountMetaFactory, type ResolvedAccount } from '../shared';
+} from "@solana/web3.js";
+import { JITO_RESTAKING_PROGRAM_ADDRESS } from "../programs";
+import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
 
 export const OPERATOR_COOLDOWN_NCN_DISCRIMINATOR = 12;
 
@@ -72,16 +72,16 @@ export type OperatorCooldownNcnInstructionDataArgs = {};
 
 export function getOperatorCooldownNcnInstructionDataEncoder(): Encoder<OperatorCooldownNcnInstructionDataArgs> {
   return transformEncoder(
-    getStructEncoder([['discriminator', getU8Encoder()]]),
+    getStructEncoder([["discriminator", getU8Encoder()]]),
     (value) => ({
       ...value,
       discriminator: OPERATOR_COOLDOWN_NCN_DISCRIMINATOR,
-    })
+    }),
   );
 }
 
 export function getOperatorCooldownNcnInstructionDataDecoder(): Decoder<OperatorCooldownNcnInstructionData> {
-  return getStructDecoder([['discriminator', getU8Decoder()]]);
+  return getStructDecoder([["discriminator", getU8Decoder()]]);
 }
 
 export function getOperatorCooldownNcnInstructionDataCodec(): Codec<
@@ -90,7 +90,7 @@ export function getOperatorCooldownNcnInstructionDataCodec(): Codec<
 > {
   return combineCodec(
     getOperatorCooldownNcnInstructionDataEncoder(),
-    getOperatorCooldownNcnInstructionDataDecoder()
+    getOperatorCooldownNcnInstructionDataDecoder(),
   );
 }
 
@@ -123,7 +123,7 @@ export function getOperatorCooldownNcnInstruction<
     TAccountNcnOperatorState,
     TAccountAdmin
   >,
-  config?: { programAddress?: TProgramAddress }
+  config?: { programAddress?: TProgramAddress },
 ): OperatorCooldownNcnInstruction<
   TProgramAddress,
   TAccountConfig,
@@ -152,7 +152,7 @@ export function getOperatorCooldownNcnInstruction<
     ResolvedAccount
   >;
 
-  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
+  const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
   const instruction = {
     accounts: [
       getAccountMeta(accounts.config),
@@ -196,11 +196,11 @@ export function parseOperatorCooldownNcnInstruction<
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>
+    IInstructionWithData<Uint8Array>,
 ): ParsedOperatorCooldownNcnInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 5) {
     // TODO: Coded error.
-    throw new Error('Not enough accounts');
+    throw new Error("Not enough accounts");
   }
   let accountIndex = 0;
   const getNextAccount = () => {
@@ -218,7 +218,7 @@ export function parseOperatorCooldownNcnInstruction<
       admin: getNextAccount(),
     },
     data: getOperatorCooldownNcnInstructionDataDecoder().decode(
-      instruction.data
+      instruction.data,
     ),
   };
 }

@@ -28,9 +28,9 @@ import {
   type TransactionSigner,
   type WritableAccount,
   type WritableSignerAccount,
-} from '@solana/web3.js';
-import { JITO_VAULT_PROGRAM_ADDRESS } from '../programs';
-import { getAccountMetaFactory, type ResolvedAccount } from '../shared';
+} from "@solana/web3.js";
+import { JITO_VAULT_PROGRAM_ADDRESS } from "../programs";
+import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
 
 export const CLOSE_VAULT_UPDATE_STATE_TRACKER_DISCRIMINATOR = 28;
 
@@ -80,20 +80,20 @@ export type CloseVaultUpdateStateTrackerInstructionDataArgs = {
 export function getCloseVaultUpdateStateTrackerInstructionDataEncoder(): Encoder<CloseVaultUpdateStateTrackerInstructionDataArgs> {
   return transformEncoder(
     getStructEncoder([
-      ['discriminator', getU8Encoder()],
-      ['ncnEpoch', getU64Encoder()],
+      ["discriminator", getU8Encoder()],
+      ["ncnEpoch", getU64Encoder()],
     ]),
     (value) => ({
       ...value,
       discriminator: CLOSE_VAULT_UPDATE_STATE_TRACKER_DISCRIMINATOR,
-    })
+    }),
   );
 }
 
 export function getCloseVaultUpdateStateTrackerInstructionDataDecoder(): Decoder<CloseVaultUpdateStateTrackerInstructionData> {
   return getStructDecoder([
-    ['discriminator', getU8Decoder()],
-    ['ncnEpoch', getU64Decoder()],
+    ["discriminator", getU8Decoder()],
+    ["ncnEpoch", getU64Decoder()],
   ]);
 }
 
@@ -103,7 +103,7 @@ export function getCloseVaultUpdateStateTrackerInstructionDataCodec(): Codec<
 > {
   return combineCodec(
     getCloseVaultUpdateStateTrackerInstructionDataEncoder(),
-    getCloseVaultUpdateStateTrackerInstructionDataDecoder()
+    getCloseVaultUpdateStateTrackerInstructionDataDecoder(),
   );
 }
 
@@ -117,7 +117,7 @@ export type CloseVaultUpdateStateTrackerInput<
   vault: Address<TAccountVault>;
   vaultUpdateStateTracker: Address<TAccountVaultUpdateStateTracker>;
   payer: TransactionSigner<TAccountPayer>;
-  ncnEpoch: CloseVaultUpdateStateTrackerInstructionDataArgs['ncnEpoch'];
+  ncnEpoch: CloseVaultUpdateStateTrackerInstructionDataArgs["ncnEpoch"];
 };
 
 export function getCloseVaultUpdateStateTrackerInstruction<
@@ -133,7 +133,7 @@ export function getCloseVaultUpdateStateTrackerInstruction<
     TAccountVaultUpdateStateTracker,
     TAccountPayer
   >,
-  config?: { programAddress?: TProgramAddress }
+  config?: { programAddress?: TProgramAddress },
 ): CloseVaultUpdateStateTrackerInstruction<
   TProgramAddress,
   TAccountConfig,
@@ -162,7 +162,7 @@ export function getCloseVaultUpdateStateTrackerInstruction<
   // Original args.
   const args = { ...input };
 
-  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
+  const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
   const instruction = {
     accounts: [
       getAccountMeta(accounts.config),
@@ -172,7 +172,7 @@ export function getCloseVaultUpdateStateTrackerInstruction<
     ],
     programAddress,
     data: getCloseVaultUpdateStateTrackerInstructionDataEncoder().encode(
-      args as CloseVaultUpdateStateTrackerInstructionDataArgs
+      args as CloseVaultUpdateStateTrackerInstructionDataArgs,
     ),
   } as CloseVaultUpdateStateTrackerInstruction<
     TProgramAddress,
@@ -205,11 +205,11 @@ export function parseCloseVaultUpdateStateTrackerInstruction<
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>
+    IInstructionWithData<Uint8Array>,
 ): ParsedCloseVaultUpdateStateTrackerInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 4) {
     // TODO: Coded error.
-    throw new Error('Not enough accounts');
+    throw new Error("Not enough accounts");
   }
   let accountIndex = 0;
   const getNextAccount = () => {
@@ -226,7 +226,7 @@ export function parseCloseVaultUpdateStateTrackerInstruction<
       payer: getNextAccount(),
     },
     data: getCloseVaultUpdateStateTrackerInstructionDataDecoder().decode(
-      instruction.data
+      instruction.data,
     ),
   };
 }

@@ -25,9 +25,9 @@ import {
   type ReadonlySignerAccount,
   type TransactionSigner,
   type WritableAccount,
-} from '@solana/web3.js';
-import { JITO_RESTAKING_PROGRAM_ADDRESS } from '../programs';
-import { getAccountMetaFactory, type ResolvedAccount } from '../shared';
+} from "@solana/web3.js";
+import { JITO_RESTAKING_PROGRAM_ADDRESS } from "../programs";
+import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
 
 export const OPERATOR_SET_ADMIN_DISCRIMINATOR = 19;
 
@@ -66,13 +66,13 @@ export type OperatorSetAdminInstructionDataArgs = {};
 
 export function getOperatorSetAdminInstructionDataEncoder(): Encoder<OperatorSetAdminInstructionDataArgs> {
   return transformEncoder(
-    getStructEncoder([['discriminator', getU8Encoder()]]),
-    (value) => ({ ...value, discriminator: OPERATOR_SET_ADMIN_DISCRIMINATOR })
+    getStructEncoder([["discriminator", getU8Encoder()]]),
+    (value) => ({ ...value, discriminator: OPERATOR_SET_ADMIN_DISCRIMINATOR }),
   );
 }
 
 export function getOperatorSetAdminInstructionDataDecoder(): Decoder<OperatorSetAdminInstructionData> {
-  return getStructDecoder([['discriminator', getU8Decoder()]]);
+  return getStructDecoder([["discriminator", getU8Decoder()]]);
 }
 
 export function getOperatorSetAdminInstructionDataCodec(): Codec<
@@ -81,7 +81,7 @@ export function getOperatorSetAdminInstructionDataCodec(): Codec<
 > {
   return combineCodec(
     getOperatorSetAdminInstructionDataEncoder(),
-    getOperatorSetAdminInstructionDataDecoder()
+    getOperatorSetAdminInstructionDataDecoder(),
   );
 }
 
@@ -106,7 +106,7 @@ export function getOperatorSetAdminInstruction<
     TAccountOldAdmin,
     TAccountNewAdmin
   >,
-  config?: { programAddress?: TProgramAddress }
+  config?: { programAddress?: TProgramAddress },
 ): OperatorSetAdminInstruction<
   TProgramAddress,
   TAccountOperator,
@@ -128,7 +128,7 @@ export function getOperatorSetAdminInstruction<
     ResolvedAccount
   >;
 
-  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
+  const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
   const instruction = {
     accounts: [
       getAccountMeta(accounts.operator),
@@ -166,11 +166,11 @@ export function parseOperatorSetAdminInstruction<
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
-    IInstructionWithData<Uint8Array>
+    IInstructionWithData<Uint8Array>,
 ): ParsedOperatorSetAdminInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 3) {
     // TODO: Coded error.
-    throw new Error('Not enough accounts');
+    throw new Error("Not enough accounts");
   }
   let accountIndex = 0;
   const getNextAccount = () => {
